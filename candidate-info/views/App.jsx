@@ -61,6 +61,7 @@ class App extends Component {
 
 
     handleDelete(id) {
+        this.loadDetailsFromServerForIASheet();
         var {data, IAData} = this.state;
 
         let deleteIAFormID = "";
@@ -73,8 +74,8 @@ class App extends Component {
             }
         })
         axios.all([
-            axios.delete(`${this.props.url}/${id}`),
-            axios.delete(`${this.props.IAurl}/${deleteIAFormID}`)
+            axios.delete(`${this.props.IAurl}/${deleteIAFormID}`),
+            axios.delete(`${this.props.url}/${id}`)            
         ]).then(res => {
             console.log('Record deleted');
         })
@@ -98,11 +99,11 @@ class App extends Component {
             })
         this.loadDetailsFromServer();
     }
+
     componentDidMount() {
         this.loadDetailsFromServer();
-        this.loadDetailsFromServerForIASheet()
+        this.loadDetailsFromServerForIASheet();
     }
-
 
     handleClose() {
         this.setState({ show: false });
