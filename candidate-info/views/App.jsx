@@ -75,7 +75,7 @@ class App extends Component {
         })
         axios.all([
             axios.delete(`${this.props.IAurl}/${deleteIAFormID}`),
-            axios.delete(`${this.props.url}/${id}`)            
+            axios.delete(`${this.props.url}/${id}`)
         ]).then(res => {
             console.log('Record deleted');
         })
@@ -131,7 +131,7 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
             <div className="">
-                <h1> Candidate Details </h1>
+                <h3> Candidate List </h3>
             </div>
             <div>
                 <Button bsStyle="primary" bsSize="large" onClick={this.handleShow}>

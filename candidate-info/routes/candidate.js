@@ -152,9 +152,16 @@ router.put('/candidateInfo/:id', function(req, res, next){
     if(candidate.phone){
         updcandidateInfo.phone = candidate.phone;
     }
+    if(candidate.alternateNumber){
+        updcandidateInfo.alternateNumber = candidate.alternateNumber;
+    }
     if(candidate.city){
         updcandidateInfo.city = candidate.city;
     }
+    if(candidate.state){
+        updcandidateInfo.state = candidate.state;
+    }
+
     if(candidate.selectedFile_name){
           updcandidateInfo.selectedFile_name = candidate.selectedFile_name;
     }

@@ -48,9 +48,9 @@ class EvaluationStatus extends Component {
   render () {
     const {data, IAdata, interviewStatus} = this.state;
   return(
-    <div className="container-fluid border">
+    <div className="container-fluid">
       <div className="col-sm-4"><label>Interview Status</label><span className="mandatory">*</span></div>
-      <div className="col-sm-6 margin-tiny"><div className="form-group experience-width">
+      <div className="col-sm-6"><div className="form-group experience-width">
          <select required className="form-control" onChange = {this.handleOnChange} name="interviewStatus"
          id="interviewStatusId" value ={interviewStatus}>
            <option>Yet to be interviewed</option>

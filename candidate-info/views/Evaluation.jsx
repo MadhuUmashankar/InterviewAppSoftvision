@@ -165,7 +165,7 @@ class Evaluation extends Component {
 
                     <div className="margin-small">
                       <div className="col-sm-4 header-margin">
-                        <label className="experience-label">Evaluator Final Score</label>
+                        <label className="evaluator-label">Evaluator Final Score</label>
                         <label className="overallScore">{totalValue}</label>
                       </div>
 
@@ -174,7 +174,7 @@ class Evaluation extends Component {
                     <div className="margin-small">
                       <EvaluationStatus onEvaluationStatusSave= {this.handleEvaluationStatusSave} candidate={candidate} data={data[index]} />
                     </div>
-
+                      <div className="margin-small">
                       {
                         data[index] &&
                         <Button className="move-right" onClick={(e)=>{this.handleUpdate(e, data[index]._id, data)}}>Update</Button>
@@ -183,7 +183,8 @@ class Evaluation extends Component {
                         !data[index] && <Button className="move-right" type="submit">Save</Button>
                       }
 
-                      <Button onClick={this.handleClose}>Close</Button>
+                      <Button className="" onClick={this.handleClose}>Close</Button>
+                      </div>
                       </fieldset>
               </form>
             </div>

@@ -53,7 +53,7 @@ class Details extends React.Component {
         this.setState({interviewDate:data.interviewDate, interviewerName : data.interviewerName},() => {
           onDetailsSave({interviewDate:data.interviewDate, interviewerName : data.interviewerName})
         });
-      } 
+      }
     }
   }
 
@@ -68,7 +68,7 @@ class Details extends React.Component {
                     <InputBox
                         type="text"
                         placeholder="Enter Candidate name"
-                        classname="form-control"
+                        classname="form-control details-label"
                         name="candidateName"
                         id="candidateId"
                         value = {candidate.firstname +" "+ candidate.lastname }
@@ -83,7 +83,7 @@ class Details extends React.Component {
                     <label className="control-label" htmlFor="iDate">Interview Date:</label>
                     <InputBox
                         type="date"
-                        classname="form-control"
+                        classname="form-control details-label"
                         name="interviewDate"
                         id="interviewDateId"
                         value = {data ? data.interviewDate : this.state.interviewDate}
@@ -98,7 +98,7 @@ class Details extends React.Component {
                     <InputBox
                         type="text"
                         placeholder="Enter Interviewer's name"
-                        classname="form-control"
+                        classname="form-control details-label"
                         name="interviewerName"
                         id="interviewerId"
                         value = {data ? data.interviewerName : this.state.interviewerName }

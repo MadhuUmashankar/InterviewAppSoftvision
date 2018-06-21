@@ -10,8 +10,7 @@ export default class CandidateAcessment extends Component {
         return (
             <div className="candidate-ia-form">
                 <Evaluation />
-            </div> 
+            </div>
         )
     }
 }
-

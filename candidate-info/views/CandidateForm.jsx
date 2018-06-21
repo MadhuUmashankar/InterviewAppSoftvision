@@ -51,6 +51,10 @@ export default class CandidateForm extends React.Component{
                 candidate["phone"] = value;
                 this.setState({phone : value})
                 break;
+            case "alternateNumber":
+                candidate["alternateNumber"] = value;
+                this.setState({alternateNumber : value})
+                break;
             case "city":
                 candidate["city"] = value;
                 this.setState({city : value})
@@ -98,14 +102,21 @@ export default class CandidateForm extends React.Component{
            if(typeof candidate["city"] !== "undefined"){
                if(!candidate["city"].match(/^[a-zA-Z ]+$/)){
                 formIsValid = false;
-                errors["city"] = "Please enter the valid cityname. eg. Bangalore";
+                errors["city"] = "Please enter the valid city name. eg. Bangalore";
             }
             }
+
+            if(typeof candidate["state"] !== "undefined"){
+                if(!candidate["state"].match(/^[a-zA-Z ]+$/)){
+                 formIsValid = false;
+                 errors["state"] = "Please enter the valid state name. eg. Karnataka";
+             }
+             }
 
             if(typeof candidate["skills"] !== "undefined"){
                 if(!candidate["skills"].match(/^[A-Za-z]{1}[a-zA-Z0-9- ]+$/)){
                     formIsValid = false;
-                    errors["skills"] = "Please enter the valid skills. eg. Java or Angular2";
+                    errors["skills"] = "Please enter the valid skills separated with a comma(,). eg. Java or Java, Angular";
                 }
            }
 
@@ -116,7 +127,7 @@ export default class CandidateForm extends React.Component{
               if(obj) {
                   console.log("Inside if");
                   formIsValid = false;
-                  errors["email"] = "Email entered already exists,Please choose another emailid";
+                  errors["email"] = "Email entered already exists, Please choose another emailid";
               }
           }
 
@@ -131,13 +142,26 @@ export default class CandidateForm extends React.Component{
                 errors["phone"] = "Please enter the valid phone number of 10 digits.";
             }
        }
+
+       if(typeof candidate["alternateNumber"] !== "undefined"){
+       // if(!candidate["alternateNumber"].match(/^[0-9]+$/)){   [7-9]{1}[0-9]{9}
+        if(!candidate["alternateNumber"].match(/[7-9]{1}[0-9]{9}/)){
+            formIsValid = false;
+            errors["alternateNumber"] = "Please enter the valid alternate number.";
+        }
+        else if(candidate["alternateNumber"].length < 10 || candidate["alternateNumber"].length > 10){
+            formIsValid = false;
+            errors["alternateNumber"] = "Please enter the valid alternate number of 10 digits.";
+        }
+      }
+
             this.setState({errors: errors});
             return formIsValid;
         }
 
     handleSubmit(e) {
         e.preventDefault();
-         const {firstname, lastname, skills, email, phone, city,selectedFile_name,selectedFile} = this.state;
+         const {firstname, lastname, skills, email, phone, alternateNumber, city, state, selectedFile_name,selectedFile} = this.state;
         const {onHandleSubmit} = this.props;
           let formIsValid = true;
         if (!formIsValid) {
@@ -145,7 +169,7 @@ export default class CandidateForm extends React.Component{
         }
         if(this.handleValidation()){
             //alert("Form submitted");
-            onHandleSubmit({ firstname, lastname, skills, email, phone, city, selectedFile_name, selectedFile, candStatus : 'Yet to be Interviewed'});
+            onHandleSubmit({ firstname, lastname, skills, email, phone, alternateNumber, city, state, selectedFile_name, selectedFile, candStatus : 'Yet to be Interviewed'});
          }
         // onHandleSubmit({ firstname, lastname, skills, email, phone, city,selectedFile_name,selectedFile});
     }
@@ -201,7 +225,7 @@ export default class CandidateForm extends React.Component{
                                                 onChange = {this.handleOnChange}
                                             />
                                           </div>
-                                          <span className="errors">{this.state.errors["firstname"]}</span>
+                                          <span className="text-danger">{this.state.errors["firstname"]}</span>
                                             </div>
                                         }
                                         {modalLabelView &&
@@ -238,7 +262,7 @@ export default class CandidateForm extends React.Component{
                                             />
                                             </div>
 
-                                           <span className="errors">{this.state.errors["lastname"]}</span>
+                                           <span className="text-danger">{this.state.errors["lastname"]}</span>
                                            </div>
                                         }
                                         {modalLabelView &&
@@ -275,7 +299,7 @@ export default class CandidateForm extends React.Component{
                                                 onChange = {this.handleOnChange}
                                             />
                                             </div>
-                                            <span className="errors">{this.state.errors["email"]}</span>
+                                            <span className="text-danger">{this.state.errors["email"]}</span>
                                            </div>
                                         }
                                         {modalLabelView &&
@@ -311,7 +335,7 @@ export default class CandidateForm extends React.Component{
                                                 onChange = {this.handleOnChange}
                                             />
                                             </div>
-                                            <span className="errors">{this.state.errors["phone"]}</span>
+                                            <span className="text-danger">{this.state.errors["phone"]}</span>
                                             </div>
                                         }
                                         {modalLabelView &&
@@ -329,6 +353,42 @@ export default class CandidateForm extends React.Component{
                             </div>
 
                             <div className="form-group">
+                                <label className="col-md-4 control-label">Alternate Phone</label>
+                                    <div className="col-md-6 inputGroupContainer">
+                                        <div className="input-group">
+
+                                        {!modalLabelView &&
+                                            <div>
+                                              <div>
+                                            <span className="input-group-addon"><span className="glyphicon glyphicon-phone"></span></span>
+                                            <InputBox
+                                                type="tel"
+                                                placeholder="(91)12345-67890"
+                                                classname="form-control"
+                                                name="alternateNumber"
+                                                maxLength="10"
+                                                value = { modalEditView &&  candidate ? candidate.alternateNumber : this.state.alternateNumber}
+                                                onChange = {this.handleOnChange}
+                                            />
+                                            </div>
+                                            <span className="text-danger">{this.state.errors["alternateNumber"]}</span>
+                                            </div>
+                                        }
+                                        {modalLabelView &&
+                                            <div>
+                                                <span>:
+                                                    <label>
+                                                        {candidate && candidate.alternateNumber}
+                                                    </label>
+                                                </span>
+
+                                            </div>
+                                        }
+                                        </div>
+                                </div>
+                            </div>
+
+                            <div className="form-group">
                                 <label className="col-md-4 control-label">City</label>
                                     <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
@@ -336,10 +396,11 @@ export default class CandidateForm extends React.Component{
                                         {!modalLabelView &&
                                             <div>
                                               <div>
-                                            <span className="input-group-addon"><i className="glyphicon glyphicon-home"></i></span>
+                                            <span className="input-group-addon">
+                                              <span className="glyphicon glyphicon-map-marker"></span></span>
                                             <InputBox
                                                 type="text"
-                                                placeholder="city"
+                                                placeholder="City"
                                                 classname="form-control"
                                                 name="city"
                                                 value = { modalEditView &&  candidate ? candidate.city : this.state.city}
@@ -347,7 +408,7 @@ export default class CandidateForm extends React.Component{
                                                 onChange = {this.handleOnChange}
                                             />
                                             </div>
-                                            <span className="errors">{this.state.errors["city"]}</span>
+                                            <span className="text-danger">{this.state.errors["city"]}</span>
                                             </div>
                                         }
                                         {modalLabelView &&
@@ -364,6 +425,43 @@ export default class CandidateForm extends React.Component{
                                     </div>
                             </div>
 
+                            <div className="form-group">
+                                <label className="col-md-4 control-label">State</label>
+                                    <div className="col-md-6 inputGroupContainer">
+                                        <div className="input-group">
+
+                                        {!modalLabelView &&
+                                            <div>
+                                              <div>
+                                            <span className="input-group-addon">
+                                              <span className="glyphicon glyphicon-map-marker"></span></span>
+                                            <InputBox
+                                                type="text"
+                                                placeholder="State"
+                                                classname="form-control"
+                                                name="state"
+                                                value = { modalEditView &&  candidate ? candidate.state : this.state.state}
+                                                required
+                                                onChange = {this.handleOnChange}
+                                            />
+                                            </div>
+                                            <span className="text-danger">{this.state.errors["state"]}</span>
+                                            </div>
+                                        }
+                                        {modalLabelView &&
+                                            <div>
+                                                <span>:
+                                                    <label>
+                                                        {candidate && candidate.state}
+                                                    </label>
+                                                </span>
+
+                                            </div>
+                                        }
+                                        </div>
+                                    </div>
+                            </div>
+
                               <div className="form-group">
                                 <label className="col-md-4 control-label">Key Skills</label>
                                     <div className="col-md-6 inputGroupContainer">
@@ -371,10 +469,12 @@ export default class CandidateForm extends React.Component{
                                         {!modalLabelView &&
                                             <div>
                                                <div>
-
+                                            <span className="input-group-addon">
+                                              <span className="glyphicon glyphicon-wrench"></span>
+                                            </span>
                                             <InputBox
                                                 type="text"
-                                                placeholder="key skills"
+                                                placeholder="Key skills"
                                                 classname="form-control"
                                                 name="skills"
                                                 value = { modalEditView &&  candidate ? candidate.skills : this.state.skills}
@@ -383,7 +483,7 @@ export default class CandidateForm extends React.Component{
                                             />
                                             </div>
 
-                                             <span className="errors">{this.state.errors["skills"]}</span>
+                                             <span className="text-danger">{this.state.errors["skills"]}</span>
                                             </div>
                                         }
                                         {modalLabelView &&
@@ -406,7 +506,7 @@ export default class CandidateForm extends React.Component{
 
                                 <div className="form-group">
                                     <label className="col-md-4 control-label">Upload Resume</label>
-                                    <div className="col-md-6 inputGroupContainer">
+                                    <div className="col-md-6 margin-resume inputGroupContainer">
                                         <div className="input-group">
                                             <input type="file"
                                               className="form-control-file"
@@ -440,9 +540,9 @@ export default class CandidateForm extends React.Component{
                             }
 
 
-                            <div className="form-group">
-                                <label className="col-md-4 control-label"></label>
-                                    <div className="col-md-6">
+                            <div className="form-group submit">
+
+                                    <div className="col-md-12">
                                         { !modalLabelView && !modalEditView &&
                                             <button className="btn btn-primary">Submit<span className="glyphicon glyphicon-submit"></span></button>
                                         }

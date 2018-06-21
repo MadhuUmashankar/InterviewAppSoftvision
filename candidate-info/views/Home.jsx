@@ -7,7 +7,7 @@ import {
     Link,
     Route,
     Switch,
-    HashRouter 
+    HashRouter
   } from 'react-router-dom';
 
  const Home = () => (
@@ -15,17 +15,17 @@ import {
       <div>
         <div className="nav">
           <div className="title">
-            <h3>Interview Management System</h3>
+            <h1><u>Interview Management System</u></h1>
           </div>
           <div className="log-in">
             <Link to="/" className="btn btn-primary">Log In</Link>
           </div>
         </div>
-        
+
         <Switch>
             <Route path="/" exact component={Login} />
               <Route path="/register" component={() => <Register url="http://localhost:3000/candidateInfo"/>}/>
-              <Route path="/app" component={() => <App url='http://localhost:3000/candidateInfo' IAurl= "http://localhost:3000/candidateInfo/newIAForm"/>}/> 
+              <Route path="/app" component={() => <App url='http://localhost:3000/candidateInfo' IAurl= "http://localhost:3000/candidateInfo/newIAForm"/>}/>
               <Route path="/logout" component={Login}/>
         </Switch>
       </div>

@@ -67,6 +67,7 @@
         position: relative;
         display: table;
         border-collapse: separate;
+        width: 100%;
     }
     .edit-btn {
         margin-left: 28px;
@@ -74,10 +75,19 @@
     }
 }
 
-.errors {
-    color: red;
+.inputGroupContainer {
+  .input-group {
+    width: 100%;
+  }
 }
 
+.margin-resume {
+  margin-top: 5px;
+}
+
+.submit{
+  text-align: -webkit-center
+}
 // IA form details
 
 .details-width {
@@ -90,23 +100,26 @@
 
 // IA form Expertise css
 
+.details-label {
+  margin-left: 10px;
+}
 .overallScore{
     margin-left: 15px;
 }
 .expertised-area {
-.control-label:after {
-    content: "*";
-    color: red;
-    padding: 5px;
+  .control-label:after {
+      content: "*";
+      color: red;
+      padding: 5px;
+  }
 }
-}
-  
+
 .header-margin {
 margin-top: 15px;
 }
 
 
-//Summary
+// IA form Summary
 
 .interview-comments {
     padding-top: 5px;
@@ -114,6 +127,7 @@ margin-top: 15px;
 
 .experience-width {
     width: 372px;
+    margin-left: 0px !important;
 }
 
 .mandatory {
@@ -122,4 +136,3 @@ margin-top: 15px;
     padding: 5px;
     font-size: 15px;
 }
-  
