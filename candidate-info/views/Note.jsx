@@ -1,5 +1,4 @@
 import React from 'react';
-import './Note.scss';
 
 class Note extends React.Component {
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import InputBox from './InputBox';
-import './Expertise.scss';
 
 class Expertise extends React.Component {
   constructor(props){
@@ -45,14 +44,12 @@ class Expertise extends React.Component {
 
   onExpertiseSave(rows) {
     const {onExpertiseSave} = this.props;
-    // const {overallAvgScore} = this.state;
     if (!rows) {return;}
     onExpertiseSave(rows);
   }
 
   componentDidMount() {
     const { data, onExpertiseSave } = this.props;
-    // const {overallAvgScore} = this.state;
       if (data != undefined) {
         if(Object.keys(data).length > 0) {
         this.setState({IAdata:{rows: data.rows}},() => {
@@ -65,12 +62,6 @@ class Expertise extends React.Component {
   render(){
     let {candidate, IAdata} = this.state;
     let rows = Object.keys(IAdata).length > 0 ? IAdata.rows : [{}];
-    // console.log('this.props', this.props)
-    // if(rows.length) {
-    //   overallAvgScore= (rows.filter(item => item.avgScore)).map(item => item.avgScore).reduce((prev, next, iv) => { return +prev + +next}, 0);
-    //   overallAvgScore = Math.round(overallAvgScore/(rows.length || 1));
-    //   console.log('overallAvgScore', overallAvgScore)
-    // }
 
     return (
       <div>

@@ -22,3 +22,104 @@
         height: 46px;
     }
 }
+
+// Login CSS
+
+.signin-form {
+    width: 650px;
+    margin: auto;
+}
+.sub-title {
+    text-align: center;
+    text-transform: uppercase;
+}
+.title {
+    text-transform: uppercase;
+    text-align: center;
+    padding: 20px;
+}
+.log-in {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+.login-btn {
+    margin-right: 10px;
+}
+.btn-wrapper button{
+    text-transform: uppercase;
+}
+
+
+//Candidate form css
+
+.form-container {
+    // background-color: lightblue;
+    padding: 20px 0;
+    label {
+        padding-top: 7px;
+        padding-left: 11px;
+    }
+    p {
+        font-weight: bold;
+    }
+    .input-group div{
+        position: relative;
+        display: table;
+        border-collapse: separate;
+    }
+    .edit-btn {
+        margin-left: 28px;
+        padding: 3px 8px;
+    }
+}
+
+.errors {
+    color: red;
+}
+
+// IA form details
+
+.details-width {
+    display: inline-block;
+}
+
+.padding {
+    padding-right: 130px;
+}
+
+// IA form Expertise css
+
+.overallScore{
+    margin-left: 15px;
+}
+.expertised-area {
+.control-label:after {
+    content: "*";
+    color: red;
+    padding: 5px;
+}
+}
+  
+.header-margin {
+margin-top: 15px;
+}
+
+
+//Summary
+
+.interview-comments {
+    padding-top: 5px;
+}
+
+.experience-width {
+    width: 372px;
+}
+
+.mandatory {
+    content: "*";
+    color: red;
+    padding: 5px;
+    font-size: 15px;
+}
+  

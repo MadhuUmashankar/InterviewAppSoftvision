@@ -1,6 +1,6 @@
 import React from 'react';
 import InputBox from './InputBox';
-import './Details.scss';
+
 class Details extends React.Component {
   constructor(props) {
     super(props)

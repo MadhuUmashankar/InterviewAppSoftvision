@@ -1,5 +1,4 @@
 import React from "react";
-import './CandidateForm.scss';
 import InputBox from './InputBox'
 import EditButton from './EditButton'
 

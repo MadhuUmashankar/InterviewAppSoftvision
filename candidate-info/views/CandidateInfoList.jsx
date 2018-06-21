@@ -48,6 +48,7 @@ export default class CandidateInfoList extends Component {
 
 
         candidateNodes = candidateNodes && candidateNodes.map((candidate, index) => {
+
             const candidateID = candidate._id;
             return (
                 <div  key={index}>
@@ -73,9 +74,6 @@ export default class CandidateInfoList extends Component {
                                 <button className="btn margin-tiny" onClick={(e)=>this.handleView(e, candidate)}>View</button>
                                 <button className="btn btn-danger" onClick={(e)=>this.handleDelete(e, candidateID,candidate)}>Delete</button>
                             </div>
-                            {/* <div>
-                                <button className="btn-evaluate btn btn-lg btn-primary"  onClick={this.handleEvalution}>Start Evalution Process</button>
-                            </div> */}
                         </div>
                 </div>
 

@@ -15,11 +15,16 @@ app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
 app.use(logger('dev'));
+
+// parse incoming requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// serve static files from template
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'upload')));
 
+// include routes
 app.use('/', indexRouter);
 app.use('/', candidateRouter);
 

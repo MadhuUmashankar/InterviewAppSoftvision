@@ -1,5 +1,4 @@
 import React from 'react';
-import './Summary.scss';
 
 class Summary extends React.Component {
   constructor(props) {
