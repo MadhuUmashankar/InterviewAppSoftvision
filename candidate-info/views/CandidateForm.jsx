@@ -171,7 +171,6 @@ export default class CandidateForm extends React.Component{
             //alert("Form submitted");
             onHandleSubmit({ firstname, lastname, skills, email, phone, alternateNumber, city, state, selectedFile_name, selectedFile, candStatus : 'Yet to be Interviewed'});
          }
-        // onHandleSubmit({ firstname, lastname, skills, email, phone, city,selectedFile_name,selectedFile});
     }
 
     handleEditView(modalEditView) {
@@ -182,20 +181,11 @@ export default class CandidateForm extends React.Component{
     handleUpdate(e, candidateId,candidate) {
         e.preventDefault();
         const {handleUpdate} = this.props;
-        //handleUpdate(candidateId, candidate);
+ 
         if(this.handleValidation()){
             handleUpdate(candidateId, candidate);
         }
     }
-
-  /*  upLoadFile(event){
-        event.preventDefault();
-         this.setState({
-            selectedFile : event.target.files[0],
-            selectedFile_name : event.target.files[0].name
-         })
-        }
-*/
 
     render(){
         const { candidate } = this.state;

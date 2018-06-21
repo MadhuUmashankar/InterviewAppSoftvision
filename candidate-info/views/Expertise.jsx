@@ -16,14 +16,14 @@ class Expertise extends React.Component {
 }
 
  handleInputChange(event, idx, overallAvgScore) {
-   const {IAdata} = this.state;
-  const { name, value } = event.target;
+    const {IAdata} = this.state;
+    const { name, value } = event.target;
 
-  let rows = Object.keys(IAdata).length > 0 ? [...IAdata.rows] : [{}];
-  rows[idx] = Object.assign({}, rows[idx], {[name]:value}) ;
-  this.setState({IAdata:{rows:rows}}, ()=> {
-      this.onExpertiseSave(rows);
-  });
+    let rows = Object.keys(IAdata).length > 0 ? [...IAdata.rows] : [{}];
+    rows[idx] = Object.assign({}, rows[idx], {[name]:value}) ;
+    this.setState({IAdata:{rows:rows}}, ()=> {
+        this.onExpertiseSave(rows);
+    });
   };
 
 

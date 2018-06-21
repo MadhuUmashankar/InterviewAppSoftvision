@@ -15,7 +15,7 @@ class Evaluation extends Component {
 
      this.state = {
        show: false,
-       data: [],
+       IAdata: [],
        detailsData: {},
        experience:{},
        expertiseData: {},
@@ -23,8 +23,7 @@ class Evaluation extends Component {
        summaryData:{},
        interviewStatus:{},
        candidate:props.candidate,
-       url: props.url,
-       index:props.index
+       url: props.url
      };
 
     this.handleSubmitIAForm = this.handleSubmitIAForm.bind(this);
@@ -44,7 +43,7 @@ class Evaluation extends Component {
        axios.get(iaUrl)
            .then(res => {
              console.log('response from server IA data', res.data);
-               this.setState({ data: res.data });
+               this.setState({ IAdata: res.data });
            })
    }
 
@@ -87,7 +86,7 @@ class Evaluation extends Component {
   handleUpdate(e, id, record) {
     e.preventDefault();
 
-    const {detailsData, candidate, experience, expertiseData, impression, summaryData, data, interviewStatus} = this.state;
+    const {detailsData, candidate, experience, expertiseData, impression, summaryData, interviewStatus} = this.state;
     const fullname = candidate.firstname + " " + candidate.lastname;
     const updatedrecord = Object.assign({}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
     let iaUrl = this.props.url + '/newIAForm';
@@ -99,35 +98,39 @@ class Evaluation extends Component {
               console.log(err);
           })
     this.loadDetailsFromServerForIASheet();
-    location.reload(true);
   }
 
 
   handleSubmitIAForm(e) {
     e.preventDefault();
+    this.loadDetailsFromServerForIASheet();
     const {detailsData, candidate, experience, expertiseData, impression, summaryData, interviewStatus} = this.state;
     // Candidate IA Form data
     const fullname = candidate.firstname + " " + candidate.lastname;
 
-    const record = Object.assign({}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
+    const record = Object.assign({}, {candidateID: candidate._id}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
     this.setState({ show: false });
       if(record) {
-          let records = this.state.data;
+          let records = this.state.IAdata;
           let newIAForm = records.concat(record);
-          this.setState({ data: newIAForm });
+          this.setState({ IAdata: newIAForm });
 
           axios.post(this.props.url + '/newIAForm', record)
               .catch(err => {
                   console.error(err);
-                  this.setState({ data: records });
+                  this.setState({ IAdata: records });
               });
-      }
-    this.loadDetailsFromServerForIASheet();
-    location.reload(true);
+      }    
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log("eval");
+    console.log(nextProps);
+  }
+
+
   render() {
-    let {candidate, url, data, index, experience, expertiseData, impression, overallAvgScore} = this.state;
+    let {candidate, url, IAdata, index, experience, expertiseData, impression, overallAvgScore} = this.state;
     let rows = expertiseData;
     if(rows.length) {
       overallAvgScore= (rows.filter(item => item.avgScore)).map(item => item.avgScore).reduce((prev, next, iv) => { return +prev + +next}, 0);
@@ -135,6 +138,13 @@ class Evaluation extends Component {
     }
     let total = ((0.1*experience) + (0.8*overallAvgScore) + (0.1*impression)) || 0;
     let totalValue = parseFloat(Number(total).toFixed(2));
+
+
+    let currentIARecord = IAdata.filter((record) => {
+      return candidate._id === record.candidateID
+    });
+
+    currentIARecord = currentIARecord[0];
 
     return (
       <div>
@@ -151,16 +161,16 @@ class Evaluation extends Component {
               <form className="form-horizontal" onSubmit= {this.handleSubmitIAForm}>
                 <fieldset className = "background">
                     <div className="margin-small">
-                      <Details onDetailsSave= {this.handleDetailsData} candidate={candidate} data={data[index]} />
+                      <Details onDetailsSave= {this.handleDetailsData} candidate={candidate} data={currentIARecord} />
                     </div>
                     <div className="margin-small">
-                     <Note onNoteSave= {this.handleNoteData} candidate={candidate} data={data[index]} />
+                     <Note onNoteSave= {this.handleNoteData} candidate={candidate} data={currentIARecord} />
                     </div>
                     <div className="margin-small">
-                     <Expertise onExpertiseSave= {this.handleExpertiseData} candidate={candidate} data={data[index]} overallAvgScore={overallAvgScore} />
+                     <Expertise onExpertiseSave= {this.handleExpertiseData} candidate={candidate} data={currentIARecord} overallAvgScore={overallAvgScore} />
                     </div>
                     <div className="margin-small">
-                      <Impression onImpressionSave= {this.handleImpressionSave} candidate={candidate} data={data[index]} />
+                      <Impression onImpressionSave= {this.handleImpressionSave} candidate={candidate} data={currentIARecord} />
                     </div>
 
                     <div className="margin-small">
@@ -169,18 +179,18 @@ class Evaluation extends Component {
                         <label className="overallScore">{totalValue}</label>
                       </div>
 
-                      <Summary onSummarySave= {this.handleSummaryData} candidate={candidate} data={data[index]} />
+                      <Summary onSummarySave= {this.handleSummaryData} candidate={candidate} data={currentIARecord} />
                     </div>
                     <div className="margin-small">
-                      <EvaluationStatus onEvaluationStatusSave= {this.handleEvaluationStatusSave} candidate={candidate} data={data[index]} />
+                      <EvaluationStatus onEvaluationStatusSave= {this.handleEvaluationStatusSave} candidate={candidate} data={currentIARecord} />
                     </div>
                       <div className="margin-small">
                       {
-                        data[index] &&
-                        <Button className="move-right" onClick={(e)=>{this.handleUpdate(e, data[index]._id, data)}}>Update</Button>
+                        currentIARecord &&
+                        <Button className="move-right" onClick={(e)=>{this.handleUpdate(e, currentIARecord._id, IAdata)}}>Update</Button>
                       }
                       {
-                        !data[index] && <Button className="move-right" type="submit">Save</Button>
+                        !currentIARecord && <Button className="move-right" type="submit">Save</Button>
                       }
 
                       <Button className="" onClick={this.handleClose}>Close</Button>

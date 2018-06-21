@@ -62,20 +62,24 @@ class App extends Component {
 
     handleDelete(id) {
         this.loadDetailsFromServerForIASheet();
-        var {data, IAData} = this.state;
+        const {data, IAData} = this.state;
 
         let deleteIAFormID = "";
-
         data.map((candidate, index) => {
             if(id === candidate._id) {
                 data.splice(index,1);
-                deleteIAFormID = IAData[index]._id;
                 this.setState({ data });
+                deleteIAFormID = IAData.filter((record) => {
+                    return candidate._id === record.candidateID
+                });
             }
         })
+      
+        deleteIAFormID = deleteIAFormID.length > 0 ? deleteIAFormID[0]._id : '';
+
         axios.all([
-            axios.delete(`${this.props.IAurl}/${deleteIAFormID}`),
-            axios.delete(`${this.props.url}/${id}`)
+            `${deleteIAFormID} ? ${axios.delete(`${this.props.IAurl}/${deleteIAFormID}`)} : ""`,
+            axios.delete(`${this.props.url}/${id}`)            
         ]).then(res => {
             console.log('Record deleted');
         })
@@ -93,16 +97,17 @@ class App extends Component {
     handleUpdate(id, record) {
         this.setState({ show: false });
         let formData = new FormData();
-      formData.append('selectedFile', record.selectedFile);
+        formData.append('selectedFile', record.selectedFile);
+
           //sends the new candidate id and new candidate to our api
-          axios.all([
-                          axios.post(this.props.url+'/upload', formData),
-                         axios.put(`${this.props.url}/${id}`, record),
-                  ])
-        //axios.put(`${this.props.url}/${id}`, record)
-            .catch(err => {
-                console.log(err);
-            })
+        axios.all([
+                        axios.post(this.props.url+'/upload', formData),
+                        axios.put(`${this.props.url}/${id}`, record),
+                ])
+        .catch(err => {
+            console.log(err);
+        })
+
         this.loadDetailsFromServer();
     }
 

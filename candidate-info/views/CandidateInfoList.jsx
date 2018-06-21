@@ -32,7 +32,7 @@ export default class CandidateInfoList extends Component {
     handleEvalution(e, candidateID, candidate) {
         window.location.href = "/CandidateAcessment";
     }
-
+    
     render() {
         const {data, searchKey, url, IAData} = this.props;
 
@@ -53,25 +53,25 @@ export default class CandidateInfoList extends Component {
             return (
                 <div  key={index}>
                         <div>
-                          <div className="candidate-colum panel">
-                            <div className= "evaluation-status date-status">
-                              <div className="">
-                               <label>{dataFromIA[index] ? dataFromIA[index].interviewStatus : ''}</label></div>
-                               <div className="">
-                                 <label>{dataFromIA[index] ? dataFromIA[index].interviewDate : ''}</label>
-                               </div>
-                              </div>
+                        <div className="candidate-colum panel">
+                          <div className= "evaluation-status date-status">
+                        <div className="">
+                           <label>{dataFromIA[index] ? dataFromIA[index].interviewStatus : ''}</label></div>
+                           <div className="">
+                             <label>{dataFromIA[index] ? dataFromIA[index].interviewDate : ''}</label>
+                           </div>
+                        </div>
+                            <div>
+                                <h5><label>{candidate.firstname} {candidate.lastname}</label></h5>
+                                <h5><span className="margin-tiny glyphicon glyphicon-wrench"></span>Skills: {candidate.skills}</h5>
+                                <h5><span className="margin-tiny glyphicon glyphicon-map-marker"></span>Location: {candidate.city}</h5>
+                                <h5><span className="margin-tiny glyphicon glyphicon-phone"></span>Phone No.: {candidate.phone}</h5>
+                            </div>
+                            <div className="evaluation-wrapper" >
+                                <Evaluation candidate={candidate} url={url}/>
+                                <div className="file"><a target="_blank" href= {candidate.selectedFile_name} download> {candidate.selectedFile_name} </a></div>
+                            </div>
                               <div>
-                                  <h5><label>{candidate.firstname} {candidate.lastname}</label></h5>
-                                  <h5><span className="margin-tiny glyphicon glyphicon-wrench"></span><strong>Skills:</strong> {candidate.skills}</h5>
-                                  <h5><span className="margin-tiny glyphicon glyphicon-map-marker"></span><strong>Location:</strong> {candidate.city}</h5>
-                                  <h5><i className="margin-tiny glyphicon glyphicon-earphone"></i><strong>Phone:</strong> {candidate.phone}</h5>
-                              </div>
-                              <div className="evaluation-wrapper" >
-                                  <Evaluation candidate={candidate} url={url} index={index}/>
-                                  <div className="file"><a target="_blank" href= {candidate.selectedFile_name} download> {candidate.selectedFile_name} </a></div>
-                              </div>
-                                <div>
                                   <button className="btn margin-tiny" onClick={(e)=>this.handleView(e, candidate)}>View</button>
                                   <button className="btn btn-danger" onClick={(e)=>this.handleDelete(e, candidateID,candidate)}>Delete</button>
                               </div>
