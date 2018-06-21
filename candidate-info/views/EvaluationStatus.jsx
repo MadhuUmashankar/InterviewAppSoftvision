@@ -61,6 +61,7 @@ class EvaluationStatus extends Component {
            <option>Move to Technical round 2</option>
            <option>Move to Manager round</option>
            <option>Move to HR round</option>
+           <option>Took other offer</option>
          </select>
       </div></div>
   </div>

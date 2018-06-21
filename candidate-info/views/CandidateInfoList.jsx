@@ -48,7 +48,6 @@ export default class CandidateInfoList extends Component {
 
 
         candidateNodes = candidateNodes && candidateNodes.map((candidate, index) => {
-          console.log(' dataFromIA[index]', dataFromIA[index])
             const candidateID = candidate._id;
             return (
                 <div  key={index}>
@@ -61,8 +60,10 @@ export default class CandidateInfoList extends Component {
                            </div>
                         </div>
                             <div>
-                                <h5>Name: {candidate.firstname} {candidate.lastname}</h5>
-                                <h5>Skills: {candidate.skills}</h5>
+                                <h5><label>{candidate.firstname} {candidate.lastname}</label></h5>
+                                <h5><span className="margin-tiny glyphicon glyphicon-wrench"></span>Skills: {candidate.skills}</h5>
+                                <h5><span className="margin-tiny glyphicon glyphicon-map-marker"></span>Location: {candidate.city}</h5>
+                                <h5><span className="margin-tiny glyphicon glyphicon-phone"></span>Phone No.: {candidate.phone}</h5>
                             </div>
                             <div className="evaluation-wrapper" >
                                 <Evaluation candidate={candidate} url={url} index={index}/>
