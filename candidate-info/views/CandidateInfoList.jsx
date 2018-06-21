@@ -54,9 +54,9 @@ export default class CandidateInfoList extends Component {
                         <div className="candidate-colum panel">
                           <div className= "evaluation-status date-status">
                         <div className="">
-                           <label>{dataFromIA[index] ? dataFromIA[index].interviewStatus : 'Status'}</label></div>
+                           <label>{dataFromIA[index] ? dataFromIA[index].interviewStatus : ''}</label></div>
                            <div className="">
-                             <label>{dataFromIA[index] ? dataFromIA[index].interviewDate : 'Date'}</label>
+                             <label>{dataFromIA[index] ? dataFromIA[index].interviewDate : ''}</label>
                            </div>
                         </div>
                             <div>

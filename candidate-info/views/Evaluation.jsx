@@ -99,6 +99,7 @@ class Evaluation extends Component {
               console.log(err);
           })
     this.loadDetailsFromServerForIASheet();
+    location.reload(true);
   }
 
 
@@ -122,6 +123,7 @@ class Evaluation extends Component {
               });
       }
     this.loadDetailsFromServerForIASheet();
+    location.reload(true);
   }
 
   render() {
