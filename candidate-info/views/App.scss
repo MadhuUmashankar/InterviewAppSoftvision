@@ -73,6 +73,13 @@
         margin-left: 28px;
         padding: 3px 8px;
     }
+    .form-group {
+      .control-label:after {
+        content: "*";
+        color: red;
+        padding: 5px;
+      }
+    }
 }
 
 .inputGroupContainer {
@@ -135,4 +142,14 @@ margin-top: 15px;
     color: red;
     padding: 5px;
     font-size: 15px;
+}
+
+
+
+
+
+//Manager form
+
+.evaluation-criteria {
+  text-align: center;
 }

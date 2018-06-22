@@ -125,7 +125,6 @@ export default class CandidateForm extends React.Component{
               let obj = arr.find(o => o.email === this.state.email);
               console.log("Inside validation email")
               if(obj) {
-                  console.log("Inside if");
                   formIsValid = false;
                   errors["email"] = "Email entered already exists, Please choose another emailid";
               }
@@ -181,7 +180,7 @@ export default class CandidateForm extends React.Component{
     handleUpdate(e, candidateId,candidate) {
         e.preventDefault();
         const {handleUpdate} = this.props;
- 
+
         if(this.handleValidation()){
             handleUpdate(candidateId, candidate);
         }

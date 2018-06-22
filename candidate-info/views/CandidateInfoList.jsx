@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import './candidateInfoList.scss';
 import Evaluation from './Evaluation';
+// import {withRouter} from "react-router-dom";
+import {hashHistory} from 'react-router';
 
-export default class CandidateInfoList extends Component {
+class CandidateInfoList extends Component {
     constructor(props) {
         super(props);
         this.modalStatus = false;
+
+        this.handleEvalution = this.handleEvalution.bind(this);
     }
 
     handleDelete(e, candidateID) {
@@ -29,10 +33,26 @@ export default class CandidateInfoList extends Component {
         onModalView(this.modalStatus, candidate);
     }
 
-    handleEvalution(e, candidateID, candidate) {
-        window.location.href = "/CandidateAcessment";
+    handleEvalution(candidate) {
+        //e.preventDefault();
+      console.log('+++++++++++++' , candidate )
+
+      // let cId = candidate._id;
+      //  // browserHistory.push('#/CandidateAcessment');
+
+      //
+        // hashHistory.push({
+        //     pathname: '#/CandidateAcessment',
+        //      query: {
+        //       id: candidate[0]._id
+        //      }
+        //   })
+      //   // this.props.history.push('#/CandidateAcessment');
+      window.location.hash = "#/CandidateAcessment";
+
+
     }
-    
+
     render() {
         const {data, searchKey, url, IAData} = this.props;
 
@@ -46,7 +66,6 @@ export default class CandidateInfoList extends Component {
             })
         }
 
-
         candidateNodes = candidateNodes && candidateNodes.map((candidate, index) => {
 
             const candidateID = candidate._id;
@@ -55,14 +74,15 @@ export default class CandidateInfoList extends Component {
                         <div>
                         <div className="candidate-colum panel">
                           <div className= "evaluation-status date-status">
-                        <div className="">
-                           <label>{dataFromIA[index] ? dataFromIA[index].interviewStatus : ''}</label></div>
+                            <div className="">
+                               <label>{dataFromIA[index] ? dataFromIA[index].interviewStatus : ''}</label>
+                             </div>
                            <div className="">
                              <label>{dataFromIA[index] ? dataFromIA[index].interviewDate : ''}</label>
                            </div>
                         </div>
                             <div>
-                                <h5><label>{candidate.firstname} {candidate.lastname}</label></h5>
+                                <h5><label><a onClick={this.handleEvalution(candidateNodes)}>{candidate.firstname} {candidate.lastname}</a></label></h5>
                                 <h5><span className="margin-tiny glyphicon glyphicon-wrench"></span>Skills: {candidate.skills}</h5>
                                 <h5><span className="margin-tiny glyphicon glyphicon-map-marker"></span>Location: {candidate.city}</h5>
                                 <h5><span className="margin-tiny glyphicon glyphicon-phone"></span>Phone No.: {candidate.phone}</h5>
@@ -71,9 +91,11 @@ export default class CandidateInfoList extends Component {
                                 <Evaluation candidate={candidate} url={url}/>
                                 <div className="file"><a target="_blank" href= {candidate.selectedFile_name} download> {candidate.selectedFile_name} </a></div>
                             </div>
+
+
                               <div>
                                   <button className="btn margin-tiny" onClick={(e)=>this.handleView(e, candidate)}>View</button>
-                                  <button className="btn btn-danger" onClick={(e)=>this.handleDelete(e, candidateID,candidate)}>Delete</button>
+                                  <button className="btn btn-danger" onClick={(e)=>this.handleDelete(e, candidateID, candidate)}>Delete</button>
                               </div>
                           </div>
                         </div>
@@ -94,3 +116,6 @@ export default class CandidateInfoList extends Component {
         )
     }
 }
+
+
+export default CandidateInfoList;
