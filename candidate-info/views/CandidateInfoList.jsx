@@ -13,6 +13,7 @@ class CandidateInfoList extends Component {
     }
 
     handleDelete(e, candidateID) {
+      console.log('inside delete', candidateID)
         if (confirm("You are about to delete this Candidate?")) {
           const {onDelete} = this.props;
           onDelete(candidateID);
@@ -33,23 +34,20 @@ class CandidateInfoList extends Component {
         onModalView(this.modalStatus, candidate);
     }
 
-    handleEvalution(candidate) {
-        //e.preventDefault();
-      console.log('+++++++++++++' , candidate )
-
-      // let cId = candidate._id;
+    handleEvalution(candidateID) {
+      event.preventDefault()
       //  // browserHistory.push('#/CandidateAcessment');
 
       //
-        // hashHistory.push({
-        //     pathname: '#/CandidateAcessment',
-        //      query: {
-        //       id: candidate[0]._id
-        //      }
-        //   })
+    hashHistory.push({
+        pathname: '#/CandidateAcessment',
+         query: {
+          id: candidateID
+         }
+      })
       //   // this.props.history.push('#/CandidateAcessment');
-      window.location.hash = "#/CandidateAcessment";
-
+      // window.location.hash = "#/CandidateAcessment";
+      // return false;
 
     }
 
@@ -60,7 +58,7 @@ class CandidateInfoList extends Component {
         let dataFromIA = IAData;
 
         if(searchKey) {
-            candidateNodes = data.filter((candidate, index) => {
+            candidateNodes = candidateNodes.filter((candidate, index) => {
                 const fullName = candidate.firstname  + " " +  candidate.lastname;
                 return candidate.firstname.toLowerCase().indexOf(searchKey.toLowerCase()) > -1 || candidate.lastname.toLowerCase().indexOf(searchKey.toLowerCase()) > -1 || candidate.skills.toLowerCase().indexOf(searchKey.toLowerCase()) > -1 || fullName.toLowerCase().indexOf(searchKey.toLowerCase()) > -1;
             })
@@ -70,7 +68,7 @@ class CandidateInfoList extends Component {
 
             const candidateID = candidate._id;
             return (
-                <div  key={index}>
+                <div key={index}>
                         <div>
                         <div className="candidate-colum panel">
                           <div className= "evaluation-status date-status">
@@ -82,7 +80,7 @@ class CandidateInfoList extends Component {
                            </div>
                         </div>
                             <div>
-                                <h5><label><a onClick={this.handleEvalution(candidateNodes)}>{candidate.firstname} {candidate.lastname}</a></label></h5>
+                                <h5><label><a onClick={()=>this.handleEvalution(candidateID)}>{candidate.firstname} {candidate.lastname}</a></label></h5>
                                 <h5><span className="margin-tiny glyphicon glyphicon-wrench"></span>Skills: {candidate.skills}</h5>
                                 <h5><span className="margin-tiny glyphicon glyphicon-map-marker"></span>Location: {candidate.city}</h5>
                                 <h5><span className="margin-tiny glyphicon glyphicon-phone"></span>Phone No.: {candidate.phone}</h5>
