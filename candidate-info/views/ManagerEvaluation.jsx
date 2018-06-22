@@ -3,35 +3,38 @@ import Summary from './Summary';
 import EvaluationStatus from './EvaluationStatus';
 import { Modal,Button } from 'react-bootstrap';
 import axios from 'axios';
+import InputBox from './InputBox';
 
 class ManagerEvaluation extends Component {
   constructor(props, context) {
      super(props, context);
 
      this.state = {
-       show: false,
-       data: [],
-       interviewStatus:{},
-       candidate:props.candidate,
-       url: props.url,
-       index:props.index
+       customerNeeds: '',
+       clientProcess:'',
+       clientRelationship:'',
+       clientOrientationRatings:'',
+       clientOrientationComment:'',
+       planningControl:'',
+       peopleManagement:'',
+       projectManagementRatings:'',
+       projectManagementComment:'',
+       leadership:'',
+       leadershipRatings: '',
+       leadershipComments: '',
+       communication: '',
+       communicationRatings: '',
+       communicationComments: '',
+       domain: '',
+       domainRatings: '',
+       domainComments: '',
+       candidateData: props.candidateData
      };
 
-    this.handleSubmitManagerForm = this.handleSubmitManagerForm.bind(this);
-    this.loadDetailsFromServerForIASheet = this.loadDetailsFromServerForIASheet.bind(this);
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    this.handleSummaryData = this.handleSummaryData.bind(this);
+    this.handleSubmitManagerForm = this.handleSubmitManagerForm.bind(this);
     this.handleEvaluationStatusSave = this.handleEvaluationStatusSave.bind(this);
-   }
-
-   loadDetailsFromServerForIASheet() {
-     let iaUrl = this.state.url + '/newIAForm';
-       axios.get(iaUrl)
-           .then(res => {
-             console.log('response from server IA data', res.data);
-               this.setState({ data: res.data });
-           })
    }
 
 
@@ -43,61 +46,76 @@ class ManagerEvaluation extends Component {
     this.setState({ show: true });
   }
 
-  componentDidMount() {
-      this.loadDetailsFromServerForIASheet();
-  }
+  handleOnChange(event) {
+    switch (event.target.name) {
+        case "customerNeeds":
+            this.setState({customerNeeds : event.target.value})
+            break;
+        case "clientProcess":
+            this.setState({clientProcess : event.target.value})
+            break;
+        case "clientRelationship":
+            this.setState({clientRelationship : event.target.value})
+            break;
+        case "clientOrientationRatings":
+            this.setState({clientOrientationRatings : event.target.value})
+            break;
+        case "clientOrientationComment":
+            this.setState({clientOrientationComment : event.target.value})
+            break;
+        case "planningControl":
+            this.setState({planningControl : event.target.value})
+            break;
+        case "peopleManagement":
+            this.setState({peopleManagement : event.target.value})
+            break;
+        case "projectManagementRatings":
+            this.setState({projectManagementRatings : event.target.value})
+            break;
+        case "projectManagementComment":
+            this.setState({projectManagementComment : event.target.value})
+            break;
+        case "leadership":
+            this.setState({leadership : event.target.value})
+            break;
+        case "leadershipRatings":
+            this.setState({leadershipRatings : event.target.value})
+            break;
+        case "leadershipComments":
+            this.setState({leadershipComments : event.target.value})
+            break;
+        case "communication":
+            this.setState({communication : event.target.value})
+            break;
+        case "communicationRatings":
+            this.setState({communicationRatings : event.target.value})
+            break;
+        case "communicationComments":
+            this.setState({communicationComments : event.target.value})
+            break;
+        case "domain":
+            this.setState({domain : event.target.value})
+            break;
+        case "domainRatings":
+            this.setState({domainRatings : event.target.value})
+            break;
+        case "domainComments":
+            this.setState({domainComments : event.target.value})
+            break;
 
-  handleSummaryData(summary) {
-    this.setState({summaryData: summary});
-  }
-  handleEvaluationStatusSave(estatus) {
-    this.setState({interviewStatus: estatus})
-  }
-
-  handleUpdate(e, id, record) {
-    e.preventDefault();
-
-    const {detailsData, candidate, experience, expertiseData, impression, summaryData, data, interviewStatus} = this.state;
-    const fullname = candidate.firstname + " " + candidate.lastname;
-    const updatedrecord = Object.assign({}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
-    let iaUrl = this.props.url + '/newIAForm';
-    this.setState({ show: false });
-
-      //sends the new candidate id and new candidate to our api
-      axios.put(`${iaUrl}/${id}`, updatedrecord)
-          .catch(err => {
-              console.log(err);
-          })
-    this.loadDetailsFromServerForIASheet();
-    location.reload(true);
+        default:
+            break;
+    }
   }
 
 
   handleSubmitManagerForm(e) {
     e.preventDefault();
-    const {detailsData, candidate, experience, expertiseData, impression, summaryData, interviewStatus} = this.state;
-    // Candidate IA Form data
-    const fullname = candidate.firstname + " " + candidate.lastname;
 
-    const record = Object.assign({}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
-    this.setState({ show: false });
-      if(record) {
-          let records = this.state.data;
-          let newIAForm = records.concat(record);
-          this.setState({ data: newIAForm });
-
-          axios.post(this.props.url + '/newIAForm', record)
-              .catch(err => {
-                  console.error(err);
-                  this.setState({ data: records });
-              });
-      }
-    this.loadDetailsFromServerForIASheet();
-    location.reload(true);
   }
 
   render() {
-    let {candidate, url, data, index} = this.state;
+    let {candidateData} = this.state;
 
 
     return (
@@ -145,22 +163,54 @@ class ManagerEvaluation extends Component {
                             <td className="col-sm-2">
                               <tr>
                                 <td>Understanding Customer Needs
-                                  <input type="text"/>
+                                  <InputBox
+                                      type="text"
+                                      classname="form-control"
+                                      name="customerNeeds"
+                                      id="customerNeedsId"
+                                      value
+                                      autoFocus="true"
+                                      maxLength="15"
+                                      required
+                                      onChange = {this.handleOnChange}
+                                  />
                                 </td>
                               </tr>
                               <tr>
                                 <td>Follow client process
-                                  <input type="text"/>
+                                  <InputBox
+                                      type="text"
+                                      classname="form-control"
+                                      name="clientProcess"
+                                      id="clientProcessId"
+                                      value
+                                      autoFocus="true"
+                                      maxLength="15"
+                                      required
+                                      onChange = {this.handleOnChange}
+                                  />
+
                                 </td>
                               </tr>
                               <tr>
-                                <td>Developing relationsships with client
-                                  <input type="text"/>
+                                <td>Developing relationships with client
+                                  <InputBox
+                                      type="text"
+                                      classname="form-control"
+                                      name="clientRelationship"
+                                      id="clientRelationshipId"
+                                      value
+                                      autoFocus="true"
+                                      maxLength="15"
+                                      required
+                                      onChange = {this.handleOnChange}
+                                  />
                                 </td>
                               </tr>
                             </td>
                             <td>
-                              <select className="form-control" id="ratings_id1" onChange={this.handleOnChange}>
+                              <select className="form-control" id="ratings_id1" name="clientOrientationRatings" onChange={this.handleOnChange}
+                                value>
                                   <option>Select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
@@ -170,7 +220,7 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="clientOrientation"
+                              <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="clientOrientationComment"
                               id="clientOrientationId" ></textarea>
                             </td>
                           </tr>
@@ -180,17 +230,38 @@ class ManagerEvaluation extends Component {
                             <td className="col-sm-2">
                               <tr>
                                 <td>Planning Control
-                                  <input type="text"/>
+                                  <InputBox
+                                      type="text"
+                                      classname="form-control"
+                                      name="planningControl"
+                                      id="planningControlId"
+                                      value
+                                      autoFocus="true"
+                                      maxLength="15"
+                                      required
+                                      onChange = {this.handleOnChange}
+                                  />
+
                                 </td>
                               </tr>
                               <tr>
                                 <td>People Management
-                                  <input type="text"/>
+                                  <InputBox
+                                      type="text"
+                                      classname="form-control"
+                                      name="peopleManagement"
+                                      id="peopleManagementId"
+                                      value
+                                      autoFocus="true"
+                                      maxLength="15"
+                                      required
+                                      onChange = {this.handleOnChange}
+                                  />
                                 </td>
                               </tr>
                             </td>
                             <td>
-                              <select className="form-control" id="ratings_id2" onChange={this.handleOnChange}>
+                              <select className="form-control" id="ratings_id2" name="projectManagementRatings" onChange={this.handleOnChange}>
                                   <option>Select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
@@ -200,7 +271,7 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="projectManagement"
+                              <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="projectManagementComment"
                               id="projectManagementId" ></textarea>
                             </td>
                           </tr>
@@ -210,12 +281,22 @@ class ManagerEvaluation extends Component {
                             <td className="col-sm-2">
                               <tr>
                                 <td>
-                                  <input type="text"/>
+                                  <InputBox
+                                      type="text"
+                                      classname="form-control"
+                                      name="leadership"
+                                      id="leadershipId"
+                                      value
+                                      autoFocus="true"
+                                      maxLength="15"
+                                      required
+                                      onChange = {this.handleOnChange}
+                                  />
                                 </td>
                               </tr>
                             </td>
                             <td>
-                              <select className="form-control" id="ratings_id3" onChange={this.handleOnChange}>
+                              <select className="form-control" id="ratings_id3" name="leadershipRatings" onChange={this.handleOnChange}>
                                   <option>Select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
@@ -225,8 +306,8 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="leadership"
-                              id="leadershipId" ></textarea>
+                              <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="leadershipComments"
+                              id="leadershipCommentsId" ></textarea>
                             </td>
                           </tr>
 
@@ -234,13 +315,23 @@ class ManagerEvaluation extends Component {
                             <td>Communication</td>
                             <td className="col-sm-2">
                               <tr>
-                                <td>
-                                  <input type="text"/>
+                                <td><InputBox
+                                    type="text"
+                                    classname="form-control"
+                                    name="communication"
+                                    id="communicationId"
+                                    value
+                                    autoFocus="true"
+                                    maxLength="15"
+                                    required
+                                    onChange = {this.handleOnChange}
+                                />
+
                                 </td>
                               </tr>
                             </td>
                             <td>
-                              <select className="form-control" id="ratings_id3" onChange={this.handleOnChange}>
+                              <select className="form-control" id="ratings_id3" onChange={this.handleOnChange} name="communicationRatings">
                                   <option>Select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
@@ -250,8 +341,8 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="communication"
-                              id="communicationId" ></textarea>
+                              <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="communicationComments"
+                              id="communicationCommentsId" ></textarea>
                             </td>
                           </tr>
 
@@ -260,12 +351,22 @@ class ManagerEvaluation extends Component {
                             <td className="col-sm-2">
                               <tr>
                                 <td>
-                                  <input type="text"/>
+                                  <InputBox
+                                      type="text"
+                                      classname="form-control"
+                                      name="domain"
+                                      id="domainId"
+                                      value
+                                      autoFocus="true"
+                                      maxLength="15"
+                                      required
+                                      onChange = {this.handleOnChange}
+                                  />
                                 </td>
                               </tr>
                             </td>
                             <td>
-                              <select className="form-control" id="ratings_id3" onChange={this.handleOnChange}>
+                              <select className="form-control" id="ratings_id3" name = "domainRatings" onChange={this.handleOnChange}>
                                   <option>Select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
@@ -275,8 +376,8 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="domain"
-                              id="domainId" ></textarea>
+                              <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="domainComments"
+                              id="domainCommentsId" ></textarea>
                             </td>
                           </tr>
                           <tr>

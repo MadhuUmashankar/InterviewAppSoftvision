@@ -3,10 +3,12 @@ import ManagerEvaluation from './ManagerEvaluation';
 import HumanResourceEvaluation from './HumanResourceEvaluation';
 import axios from 'axios';
 
+
 export default class CandidateAcessment extends Component {
     constructor(props) {
         super(props)
         this.state = {
+          candidateData: '',
           interViewToBeTaken: ['Technical Round', 'Manager Round', 'HR Round']
         };
   this.handleInterview = this.handleInterview.bind(this);
@@ -38,7 +40,9 @@ export default class CandidateAcessment extends Component {
       let url = "http://localhost:3000/candidateInfo"
       axios.get(`${url}/${id}`)
           .then(response => {
+            this.setState({ candidateData: response.data });
             console.log(response.data);
+
           })
           .catch(err => {
               console.log(err);
@@ -48,12 +52,15 @@ export default class CandidateAcessment extends Component {
 
 
     render() {
-      const {interViewToBeTaken} = this.state;
-      console.log(' in candidate accesment', interViewToBeTaken, this.props)
+      const {interViewToBeTaken, candidateData} = this.state;
+      const fullname = candidateData.firstname + " " + candidateData.lastname;
+      console.log(' in candidate accesment', interViewToBeTaken, candidateData)
         return (
             <div className="candidate-ia-form">
-                <label>Candidate Assessment Form</label>
-
+                <label>{fullname}</label>
+                <br />
+                {candidateData.skills}
+                <hr />
                 <center>
                   <p>No interview is scheduled for this particular candidate.
                     Please click here to Start Evaluating.
@@ -76,7 +83,8 @@ export default class CandidateAcessment extends Component {
                           </thead>
                           <tbody>
                             <tr>
-                              <td>{interViewToBeTaken ==='Manager Round' ? <ManagerEvaluation /> : <HumanResourceEvaluation />}</td>
+                              <td>{interViewToBeTaken ==='Manager Round' ? <ManagerEvaluation candidateData={candidateData}/>
+                              : <HumanResourceEvaluation candidateData={candidateData} />}</td>
                             </tr>
                           </tbody>
                         </table>
