@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ManagerEvaluation from './ManagerEvaluation';
 import HumanResourceEvaluation from './HumanResourceEvaluation';
+import axios from 'axios';
 
 export default class CandidateAcessment extends Component {
     constructor(props) {
@@ -11,14 +12,44 @@ export default class CandidateAcessment extends Component {
   this.handleInterview = this.handleInterview.bind(this);
     }
 
-handleInterview(e){
-  this.setState({interViewToBeTaken : e.target.value})
-}
+    componentDidMount() {
+        this.loadCandidateDetails();
+    }
+
+    handleInterview(e){
+      this.setState({interViewToBeTaken : e.target.value})
+    }
+
+    getCandidateIDqs(key) {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for(var i = 0; i < hashes.length; i++)
+        {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars[key];
+    }
+
+
+    loadCandidateDetails() {
+      let id = this.getCandidateIDqs('id');
+      let url = "http://localhost:3000/candidateInfo"
+      axios.get(`${url}/${id}`)
+          .then(response => {
+            console.log(response.data);
+          })
+          .catch(err => {
+              console.log(err);
+          })
+    }
+
 
 
     render() {
       const {interViewToBeTaken} = this.state;
-      console.log(' in candidate accesment', interViewToBeTaken)
+      console.log(' in candidate accesment', interViewToBeTaken, this.props)
         return (
             <div className="candidate-ia-form">
                 <label>Candidate Assessment Form</label>

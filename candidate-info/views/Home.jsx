@@ -16,7 +16,7 @@ import {
       <div>
         <div className="nav">
           <div className="title">
-            <h1><u>Interview Management System</u></h1>
+            <h1>Interview Management System</h1>
           </div>
           <div className="log-in">
             <Link to="/" className="btn btn-primary">Log In</Link>

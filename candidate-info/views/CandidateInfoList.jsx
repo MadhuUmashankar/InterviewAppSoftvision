@@ -35,7 +35,7 @@ class CandidateInfoList extends Component {
     }
 
     handleEvalution(candidateID) {
-      event.preventDefault()
+      event.preventDefault();
       //  // browserHistory.push('#/CandidateAcessment');
 
       //

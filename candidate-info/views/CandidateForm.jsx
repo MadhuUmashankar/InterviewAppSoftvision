@@ -59,6 +59,10 @@ export default class CandidateForm extends React.Component{
                 candidate["city"] = value;
                 this.setState({city : value})
                 break;
+            case "state":
+                candidate["state"] = value;
+                this.setState({state : value})
+                break;
             case "skills":
                 candidate["skills"] = value;
                 this.setState({skills : value})
@@ -160,6 +164,7 @@ export default class CandidateForm extends React.Component{
 
     handleSubmit(e) {
         e.preventDefault();
+        const candidateID = Math.random().toString(26).slice(2);
          const {firstname, lastname, skills, email, phone, alternateNumber, city, state, selectedFile_name,selectedFile} = this.state;
         const {onHandleSubmit} = this.props;
           let formIsValid = true;
@@ -168,7 +173,7 @@ export default class CandidateForm extends React.Component{
         }
         if(this.handleValidation()){
             //alert("Form submitted");
-            onHandleSubmit({ firstname, lastname, skills, email, phone, alternateNumber, city, state, selectedFile_name, selectedFile, candStatus : 'Yet to be Interviewed'});
+            onHandleSubmit({ candidateID, firstname, lastname, skills, email, phone, alternateNumber, city, state, selectedFile_name, selectedFile, candStatus : 'Yet to be Interviewed'});
          }
     }
 

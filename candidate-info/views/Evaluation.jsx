@@ -88,15 +88,15 @@ class Evaluation extends Component {
 
     const {detailsData, candidate, experience, expertiseData, impression, summaryData, interviewStatus} = this.state;
     const fullname = candidate.firstname + " " + candidate.lastname;
-    const updatedrecord = Object.assign({}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
+    const updatedrecord = Object.assign({},{candidateID: candidate.candidateID}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
     let iaUrl = this.props.url + '/newIAForm';
     this.setState({ show: false });
 
-      //sends the new candidate id and new candidate to our api
-      axios.put(`${iaUrl}/${id}`, updatedrecord)
-          .catch(err => {
-              console.log(err);
-          })
+    //sends the new candidate id and new candidate to our api
+    axios.put(`${iaUrl}/${id}`, updatedrecord)
+        .catch(err => {
+            console.log(err);
+        })
     this.loadDetailsFromServerForIASheet();
   }
 
@@ -108,7 +108,7 @@ class Evaluation extends Component {
     // Candidate IA Form data
     const fullname = candidate.firstname + " " + candidate.lastname;
 
-    const record = Object.assign({}, {candidateID: candidate._id}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
+    const record = Object.assign({}, {candidateID: candidate.candidateID}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
     this.setState({ show: false });
       if(record) {
           let records = this.state.IAdata;
@@ -123,12 +123,6 @@ class Evaluation extends Component {
       }    
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log("eval");
-    console.log(nextProps);
-  }
-
-
   render() {
     let {candidate, url, IAdata, index, experience, expertiseData, impression, overallAvgScore} = this.state;
     let rows = expertiseData;
@@ -141,7 +135,7 @@ class Evaluation extends Component {
 
 
     let currentIARecord = IAdata.filter((record) => {
-      return candidate._id === record.candidateID
+      return candidate.candidateID === record.candidateID
     });
 
     currentIARecord = currentIARecord[0];

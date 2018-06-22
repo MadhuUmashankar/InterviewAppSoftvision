@@ -136,6 +136,9 @@ router.put('/candidateInfo/:id', function(req, res, next){
     var candidate = req.body;
     var updcandidateInfo = {};
 
+    if(candidate.candidateID){
+        updcandidateInfo.candidateID = candidate.candidateID;
+    }
     if(candidate.firstname){
         updcandidateInfo.firstname = candidate.firstname;
     }
@@ -206,6 +209,9 @@ router.put('/candidateInfo/newIAForm/:id', function(req, res, next){
     var evaluator = req.body;
      let updatedIA = {};
 
+     if(evaluator.candidateID){
+        updatedIA.candidateID = evaluator.candidateID;
+    }
     if(evaluator.interviewDate){
         updatedIA.interviewDate = evaluator.interviewDate;
     }
