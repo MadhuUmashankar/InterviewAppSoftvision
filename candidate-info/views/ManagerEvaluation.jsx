@@ -14,11 +14,11 @@ class ManagerEvaluation extends Component {
        clientProcess:'',
        clientRelationship:'',
        clientOrientationRatings:'',
-       clientOrientationComment:'',
+       clientOrientationComments:'',
        planningControl:'',
        peopleManagement:'',
        projectManagementRatings:'',
-       projectManagementComment:'',
+       projectManagementComments:'',
        leadership:'',
        leadershipRatings: '',
        leadershipComments: '',
@@ -28,13 +28,19 @@ class ManagerEvaluation extends Component {
        domain: '',
        domainRatings: '',
        domainComments: '',
+       requirementGathering: '',
+       architecht: '',
+       coding: '',
+       testing: '',
+       technicalSolutionsRatings: '',
+       technicalSolutionsComments: '',
        candidateData: props.candidateData
      };
 
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
     this.handleSubmitManagerForm = this.handleSubmitManagerForm.bind(this);
-    this.handleEvaluationStatusSave = this.handleEvaluationStatusSave.bind(this);
    }
 
 
@@ -60,8 +66,8 @@ class ManagerEvaluation extends Component {
         case "clientOrientationRatings":
             this.setState({clientOrientationRatings : event.target.value})
             break;
-        case "clientOrientationComment":
-            this.setState({clientOrientationComment : event.target.value})
+        case "clientOrientationComments":
+            this.setState({clientOrientationComments : event.target.value})
             break;
         case "planningControl":
             this.setState({planningControl : event.target.value})
@@ -72,8 +78,8 @@ class ManagerEvaluation extends Component {
         case "projectManagementRatings":
             this.setState({projectManagementRatings : event.target.value})
             break;
-        case "projectManagementComment":
-            this.setState({projectManagementComment : event.target.value})
+        case "projectManagementComments":
+            this.setState({projectManagementComments : event.target.value})
             break;
         case "leadership":
             this.setState({leadership : event.target.value})
@@ -102,6 +108,25 @@ class ManagerEvaluation extends Component {
         case "domainComments":
             this.setState({domainComments : event.target.value})
             break;
+        case "requirementGathering":
+            this.setState({requirementGathering : event.target.value})
+            break;
+        case "architecht":
+            this.setState({architecht : event.target.value})
+            break;
+        case "coding":
+            this.setState({coding : event.target.value})
+            break;
+        case "testing":
+            this.setState({testing : event.target.value})
+            break;
+        case "technicalSolutionsRatings":
+            this.setState({technicalSolutionsRatings : event.target.value})
+            break;
+        case "technicalSolutionsComments":
+            this.setState({technicalSolutionsComments : event.target.value})
+            break;
+
 
         default:
             break;
@@ -111,12 +136,31 @@ class ManagerEvaluation extends Component {
 
   handleSubmitManagerForm(e) {
     e.preventDefault();
+    const {customerNeeds, clientProcess, clientRelationship, clientOrientationRatings, clientOrientationComments, planningControl, peopleManagement, projectManagementRatings, projectManagementComments, leadership, leadershipRatings, leadershipComments, communication, communicationRatings, communicationComments, domain, domainRatings, domainComments, requirementGathering, architecht, coding, testing, technicalSolutionsRatings, technicalSolutionsComments} = this.state;
+    // Candidate Manager
+
+
+     const managerRecord = Object.assign({}, customerNeeds, clientProcess, clientRelationship, clientOrientationRatings, clientOrientationComments, planningControl, peopleManagement, projectManagementRatings, projectManagementComments, leadership, leadershipRatings, leadershipComments, communication, communicationRatings, communicationComments, domain, domainRatings, domainComments, requirementGathering, architecht, coding, testing, technicalSolutionsRatings, technicalSolutionsComments);
+    this.setState({ show: false });
+    console.log('inside save managerRecord', managerRecord);
+    //   if(managerRecord) {
+    //       let records = this.state.IAdata;
+    //       let newIAForm = records.concat(managerRecord);
+    //       this.setState({ IAdata: newIAForm });
+    //
+    //       axios.post(this.props.url + '/newManagerForm', managerRecord)
+    //           .catch(err => {
+    //               console.error(err);
+    //               this.setState({ IAdata: records });
+    //           });
+    //   }
 
   }
 
   render() {
-    let {candidateData} = this.state;
+    let {candidateData, customerNeeds, clientProcess, clientRelationship, clientOrientationRatings, clientOrientationComments, planningControl, peopleManagement, projectManagementRatings, projectManagementComments, leadership, leadershipRatings, leadershipComments, communication, communicationRatings, communicationComments, domain, domainRatings, domainComments, requirementGathering, architecht, coding, testing, technicalSolutionsRatings, technicalSolutionsComments} = this.state;
 
+console.log('wat is candidateData in Manager', candidateData)
 
     return (
       <div>
@@ -168,7 +212,7 @@ class ManagerEvaluation extends Component {
                                       classname="form-control"
                                       name="customerNeeds"
                                       id="customerNeedsId"
-                                      value
+                                      value= {customerNeeds}
                                       autoFocus="true"
                                       maxLength="15"
                                       required
@@ -183,9 +227,7 @@ class ManagerEvaluation extends Component {
                                       classname="form-control"
                                       name="clientProcess"
                                       id="clientProcessId"
-                                      value
-                                      autoFocus="true"
-                                      maxLength="15"
+                                      value={clientProcess}
                                       required
                                       onChange = {this.handleOnChange}
                                   />
@@ -199,9 +241,7 @@ class ManagerEvaluation extends Component {
                                       classname="form-control"
                                       name="clientRelationship"
                                       id="clientRelationshipId"
-                                      value
-                                      autoFocus="true"
-                                      maxLength="15"
+                                      value={clientRelationship}
                                       required
                                       onChange = {this.handleOnChange}
                                   />
@@ -210,7 +250,7 @@ class ManagerEvaluation extends Component {
                             </td>
                             <td>
                               <select className="form-control" id="ratings_id1" name="clientOrientationRatings" onChange={this.handleOnChange}
-                                value>
+                                value={clientOrientationRatings}>
                                   <option>Select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
@@ -220,8 +260,8 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="clientOrientationComment"
-                              id="clientOrientationId" ></textarea>
+                              <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="clientOrientationComments"
+                              id="clientOrientationCommentsId" value={clientOrientationComments}></textarea>
                             </td>
                           </tr>
 
@@ -235,9 +275,7 @@ class ManagerEvaluation extends Component {
                                       classname="form-control"
                                       name="planningControl"
                                       id="planningControlId"
-                                      value
-                                      autoFocus="true"
-                                      maxLength="15"
+                                      value={planningControl}
                                       required
                                       onChange = {this.handleOnChange}
                                   />
@@ -251,9 +289,7 @@ class ManagerEvaluation extends Component {
                                       classname="form-control"
                                       name="peopleManagement"
                                       id="peopleManagementId"
-                                      value
-                                      autoFocus="true"
-                                      maxLength="15"
+                                      value={peopleManagement}
                                       required
                                       onChange = {this.handleOnChange}
                                   />
@@ -261,7 +297,7 @@ class ManagerEvaluation extends Component {
                               </tr>
                             </td>
                             <td>
-                              <select className="form-control" id="ratings_id2" name="projectManagementRatings" onChange={this.handleOnChange}>
+                              <select className="form-control" id="ratings_id2" name="projectManagementRatings" onChange={this.handleOnChange} value={projectManagementRatings}>
                                   <option>Select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
@@ -271,8 +307,8 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="projectManagementComment"
-                              id="projectManagementId" ></textarea>
+                              <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="projectManagementComments"
+                              id="projectManagementCommentsId" value={projectManagementComments}></textarea>
                             </td>
                           </tr>
 
@@ -286,9 +322,7 @@ class ManagerEvaluation extends Component {
                                       classname="form-control"
                                       name="leadership"
                                       id="leadershipId"
-                                      value
-                                      autoFocus="true"
-                                      maxLength="15"
+                                      value={leadership}
                                       required
                                       onChange = {this.handleOnChange}
                                   />
@@ -296,7 +330,7 @@ class ManagerEvaluation extends Component {
                               </tr>
                             </td>
                             <td>
-                              <select className="form-control" id="ratings_id3" name="leadershipRatings" onChange={this.handleOnChange}>
+                              <select className="form-control" id="ratings_id3" name="leadershipRatings" onChange={this.handleOnChange} value={leadershipRatings}>
                                   <option>Select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
@@ -307,7 +341,7 @@ class ManagerEvaluation extends Component {
                             </td>
                             <td>
                               <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="leadershipComments"
-                              id="leadershipCommentsId" ></textarea>
+                              id="leadershipCommentsId" value={leadershipComments}></textarea>
                             </td>
                           </tr>
 
@@ -320,9 +354,7 @@ class ManagerEvaluation extends Component {
                                     classname="form-control"
                                     name="communication"
                                     id="communicationId"
-                                    value
-                                    autoFocus="true"
-                                    maxLength="15"
+                                    value={communication}
                                     required
                                     onChange = {this.handleOnChange}
                                 />
@@ -331,7 +363,7 @@ class ManagerEvaluation extends Component {
                               </tr>
                             </td>
                             <td>
-                              <select className="form-control" id="ratings_id3" onChange={this.handleOnChange} name="communicationRatings">
+                              <select className="form-control" id="ratings_id3" onChange={this.handleOnChange} name="communicationRatings" value={communicationRatings}>
                                   <option>Select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
@@ -342,7 +374,7 @@ class ManagerEvaluation extends Component {
                             </td>
                             <td>
                               <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="communicationComments"
-                              id="communicationCommentsId" ></textarea>
+                              id="communicationCommentsId" value={communicationComments} ></textarea>
                             </td>
                           </tr>
 
@@ -356,9 +388,7 @@ class ManagerEvaluation extends Component {
                                       classname="form-control"
                                       name="domain"
                                       id="domainId"
-                                      value
-                                      autoFocus="true"
-                                      maxLength="15"
+                                      value={domain}
                                       required
                                       onChange = {this.handleOnChange}
                                   />
@@ -366,7 +396,7 @@ class ManagerEvaluation extends Component {
                               </tr>
                             </td>
                             <td>
-                              <select className="form-control" id="ratings_id3" name = "domainRatings" onChange={this.handleOnChange}>
+                              <select className="form-control" id="ratings_id3" name = "domainRatings" onChange={this.handleOnChange} value={domainRatings}>
                                   <option>Select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
@@ -377,7 +407,7 @@ class ManagerEvaluation extends Component {
                             </td>
                             <td>
                               <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="domainComments"
-                              id="domainCommentsId" ></textarea>
+                              id="domainCommentsId" value={domainComments}></textarea>
                             </td>
                           </tr>
                           <tr>
@@ -385,27 +415,55 @@ class ManagerEvaluation extends Component {
                             <td className="col-sm-2">
                               <tr>
                                 <td>Requirement gathering
-                                  <input type="text"/>
+                                  <InputBox
+                                      type="text"
+                                      classname="form-control"
+                                      name="requirementGathering"
+                                      id="requirementGatheringId"
+                                      value={requirementGathering}
+                                      onChange = {this.handleOnChange}
+                                  />
                                 </td>
                               </tr>
                               <tr>
                                 <td>Architect/ Design
-                                  <input type="text"/>
+                                  <InputBox
+                                      type="text"
+                                      classname="form-control"
+                                      name="architecht"
+                                      id="architechtId"
+                                      value={architecht}
+                                      onChange = {this.handleOnChange}
+                                  />
                                 </td>
                               </tr>
                               <tr>
                                 <td>Coding
-                                  <input type="text"/>
+                                  <InputBox
+                                      type="text"
+                                      classname="form-control"
+                                      name="coding"
+                                      id="codingId"
+                                      value={coding}
+                                      onChange = {this.handleOnChange}
+                                  />
                                 </td>
                               </tr>
                               <tr>
                                 <td>Testing
-                                  <input type="text"/>
+                                  <InputBox
+                                      type="text"
+                                      classname="form-control"
+                                      name="testing"
+                                      id="testingId"
+                                      value={testing}
+                                      onChange = {this.handleOnChange}
+                                  />
                                 </td>
                               </tr>
                             </td>
                             <td>
-                              <select className="form-control" id="ratings_id1" onChange={this.handleOnChange}>
+                              <select className="form-control" id="ratings_id1" onChange={this.handleOnChange} name="technicalSolutionsRatings" value={technicalSolutionsRatings}>
                                   <option>Select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
@@ -415,8 +473,8 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="technicalSolutions"
-                              id="technicalSolutionsId" ></textarea>
+                              <textarea required rows="2" cols="25" onChange = {this.handleOnChange} name="technicalSolutionsComments"
+                              id="technicalSolutionsCommentsId" value={technicalSolutionsComments}></textarea>
                             </td>
                           </tr>
 
@@ -426,19 +484,19 @@ class ManagerEvaluation extends Component {
 
                     </div>
                     <div className="margin-small">
-                      <EvaluationStatus onEvaluationStatusSave= {this.handleEvaluationStatusSave} candidate={candidate} data={data[index]} />
-                    </div>
-                      <div className="margin-small">
-                      {
-                        data[index] &&
-                        <Button className="move-right" onClick={(e)=>{this.handleUpdate(e, data[index]._id, data)}}>Update</Button>
-                      }
-                      {
-                        !data[index] && <Button className="move-right" type="submit">Save</Button>
-                      }
+                                          <EvaluationStatus onEvaluationStatusSave= {this.handleEvaluationStatusSave} candidateData={candidateData}  />
+                                        </div>
+                                          <div className="margin-small">
+                                          {
 
-                      <Button className="" onClick={this.handleClose}>Close</Button>
-                      </div>
+                                            <Button className="move-right" >Update</Button>
+                                          }
+                                          {
+                                             <Button className="move-right" type="submit">Save</Button>
+                                          }
+
+                                          <Button className="" onClick={this.handleClose}>Close</Button>
+                                          </div>
                       </fieldset>
               </form>
             </div>

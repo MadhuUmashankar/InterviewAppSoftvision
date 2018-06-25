@@ -54,7 +54,7 @@ export default class CandidateAcessment extends Component {
     render() {
       const {interViewToBeTaken, candidateData} = this.state;
       const fullname = candidateData.firstname + " " + candidateData.lastname;
-      console.log(' in candidate accesment', interViewToBeTaken, candidateData)
+      console.log(' in candidate accesment data',  candidateData)
         return (
             <div className="candidate-ia-form">
                 <label>{fullname}</label>
@@ -83,8 +83,8 @@ export default class CandidateAcessment extends Component {
                           </thead>
                           <tbody>
                             <tr>
-                              <td>{interViewToBeTaken ==='Manager Round' ? <ManagerEvaluation candidateData={candidateData}/>
-                              : <HumanResourceEvaluation candidateData={candidateData} />}</td>
+                              <td><ManagerEvaluation candidateData={candidateData} /></td>
+                              <td><HumanResourceEvaluation candidateData={candidateData} /></td>
                             </tr>
                           </tbody>
                         </table>
