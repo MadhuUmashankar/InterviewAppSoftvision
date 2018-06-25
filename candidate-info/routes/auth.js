@@ -5,43 +5,31 @@ require('../config/passport')(passport);
 var express = require('express');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
-var mongojs = require('mongojs');
-var db = mongojs('mongodb://localhost:27017/candidateInformationTable', ['users'] );
-
-// router.post('/candidateInfo/register', function(req, res, next){
-//     var user = req.body;
-//     if(!user.username || !user.email || !(user.password + '') || !(user.confirmpassword + '')){
-//         res.status(400);
-//         res.json({
-//             "error": "Bad Data"
-//         });
-//     } else {
-//         db.users.save(user, function(err, user){
-//             if(err){
-//                 res.send(err);
-//             }
-//             res.json(user);
-//         });
-//     }
-// });
+var User = require("../model/users");
+console.log(User)
 
 router.post('/candidateInfo/register', function(req, res) {
   if (!req.body.username || !req.body.password || !req.body.email || !req.body.confirmpassword) {
     res.json({success: false, msg: 'Please pass username and password.'});
   } else {
-    var user = req.body;
+    var newUser = new User({
+      username: req.body.username,
+      password: req.body.password,
+      email:req.body.email,
+      confirmpassword:req.body.confirmpassword
+    });
     // save the user
-    db.users.save(user, function(err, user){
-      if(err){
+    newUser.save(function(err) {
+      if (err) {
         return res.json({success: false, msg: 'Username already exists.'});
       }
-      res.json(user);
+      res.json({success: true, msg: 'Successful created new user.'});
     });
   }
 });
 
 router.post('/candidateInfo/login', function(req, res) {
-  db.users.findOne({
+  User.findOne({
     username: req.body.username
   }, function(err, user) {
     if (err) throw err;

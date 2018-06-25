@@ -2,6 +2,7 @@
 //import dependency
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var bcrypt = require('bcrypt-nodejs');
 
 //create new instance of the mongoose.schema. the schema takes an object that shows
 //the shape of your database entries.
@@ -36,20 +37,27 @@ var UserSchema = new Schema({
                 user.password = hash;
                 next();
             });
+            bcrypt.hash(user.confirmpassword, salt, null, function (err, hash) {
+                if (err) {
+                    return next(err);
+                }
+                user.confirmpassword = hash;
+                next();
+            });
         });
     } else {
         return next();
     }
 });
 
-// UserSchema.methods.comparePassword = function (passw, cb) {
-//     bcrypt.compare(passw, this.password, function (err, isMatch) {
-//         if (err) {
-//             return cb(err);
-//         }
-//         cb(null, isMatch);
-//     });
-// };
+UserSchema.methods.comparePassword = function (passw, cb) {
+    bcrypt.compare(passw, this.password, function (err, isMatch) {
+        if (err) {
+            return cb(err);
+        }
+        cb(null, isMatch);
+    });
+};
   
   //export our module to use in server.js
   

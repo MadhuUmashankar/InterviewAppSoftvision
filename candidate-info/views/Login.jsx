@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import InputBox from './InputBox';
 import axios from 'axios';
+import {hashHistory} from 'react-router';
 
 import {
     BrowserRouter as Router,
@@ -23,7 +24,7 @@ export default class Login extends Component {
         e.preventDefault();
         const { username, password } = this.state;
         
-        axios.post('http://localhost:3000/candidateInfo/login', { username, password })
+        axios.post(this.props.url+'/login', { username, password })
           .then((result) => {
             localStorage.setItem('jwtToken', result.data.token);
             this.setState({ message: '' });
