@@ -1,6 +1,9 @@
+//https://www.djamware.com/post/5a90c37980aca7059c14297a/securing-mern-stack-web-application-using-passport
+
 import React, { Component } from 'react';
 import InputBox from './InputBox'
 import axios from 'axios';
+import {hashHistory} from 'react-router';
 
 export default class Register extends Component {
     constructor(props) {
@@ -49,7 +52,12 @@ export default class Register extends Component {
             confirmpassword
         }
 
-        axios.post(this.props.url+'/newUser', user)
+        axios.post(this.props.url+'/register', user)
+        .then((result) => {
+            hashHistory.push({
+                pathname: '#/'
+              })
+        })
         .catch(err => {
             console.error(err);
         });

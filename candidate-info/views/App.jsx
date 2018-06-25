@@ -3,8 +3,7 @@ import CandidateForm from './CandidateForm';
 import CandidateInfoList from './CandidateInfoList';
 import './App.scss';
 import { Modal,Button } from 'react-bootstrap';
-import InputBox from './InputBox'
-
+import InputBox from './InputBox';
 
 import axios from 'axios';
 

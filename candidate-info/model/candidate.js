@@ -1,4 +1,3 @@
-//mode/todo.js
 'use strict';
 //import dependency
 var mongoose = require('mongoose');

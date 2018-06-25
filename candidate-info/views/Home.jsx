@@ -3,6 +3,7 @@ import Login from './Login';
 import Register from './Register';
 import App from './App';
 import CandidateAcessment from './CandidateAcessment';
+import registerServiceWorker from './registerServiceWorker';
 import {
     BrowserRouter as Router,
     Link,
@@ -33,5 +34,5 @@ import {
       </div>
     </HashRouter>
   );
-
+  registerServiceWorker();
   export default Home;
