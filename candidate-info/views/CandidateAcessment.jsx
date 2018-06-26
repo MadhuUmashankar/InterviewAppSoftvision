@@ -75,7 +75,7 @@ export default class CandidateAcessment extends Component {
             <div className="App">
               <div>
                 <label className="candidate-assessment-label">{fullname}</label>
-                <div className="ca-resume"><label>Resume</label> <a  target="_blank" href= {candidateData.selectedFile_name} download> Download </a></div>
+                <div className="ca-resume"><label>Resume</label> <a  target="_blank" href= {candidateData.selectedFile_name} download> <span className="glyphicon glyphicon-download-alt"></span> </a></div>
 
                 <div><span className="margin-tiny glyphicon glyphicon-wrench"></span><label>Skills: {candidateData.skills}</label></div>
 
