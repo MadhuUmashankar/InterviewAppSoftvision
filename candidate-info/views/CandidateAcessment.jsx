@@ -12,10 +12,13 @@ export default class CandidateAcessment extends Component {
           candidateData: '',
           interViewToBeTaken: ['Technical Round', 'Manager Round', 'HR Round'],
           showInterviews: false,
-          showTable: false
+          showTable: false,
+          status:'',
+          type:''
         };
   this.handleInterviewChange = this.handleInterviewChange.bind(this);
   this.startEvaluating = this.startEvaluating.bind(this);
+  this.sendInterviewStatus = this.sendInterviewStatus.bind(this);
     }
 
     componentDidMount() {
@@ -55,12 +58,19 @@ export default class CandidateAcessment extends Component {
  startEvaluating() {
    this.setState({ showInterviews: true });
  }
+ sendInterviewStatus(status, type) {
+   this.setState({status,type});
+ }
 
     render() {
-      const {interViewToBeTaken, candidateData, showInterviews, showTable} = this.state;
+      const {interViewToBeTaken, candidateData, showInterviews, showTable, status, type} = this.state;
       const fullname = candidateData.firstname + " " + candidateData.lastname;
-      let url = "http://localhost:3000/candidateInfo";
+      let url = "http://localhost:3000/candidateInfo", currentStatus;
       console.log(' in candidate accesment data',  candidateData)
+
+      if(interViewToBeTaken === type) {
+        currentStatus=status
+      }
         return (
             <div className="App">
               <div>
@@ -72,16 +82,19 @@ export default class CandidateAcessment extends Component {
                 </div>
                 <hr />
                 <center>
+                  <div>
                   <p>No interview is scheduled for this particular candidate.
                     Please click here to <button onClick={this.startEvaluating}>Start Evaluating</button>
                   </p>
+                </div>
+
                   <br />
                   {showInterviews ?
                     <div>
                       <select className="form-control experience-width" id="interViewToBeTakenId" onChange = {this.handleInterviewChange} value = {interViewToBeTaken}>
-                          <option>Manager Round</option>
-                          <option>Technical Round</option>
-                          <option>HR Round</option>
+                          <option value="manager">Manager Round</option>
+                          <option value="technical">Technical Round</option>
+                          <option value="hr">HR Round</option>
                       </select>
                     </div>
                   : null
@@ -92,15 +105,17 @@ export default class CandidateAcessment extends Component {
                       <thead>
                           <tr>
                             <th>Interview Round</th>
+                            <th>Evaluation</th>
+                            <th>Status</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr colSpan="3">
-                            <td>Round1{(interViewToBeTaken==="Manager Round") ? <ManagerEvaluation candidateData={candidateData} interViewToBeTaken={interViewToBeTaken} url={url} /> : null}
-                            {(interViewToBeTaken==="Technical Round") ? <Evaluation candidateData={candidateData} url={url} /> : null}
-                          {(interViewToBeTaken==="HR Round") ? <HumanResourceEvaluation candidateData={candidateData} interViewToBeTaken={interViewToBeTaken} url={url} /> : null}</td>
-                        
-
+                          <tr>
+                            <td className="interview-round">1. {interViewToBeTaken} Round</td>
+                              <td>{(interViewToBeTaken==="manager") ? <ManagerEvaluation candidateData={candidateData} interViewToBeTaken={interViewToBeTaken} url={url} sendInterviewStatus={this.sendInterviewStatus} /> : null}
+                              {(interViewToBeTaken==="technical") ? <Evaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} /> : null}
+                            {(interViewToBeTaken==="hr") ? <HumanResourceEvaluation candidateData={candidateData} sendInterviewStatus={this.sendInterviewStatus} interViewToBeTaken={interViewToBeTaken} url={url} /> : null}</td>
+                          <td>{currentStatus}</td>
                           </tr>
                         </tbody>
                       </table>

@@ -29,7 +29,7 @@ class HumanResourceEvaluation extends Component {
    componentDidMount() {
        this.loadHRDetails();
        const {hrEvaluationData} = this.state;
-       const {candidateData} = this.props;
+       const {candidateData, sendInterviewStatus} = this.props;
        let currentHRRecord = hrEvaluationData.filter((record) => {
          return candidateData.candidateID === record.candidateID
        });
@@ -39,7 +39,10 @@ class HumanResourceEvaluation extends Component {
        if(currentHRRecord != undefined) {
          if(Object.keys(currentHRRecord).length > 0) {
            const hrInterviewStatus = currentHRRecord.hrInterviewStatus ? currentHRRecord.hrInterviewStatus : "";
-           this.setState({hrInterviewStatus});
+           this.setState({hrInterviewStatus},()=>{
+             sendInterviewStatus(hrInterviewStatus, "hr");
+           });
+
          }
      }
    }
@@ -62,6 +65,7 @@ class HumanResourceEvaluation extends Component {
   }
 
   handleOnChange(event) {
+     const {sendInterviewStatus} = this.props;
       switch (event.target.name) {
           case "intelligence":
               this.setState({intelligence : event.target.value})
@@ -76,7 +80,8 @@ class HumanResourceEvaluation extends Component {
               this.setState({teamWork : event.target.value})
               break;
           case "hrInterviewStatus":
-              this.setState({hrInterviewStatus : event.target.value})
+              this.setState({hrInterviewStatus : event.target.value});
+                sendInterviewStatus(event.target.value, "hr");
               break;
           case "interviewerName1":
               this.setState({interviewerName1 : event.target.value})

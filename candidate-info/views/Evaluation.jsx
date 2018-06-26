@@ -80,7 +80,9 @@ class Evaluation extends Component {
     this.setState({summaryData: summary});
   }
   handleEvaluationStatusSave(estatus) {
-    this.setState({interviewStatus: estatus})
+    const {sendInterviewStatus} = this.props;
+    this.setState({interviewStatus: estatus});
+    sendInterviewStatus(estatus.interviewStatus, "technical");
   }
 
   handleUpdate(e, id, record) {
@@ -129,7 +131,7 @@ class Evaluation extends Component {
 
   render() {
     let {url, IAdata, index, experience, expertiseData, impression, overallAvgScore} = this.state;
-    const {candidateData} = this.props;
+    const {candidateData, sendInterviewStatus} = this.props;
     const candidate = candidateData;
     let rows = expertiseData;
     if(rows.length) {

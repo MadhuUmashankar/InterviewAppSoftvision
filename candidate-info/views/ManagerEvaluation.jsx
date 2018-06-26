@@ -54,7 +54,7 @@ class ManagerEvaluation extends Component {
        this.loadManagerDetails();
 
        const {managerEvaluationData} = this.state;
-       const {candidateData} = this.props;
+       const {candidateData, sendInterviewStatus} = this.props;
        let currentManagerRecord = managerEvaluationData.filter((record) => {
          return candidateData.candidateID === record.candidateID
        });
@@ -70,7 +70,8 @@ class ManagerEvaluation extends Component {
            const communicationRatings= currentManagerRecord.communicationRatings ? currentManagerRecord.communicationRatings : "";
            const domainRatings= currentManagerRecord.domainRatings ? currentManagerRecord.domainRatings : "";
            const technicalSolutionsRatings= currentManagerRecord.technicalSolutionsRatings ? currentManagerRecord.technicalSolutionsRatings : "";
-           this.setState({managerInterviewStatus, clientOrientationRatings, projectManagementRatings, leadershipRatings, communicationRatings, domainRatings, technicalSolutionsRatings });
+           this.setState({managerInterviewStatus, clientOrientationRatings, projectManagementRatings, leadershipRatings, communicationRatings, domainRatings, technicalSolutionsRatings }, ()=>{
+             sendInterviewStatus(hrInterviewStatus, "manager")});
          }
      }
    }
@@ -95,6 +96,7 @@ class ManagerEvaluation extends Component {
   }
 
   handleOnChange(event) {
+     const {sendInterviewStatus} = this.props;
     switch (event.target.name) {
         case "customerNeeds":
             this.setState({customerNeeds : event.target.value})
@@ -170,6 +172,7 @@ class ManagerEvaluation extends Component {
             break;
         case "managerInterviewStatus":
             this.setState({managerInterviewStatus : event.target.value})
+            sendInterviewStatus(event.target.value, "manager");
             break;
         case "interviewerName2":
             this.setState({interviewerName2 : event.target.value})
