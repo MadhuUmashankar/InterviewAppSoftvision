@@ -70,7 +70,7 @@ class ManagerEvaluation extends Component {
            const communicationRatings= currentManagerRecord.communicationRatings ? currentManagerRecord.communicationRatings : "";
            const domainRatings= currentManagerRecord.domainRatings ? currentManagerRecord.domainRatings : "";
            const technicalSolutionsRatings= currentManagerRecord.technicalSolutionsRatings ? currentManagerRecord.technicalSolutionsRatings : "";
-           this.setState({managerInterviewStatus});
+           this.setState({managerInterviewStatus, clientOrientationRatings, projectManagementRatings, leadershipRatings, communicationRatings, domainRatings, technicalSolutionsRatings });
          }
      }
    }
