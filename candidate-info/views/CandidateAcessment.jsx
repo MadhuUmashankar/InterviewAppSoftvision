@@ -10,17 +10,20 @@ export default class CandidateAcessment extends Component {
         super(props)
         this.state = {
           candidateData: '',
-          interViewToBeTaken: ['Technical Round', 'Manager Round', 'HR Round']
+          interViewToBeTaken: ['Technical Round', 'Manager Round', 'HR Round'],
+          showInterviews: false,
+          showTable: false
         };
-  this.handleInterview = this.handleInterview.bind(this);
+  this.handleInterviewChange = this.handleInterviewChange.bind(this);
+  this.startEvaluating = this.startEvaluating.bind(this);
     }
 
     componentDidMount() {
         this.loadCandidateDetails();
     }
 
-    handleInterview(e){
-      this.setState({interViewToBeTaken : e.target.value})
+    handleInterviewChange(e){
+      this.setState({showTable: true, interViewToBeTaken : e.target.value})
     }
 
     getCandidateIDqs(key) {
@@ -49,52 +52,63 @@ export default class CandidateAcessment extends Component {
           })
     }
 
-
+ startEvaluating() {
+   this.setState({ showInterviews: true });
+ }
 
     render() {
-      const {interViewToBeTaken, candidateData} = this.state;
+      const {interViewToBeTaken, candidateData, showInterviews, showTable} = this.state;
       const fullname = candidateData.firstname + " " + candidateData.lastname;
-      console.log('on name cliick, this.props', this.props);
       let url = "http://localhost:3000/candidateInfo";
       console.log(' in candidate accesment data',  candidateData)
         return (
             <div className="App">
-                <label>{fullname}</label>
-                <br />
-                {candidateData.skills}
+              <div>
+                <label className="candidate-assessment-label">{fullname}</label>
+                <div className="ca-resume"><label>Resume</label> <a  target="_blank" href= {candidateData.selectedFile_name} download> Download </a></div>
+
+                <div><span className="margin-tiny glyphicon glyphicon-wrench"></span><label>Skills: {candidateData.skills}</label></div>
+
+                </div>
                 <hr />
-                <a target="_blank" href= {candidateData.selectedFile_name} download> {candidateData.selectedFile_name} </a>
                 <center>
                   <p>No interview is scheduled for this particular candidate.
-                    Please click here to <a>Start Evaluating</a>.
+                    Please click here to <button onClick={this.startEvaluating}>Start Evaluating</button>
                   </p>
                   <br />
-                  <div className="">
-                    <select className="form-control experience-width" id="interViewToBeTakenId" onChange = {this.handleInterview} value = {interViewToBeTaken}>
-                        <option>Manager Round</option>
-                        <option>Technical Round</option>
-                        <option>HR Round</option>
-                    </select>
-                  </div>
-                    <br />
-                  <table
-                    className="table table-bordered table-responsive" id="interview_round_id">
-                        <thead>
-                            <tr>
-                              <th>Interview Round</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td><ManagerEvaluation candidateData={candidateData} interViewToBeTaken={interViewToBeTaken} url={url}/></td>
-                              <td><HumanResourceEvaluation candidateData={candidateData} interViewToBeTaken={interViewToBeTaken} url={url} /></td>
-                              <td><div className="evaluation-wrapper" >
-                                  <Evaluation candidateData={candidateData} url={url}/>
-                                  <div className="file"></div>
-                              </div></td>
-                            </tr>
-                          </tbody>
-                        </table>
+                  {showInterviews ?
+                    <div>
+                      <select className="form-control experience-width" id="interViewToBeTakenId" onChange = {this.handleInterviewChange} value = {interViewToBeTaken}>
+                          <option>Manager Round</option>
+                          <option>Technical Round</option>
+                          <option>HR Round</option>
+                      </select>
+                    </div>
+                  : null
+                  }
+                  <br />
+                  { showTable ? <table
+                  className="table table-bordered table-responsive" id="interview_round_id">
+                      <thead>
+                          <tr>
+                            <th>Interview Round</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr colSpan="3">
+                            <td>Round1{(interViewToBeTaken==="Manager Round") ? <ManagerEvaluation candidateData={candidateData} interViewToBeTaken={interViewToBeTaken} url={url} /> : null}
+                            {(interViewToBeTaken==="Technical Round") ? <Evaluation candidateData={candidateData} url={url} /> : null}
+                          {(interViewToBeTaken==="HR Round") ? <HumanResourceEvaluation candidateData={candidateData} interViewToBeTaken={interViewToBeTaken} url={url} /> : null}</td>
+                        
+
+                          </tr>
+                        </tbody>
+                      </table>
+                    :
+                  null
+                  }
+
+
                 </center>
             </div>
         )
