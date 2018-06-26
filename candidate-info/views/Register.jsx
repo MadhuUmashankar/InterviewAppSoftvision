@@ -4,6 +4,9 @@ import React, { Component } from 'react';
 import InputBox from './InputBox'
 import axios from 'axios';
 import {hashHistory} from 'react-router';
+import {
+    Link
+  } from 'react-router-dom';
 
 export default class Register extends Component {
     constructor(props) {
@@ -147,6 +150,10 @@ export default class Register extends Component {
                             <label className="col-md-4 control-label"></label>
                                 <div className="col-md-8">
                                     <button className="btn btn-primary">Sign Up<span className="glyphicon glyphicon-submit"></span></button>
+                                    
+                                    <p>
+                                        Already Have Account? <Link to="/" className="register-btn">SIGN IN</Link>
+                                    </p>
                                 </div>
                         </div>
                     </fieldset>

@@ -33,7 +33,7 @@ export default class Login extends Component {
               })
           })
           .catch((error) => {
-            if(error) {
+            if(error.response.status === 401) {
               this.setState({ message: 'Login failed. Username or password not match' });
             }
           });

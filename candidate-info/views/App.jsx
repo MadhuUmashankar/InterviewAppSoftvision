@@ -4,8 +4,18 @@ import CandidateInfoList from './CandidateInfoList';
 import './App.scss';
 import { Modal,Button } from 'react-bootstrap';
 import InputBox from './InputBox';
+import {hashHistory} from 'react-router';
+
+import {
+    BrowserRouter as Router,
+    Link,
+    Route,
+    Switch,
+    HashRouter
+  } from 'react-router-dom';
 
 import axios from 'axios';
+
 
 class App extends Component {
 
@@ -20,13 +30,20 @@ class App extends Component {
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleView = this.handleView.bind(this);
+        this.logout = this.logout.bind(this);
     }
 
     loadDetailsFromServer() {
         axios.get(this.props.url)
             .then(res => {
                 this.setState({ data: res.data });
-            })
+            }).catch((error) => {
+                if(error.response.status === 401) {
+                  hashHistory.push({
+                    pathname: '#/'
+                  })
+                }
+            });
     }
 
     loadDetailsFromServerForIASheet() {
@@ -111,8 +128,9 @@ class App extends Component {
     }
 
     componentDidMount() {
+        axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
         this.loadDetailsFromServer();
-        this.loadDetailsFromServerForIASheet();
+        this.loadDetailsFromServerForIASheet();            
     }
 
     handleClose() {
@@ -126,17 +144,33 @@ class App extends Component {
     handleSearch(e) {
         this.setState({searchKey:e.target.value})
     }
+    
+    logout() {
+        localStorage.removeItem('jwtToken');
+        window.location.reload();
+        hashHistory.push({
+            pathname: '#/'
+          })
+    }
 
    render() {
     const {data, searchKey, candidate, modalLabelView, IAData } = this.state;
     let url = this.props.url;
 
     return (
+
+    
       <div className="App">
         <div className="App-header">
             <div className="">
                 <h3> Candidate List </h3>
             </div>
+            {localStorage.getItem('jwtToken') &&
+              <button className="btn btn-primary log-in" onClick={this.logout}>Logout</button>
+            }
+            {!localStorage.getItem('jwtToken') &&
+               <Link to="/" className="btn btn-primary log-in">Log In</Link>
+            }
             <div>
                 <Button bsStyle="primary" bsSize="large" onClick={this.handleShow}>
                     Add New Candidate

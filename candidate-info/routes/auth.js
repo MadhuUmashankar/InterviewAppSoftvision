@@ -6,7 +6,6 @@ var express = require('express');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
 var User = require("../model/users");
-console.log(User)
 
 router.post('/candidateInfo/register', function(req, res) {
   if (!req.body.username || !req.body.password || !req.body.email || !req.body.confirmpassword) {
