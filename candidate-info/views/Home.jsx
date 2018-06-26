@@ -27,7 +27,7 @@ import {
             <Route path="/" exact component={Login} />
               <Route path="/register" component={() => <Register url="http://localhost:3000/candidateInfo"/>}/>
               <Route path="/app" component={() => <App url='http://localhost:3000/candidateInfo' IAurl= "http://localhost:3000/candidateInfo/newIAForm"/>}/>
-              <Route path="/candidateAcessment" component = {CandidateAcessment}/>
+              <Route path="/candidateAcessment" component = {CandidateAcessment} url='http://localhost:3000/candidateInfo' IAurl= "http://localhost:3000/candidateInfo/newIAForm" />
               <Route path="/logout" component={Login}/>
         </Switch>
       </div>

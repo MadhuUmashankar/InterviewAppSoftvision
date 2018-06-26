@@ -1,5 +1,5 @@
 .App {
-    max-width: 1200px;
+    max-width: 960px;
     margin: auto;
     // background-color: lightblue;
     padding: 20px;
@@ -8,6 +8,10 @@
         align-items: center;
         justify-content: space-between;
     }
+}
+
+button.close {
+  font-size: 35px;
 }
 
 .search-container {
@@ -153,3 +157,6 @@ margin-top: 15px;
 .evaluation-criteria {
   text-align: center;
 }
+
+
+// candidate assessment form

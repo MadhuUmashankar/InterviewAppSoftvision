@@ -22,7 +22,7 @@ class Evaluation extends Component {
        impression:{},
        summaryData:{},
        interviewStatus:{},
-       candidate:props.candidate,
+       // candidate:props.candidateData,
        url: props.url
      };
 
@@ -86,7 +86,9 @@ class Evaluation extends Component {
   handleUpdate(e, id, record) {
     e.preventDefault();
 
-    const {detailsData, candidate, experience, expertiseData, impression, summaryData, interviewStatus} = this.state;
+    const {candidateData} = this.props;
+    const candidate = candidateData;
+    const {detailsData, experience, expertiseData, impression, summaryData, interviewStatus} = this.state;
     const fullname = candidate.firstname + " " + candidate.lastname;
     const updatedrecord = Object.assign({},{candidateID: candidate.candidateID}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
     let iaUrl = this.props.url + '/newIAForm';
@@ -104,7 +106,9 @@ class Evaluation extends Component {
   handleSubmitIAForm(e) {
     e.preventDefault();
     this.loadDetailsFromServerForIASheet();
-    const {detailsData, candidate, experience, expertiseData, impression, summaryData, interviewStatus} = this.state;
+    const {candidateData} = this.props;
+    const candidate = candidateData;
+    const {detailsData, experience, expertiseData, impression, summaryData, interviewStatus} = this.state;
     // Candidate IA Form data
     const fullname = candidate.firstname + " " + candidate.lastname;
 
@@ -120,11 +124,13 @@ class Evaluation extends Component {
                   console.error(err);
                   this.setState({ IAdata: records });
               });
-      }    
+      }
   }
 
   render() {
-    let {candidate, url, IAdata, index, experience, expertiseData, impression, overallAvgScore} = this.state;
+    let {url, IAdata, index, experience, expertiseData, impression, overallAvgScore} = this.state;
+    const {candidateData} = this.props;
+    const candidate = candidateData;
     let rows = expertiseData;
     if(rows.length) {
       overallAvgScore= (rows.filter(item => item.avgScore)).map(item => item.avgScore).reduce((prev, next, iv) => { return +prev + +next}, 0);

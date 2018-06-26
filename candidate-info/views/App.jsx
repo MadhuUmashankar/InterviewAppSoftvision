@@ -74,12 +74,12 @@ class App extends Component {
                 });
             }
         })
-      
+
         deleteIAFormID = deleteIAFormID.length > 0 ? deleteIAFormID[0]._id : '';
 
         axios.all([
             `${deleteIAFormID} ? ${axios.delete(`${this.props.IAurl}/${deleteIAFormID}`)} : ""`,
-            axios.delete(`${this.props.url}/${id}`)            
+            axios.delete(`${this.props.url}/${id}`)
         ]).then(res => {
             console.log('Record deleted');
         })

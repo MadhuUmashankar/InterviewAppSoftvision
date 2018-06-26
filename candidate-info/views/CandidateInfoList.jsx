@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './candidateInfoList.scss';
-import Evaluation from './Evaluation';
+// import Evaluation from './Evaluation';
 // import {withRouter} from "react-router-dom";
 import {hashHistory} from 'react-router';
 
@@ -64,9 +64,18 @@ class CandidateInfoList extends Component {
             })
         }
 
+        // let currentIARecord = dataFromIA.filter((record) => {
+        //   return candidate.candidateID === record.candidateID
+        // });
+        //
+        // currentIARecord = currentIARecord[0];
+
+
         candidateNodes = candidateNodes && candidateNodes.map((candidate, index) => {
 
             const candidateID = candidate._id;
+
+
             return (
                 <div key={index}>
                         <div>
@@ -85,10 +94,7 @@ class CandidateInfoList extends Component {
                                 <h5><span className="margin-tiny glyphicon glyphicon-map-marker"></span>Location: {candidate.city}</h5>
                                 <h5><span className="margin-tiny glyphicon glyphicon-phone"></span>Phone No.: {candidate.phone}</h5>
                             </div>
-                            <div className="evaluation-wrapper" >
-                                <Evaluation candidate={candidate} url={url}/>
-                                <div className="file"><a target="_blank" href= {candidate.selectedFile_name} download> {candidate.selectedFile_name} </a></div>
-                            </div>
+
 
 
                               <div>
