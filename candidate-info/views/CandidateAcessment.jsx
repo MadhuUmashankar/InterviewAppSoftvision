@@ -3,7 +3,13 @@ import ManagerEvaluation from './ManagerEvaluation';
 import HumanResourceEvaluation from './HumanResourceEvaluation';
 import Evaluation from './Evaluation';
 import axios from 'axios';
-
+import {
+  BrowserRouter as Router,
+  Link,
+  Route,
+  Switch,
+  HashRouter
+} from 'react-router-dom';
 
 export default class CandidateAcessment extends Component {
     constructor(props) {
@@ -19,6 +25,7 @@ export default class CandidateAcessment extends Component {
   this.handleInterviewChange = this.handleInterviewChange.bind(this);
   this.startEvaluating = this.startEvaluating.bind(this);
   this.sendInterviewStatus = this.sendInterviewStatus.bind(this);
+  this.logout = this.logout.bind(this);
     }
 
     componentDidMount() {
@@ -62,6 +69,14 @@ export default class CandidateAcessment extends Component {
    this.setState({status,type});
  }
 
+ logout() {
+  localStorage.removeItem('jwtToken');
+  window.location.reload();
+  hashHistory.push({
+      pathname: '#/'
+    })
+}
+
     render() {
       const {interViewToBeTaken, candidateData, showInterviews, showTable, status, type} = this.state;
       const fullname = candidateData.firstname + " " + candidateData.lastname;
@@ -73,6 +88,9 @@ export default class CandidateAcessment extends Component {
       }
         return (
             <div className="App">
+              {localStorage.getItem('jwtToken') &&
+                <Link to="/" className="btn btn-primary log-in">Log Out</Link>
+              }
               <div>
                 <label className="candidate-assessment-label">{fullname}</label>
                 <div className="ca-resume"><label>Resume</label> <a  target="_blank" href= {candidateData.selectedFile_name} download> <span className="glyphicon glyphicon-download-alt"></span> </a></div>

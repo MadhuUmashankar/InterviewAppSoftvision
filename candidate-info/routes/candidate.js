@@ -4,7 +4,7 @@ var path = require('path');
 var multer = require('multer');
 var mongojs = require('mongojs');
 var uuid = require('uuid');
-var db = mongojs('mongodb://localhost:27017/candidateInformationTable', ['candidateInformationTables', 'evaluationSheetInformationTables', 'managerEvaluationInformationTables', 'hrEvaluationInformationTables'], 'users');
+var db = mongojs('mongodb://localhost:27017/candidateInformationTable', ['candidateInformationTables', 'evaluationSheetInformationTables', 'managerEvaluationInformationTables', 'hrEvaluationInformationTables']);
 
 
 // Get all Manager Evaluaton  Info
@@ -56,23 +56,6 @@ router.post('/candidateInfo/newManagerForm', function(req, res, next){
 
 });
 
-//Save New user
-router.post('/candidateInfo/newUser', function(req, res, next){
-    var user = req.body;
-    if(!user.username || !user.email || !(user.password + '') || !(user.confirmpassword + '')){
-        res.status(400);
-        res.json({
-            "error": "Bad Data"
-        });
-    } else {
-        db.users.save(user, function(err, user){
-            if(err){
-                res.send(err);
-            }
-            res.json(user);
-        });
-    }
-});
 
 // Get All candidate Info
 router.get('/candidateInfo', function(req, res, next){

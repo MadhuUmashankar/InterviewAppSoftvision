@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var candidateRouter = require('./routes/candidate');
+var auth = require('./routes/auth');
 
 var app = express();
 
@@ -27,6 +28,13 @@ app.use(express.static(path.join(__dirname, 'upload')));
 // include routes
 app.use('/', indexRouter);
 app.use('/', candidateRouter);
+app.use('/', auth);
+
+var mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
+mongoose.connect('mongodb://localhost/candidateInformationTable', { promiseLibrary: require('bluebird') })
+  .then(() =>  console.log('connection succesful'))
+  .catch((err) => console.error(err));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
