@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Login from './Login';
 import Register from './Register';
 import App from './App';
-import CandidateAcessment from './CandidateAcessment';
+import CandidateAssessment from './CandidateAssessment';
 import registerServiceWorker from './registerServiceWorker';
 import {
     BrowserRouter as Router,
@@ -12,7 +12,7 @@ import {
     HashRouter
   } from 'react-router-dom';
 
- const Home = () => { 
+ const Home = () => {
     return (
         <HashRouter>
           <div>
@@ -26,7 +26,7 @@ import {
                 <Route path="/" exact component={() => <Login url="http://localhost:3000/candidateInfo"/>} />
                   <Route path="/register" component={() => <Register url="http://localhost:3000/candidateInfo"/>}/>
                   <Route path="/app" component={() => <App url='http://localhost:3000/candidateInfo' IAurl= "http://localhost:3000/candidateInfo/newIAForm"/>}/>
-                  <Route path="/candidateAcessment" component = {CandidateAcessment}/>
+                  <Route path="/CandidateAssessment" component = {CandidateAssessment}/>
               </Switch>
           </div>
         </HashRouter>

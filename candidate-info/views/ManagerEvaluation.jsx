@@ -12,35 +12,33 @@ class ManagerEvaluation extends Component {
 
      this.state = {
        managerEvaluationData:[],
-       customerNeeds: '',
-       clientProcess:'',
-       clientRelationship:'',
-       clientOrientationRatings:'',
-       clientOrientationComments:'',
-       planningControl:'',
-       peopleManagement:'',
-       projectManagementRatings:'',
-       projectManagementComments:'',
-       leadership:'',
-       leadershipRatings: '',
-       leadershipComments: '',
-       communication: '',
-       communicationRatings: '',
-       communicationComments: '',
-       domain: '',
-       domainRatings: '',
-       domainComments: '',
-       requirementGathering: '',
-       architecht: '',
-       coding: '',
-       testing: '',
-       technicalSolutionsRatings: '',
-       technicalSolutionsComments: '',
-       managerInterviewStatus: '',
        url: props.url,
        interviewerName2: '',
        jobTitle: '',
-       interviewerRound:''
+       interviewerRound:'',
+       clientOrientationRatings1: '',
+       clientOrientationComments1: '',
+       clientOrientationRatings2: '',
+       clientOrientationComments2: '',
+       clientOrientationRatings3: '',
+       clientOrientationComments3: '',
+       projectManagementRatings: '',
+       projectManagementComments: '',
+       leadershipRatings: '',
+       leadershipComments: '',
+       communicationRatings: '',
+       communicationComments: '',
+       domainRatings: '',
+       domainComments: '',
+       technicalSolutionsRatings1: '',
+       technicalSolutionsComments1: '',
+       technicalSolutionsRatings2: '',
+       technicalSolutionsComments2: '',
+       technicalSolutionsRatings3: '',
+       technicalSolutionsComments3: '',
+       technicalSolutionsRatings4: '',
+       technicalSolutionsComments4: '',
+       managerInterviewStatus:''
      };
 
     this.handleShow = this.handleShow.bind(this);
@@ -53,27 +51,44 @@ class ManagerEvaluation extends Component {
    componentDidMount() {
        this.loadManagerDetails();
 
-       const {managerEvaluationData} = this.state;
-       const {candidateData, sendInterviewStatus} = this.props;
-       let currentManagerRecord = managerEvaluationData.filter((record) => {
-         return candidateData.candidateID === record.candidateID
-       });
-
-       currentManagerRecord = currentManagerRecord[0];
-
-       if(currentManagerRecord != undefined) {
-         if(Object.keys(currentManagerRecord).length > 0) {
-           const clientOrientationRatings = currentManagerRecord.clientOrientationRatings ? currentManagerRecord.clientOrientationRatings : "";
-           const managerInterviewStatus = currentManagerRecord.managerInterviewStatus ? currentManagerRecord.managerInterviewStatus : "";
-           const projectManagementRatings = currentManagerRecord.projectManagementRatings ? currentManagerRecord.projectManagementRatings : "";
-           const leadershipRatings = currentManagerRecord.leadershipRatings ? currentManagerRecord.leadershipRatings : "";
-           const communicationRatings= currentManagerRecord.communicationRatings ? currentManagerRecord.communicationRatings : "";
-           const domainRatings= currentManagerRecord.domainRatings ? currentManagerRecord.domainRatings : "";
-           const technicalSolutionsRatings= currentManagerRecord.technicalSolutionsRatings ? currentManagerRecord.technicalSolutionsRatings : "";
-           this.setState({managerInterviewStatus, clientOrientationRatings, projectManagementRatings, leadershipRatings, communicationRatings, domainRatings, technicalSolutionsRatings }, ()=>{
-             sendInterviewStatus(hrInterviewStatus, "manager")});
-         }
-     }
+     //   const {managerEvaluationData} = this.state;
+     //   const {candidateData, sendInterviewStatus} = this.props;
+     //   let currentManagerRecord = managerEvaluationData.filter((record) => {
+     //     return candidateData.candidateID === record.candidateID
+     //   });
+     //
+     //   currentManagerRecord = currentManagerRecord[0];
+     //   console.log("currentManagerRecord", currentManagerRecord);
+     //   if(currentManagerRecord != undefined) {
+     //     if(Object.keys(currentManagerRecord).length > 0) {
+     //      const clientOrientationRatings1= currentManagerRecord.clientOrientationRatings1;
+     //      const clientOrientationComments1= currentManagerRecord.clientOrientationComments1;
+     //      const clientOrientationRatings2= currentManagerRecord.clientOrientationRatings2 ? currentManagerRecord.clientOrientationRatings2 : "";
+     //      const clientOrientationComments2= currentManagerRecord.clientOrientationComments2 ? currentManagerRecord.clientOrientationComments2 : "";
+     //      const clientOrientationRatings3= currentManagerRecord.clientOrientationRatings3 ? currentManagerRecord.clientOrientationRatings3 : "";
+     //      const clientOrientationComments3= currentManagerRecord.clientOrientationComments3 ? currentManagerRecord.clientOrientationComments3 : "";
+     //      const projectManagementRatings= currentManagerRecord.projectManagementRatings ? currentManagerRecord.projectManagementRatings : "";
+     //      const projectManagementComments= currentManagerRecord.projectManagementComments ? currentManagerRecord.projectManagementComments : "";
+     //      const leadershipRatings= currentManagerRecord.leadershipRatings ? currentManagerRecord.leadershipRatings : "";
+     //      const leadershipComments= currentManagerRecord.leadershipComments ? currentManagerRecord.leadershipComments : "";
+     //      const communicationRatings= currentManagerRecord.communicationRatings ? currentManagerRecord.communicationRatings : "";
+     //      const communicationComments= currentManagerRecord.communicationComments ? currentManagerRecord.communicationComments : "";
+     //      const domainRatings= currentManagerRecord.domainRatings ? currentManagerRecord.domainRatings : "";
+     //      const domainComments= currentManagerRecord.domainComments ? currentManagerRecord.domainComments : "";
+     //      const technicalSolutionsRatings1= currentManagerRecord.technicalSolutionsRatings1 ? currentManagerRecord.technicalSolutionsRatings1 : "";
+     //      const technicalSolutionsComments1= currentManagerRecord.technicalSolutionsComments1 ? currentManagerRecord.technicalSolutionsComments1 : "";
+     //      const technicalSolutionsRatings2 = currentManagerRecord.technicalSolutionsRatings2 ? currentManagerRecord.technicalSolutionsRatings2 : "";
+     //      const technicalSolutionsComments2= currentManagerRecord.technicalSolutionsComments2 ? currentManagerRecord.technicalSolutionsComments2 : "";
+     //      const technicalSolutionsRatings3= currentManagerRecord.technicalSolutionsRatings3 ? currentManagerRecord.technicalSolutionsRatings3 : "";
+     //      const technicalSolutionsComments3= currentManagerRecord.technicalSolutionsComments3 ? currentManagerRecord.technicalSolutionsComments3 : "";
+     //      const technicalSolutionsRatings4= currentManagerRecord.technicalSolutionsRatings4 ? currentManagerRecord.technicalSolutionsRatings4 : "";
+     //      const technicalSolutionsComments4= currentManagerRecord.technicalSolutionsComments4 ? currentManagerRecord.technicalSolutionsComments4 : "";
+     //      const managerInterviewStatus = currentManagerRecord.managerInterviewStatus ? currentManagerRecord.managerInterviewStatus : "";
+     //
+     //       this.setState({clientOrientationRatings1, clientOrientationComments1, clientOrientationRatings2, clientOrientationComments2, clientOrientationRatings3, clientOrientationComments3, projectManagementRatings, projectManagementComments, leadershipRatings, leadershipComments, communicationRatings, communicationComments, domainRatings, domainComments, technicalSolutionsRatings1, technicalSolutionsComments1, technicalSolutionsRatings2,technicalSolutionsComments2, technicalSolutionsRatings3, technicalSolutionsComments3, technicalSolutionsRatings4,  technicalSolutionsComments4,  managerInterviewStatus }, ()=>{
+     //         sendInterviewStatus(hrInterviewStatus, "manager")});
+     //     }
+     // }
    }
 
 
@@ -97,83 +112,7 @@ class ManagerEvaluation extends Component {
 
   handleOnChange(event) {
      const {sendInterviewStatus} = this.props;
-    switch (event.target.name) {
-        case "customerNeeds":
-            this.setState({customerNeeds : event.target.value})
-            break;
-        case "clientProcess":
-            this.setState({clientProcess : event.target.value})
-            break;
-        case "clientRelationship":
-            this.setState({clientRelationship : event.target.value})
-            break;
-        case "clientOrientationRatings":
-            this.setState({clientOrientationRatings : event.target.value})
-            break;
-        case "clientOrientationComments":
-            this.setState({clientOrientationComments : event.target.value})
-            break;
-        case "planningControl":
-            this.setState({planningControl : event.target.value})
-            break;
-        case "peopleManagement":
-            this.setState({peopleManagement : event.target.value})
-            break;
-        case "projectManagementRatings":
-            this.setState({projectManagementRatings : event.target.value})
-            break;
-        case "projectManagementComments":
-            this.setState({projectManagementComments : event.target.value})
-            break;
-        case "leadership":
-            this.setState({leadership : event.target.value})
-            break;
-        case "leadershipRatings":
-            this.setState({leadershipRatings : event.target.value})
-            break;
-        case "leadershipComments":
-            this.setState({leadershipComments : event.target.value})
-            break;
-        case "communication":
-            this.setState({communication : event.target.value})
-            break;
-        case "communicationRatings":
-            this.setState({communicationRatings : event.target.value})
-            break;
-        case "communicationComments":
-            this.setState({communicationComments : event.target.value})
-            break;
-        case "domain":
-            this.setState({domain : event.target.value})
-            break;
-        case "domainRatings":
-            this.setState({domainRatings : event.target.value})
-            break;
-        case "domainComments":
-            this.setState({domainComments : event.target.value})
-            break;
-        case "requirementGathering":
-            this.setState({requirementGathering : event.target.value})
-            break;
-        case "architecht":
-            this.setState({architecht : event.target.value})
-            break;
-        case "coding":
-            this.setState({coding : event.target.value})
-            break;
-        case "testing":
-            this.setState({testing : event.target.value})
-            break;
-        case "technicalSolutionsRatings":
-            this.setState({technicalSolutionsRatings : event.target.value})
-            break;
-        case "technicalSolutionsComments":
-            this.setState({technicalSolutionsComments : event.target.value})
-            break;
-        case "managerInterviewStatus":
-            this.setState({managerInterviewStatus : event.target.value})
-            sendInterviewStatus(event.target.value, "manager");
-            break;
+     switch (event.target.name) {
         case "interviewerName2":
             this.setState({interviewerName2 : event.target.value})
             break;
@@ -183,7 +122,76 @@ class ManagerEvaluation extends Component {
         case "interviewerRound":
             this.setState({interviewerRound : event.target.value})
             break;
-
+        case "managerInterviewStatus":
+            this.setState({managerInterviewStatus : event.target.value})
+            sendInterviewStatus(event.target.value, "manager");
+            break;
+        case "clientOrientationRatings1":
+            this.setState({clientOrientationRatings1 : event.target.value})
+            break;
+        case "clientOrientationComments1":
+            this.setState({clientOrientationComments1 : event.target.value})
+            break;
+        case "clientOrientationRatings2":
+            this.setState({clientOrientationRatings2 : event.target.value})
+            break;
+        case "clientOrientationComments2":
+            this.setState({clientOrientationComments2 : event.target.value})
+            break;
+        case "clientOrientationRatings3":
+            this.setState({clientOrientationRatings3 : event.target.value})
+            break;
+        case "clientOrientationComments3":
+            this.setState({clientOrientationComments3 : event.target.value})
+            break;
+        case "projectManagementRatings":
+            this.setState({projectManagementRatings : event.target.value})
+            break;
+        case "projectManagementComments":
+            this.setState({projectManagementComments : event.target.value})
+            break;
+        case "leadershipRatings":
+            this.setState({leadershipRatings : event.target.value})
+            break;
+        case "leadershipComments":
+            this.setState({leadershipComments : event.target.value})
+            break;
+        case "communicationRatings":
+            this.setState({communicationRatings : event.target.value})
+            break;
+        case "communicationComments":
+            this.setState({communicationComments : event.target.value})
+            break;
+        case "domainRatings":
+            this.setState({domainRatings : event.target.value})
+            break;
+        case "domainComments":
+            this.setState({domainComments : event.target.value})
+            break;
+        case "technicalSolutionsRatings1":
+            this.setState({technicalSolutionsRatings1 : event.target.value})
+            break;
+        case "technicalSolutionsComments1":
+            this.setState({technicalSolutionsComments1 : event.target.value})
+            break;
+        case "technicalSolutionsRatings2":
+            this.setState({technicalSolutionsRatings2 : event.target.value})
+            break;
+        case "technicalSolutionsComments2":
+            this.setState({technicalSolutionsComments2 : event.target.value})
+            break;
+        case "technicalSolutionsRatings3":
+            this.setState({technicalSolutionsRatings3 : event.target.value})
+            break;
+        case "technicalSolutionsComments3":
+            this.setState({technicalSolutionsComments3 : event.target.value})
+            break;
+        case "technicalSolutionsRatings4":
+            this.setState({technicalSolutionsRatings4 : event.target.value})
+            break;
+        case "technicalSolutionsComments4":
+            this.setState({technicalSolutionsComments4 : event.target.value})
+            break;
         default:
             break;
     }
@@ -193,9 +201,10 @@ class ManagerEvaluation extends Component {
   handleSubmitManagerForm(e) {
     e.preventDefault();
     const {candidateData} = this.props;
-    const {customerNeeds, clientProcess, clientRelationship, clientOrientationRatings, clientOrientationComments, planningControl, peopleManagement, projectManagementRatings, projectManagementComments, leadership, leadershipRatings, leadershipComments, communication, communicationRatings, communicationComments, domain, domainRatings, domainComments, requirementGathering, architecht, coding, testing, technicalSolutionsRatings, technicalSolutionsComments, managerInterviewStatus, interviewerName2, jobTitle, interviewerRound} = this.state;
+    const candidateFullname = candidateData.firstname + " " + candidateData.lastname;
+    const {interviewerName2, jobTitle, interviewerRound, clientOrientationRatings1, clientOrientationComments1, clientOrientationRatings2, clientOrientationComments2, clientOrientationRatings3, clientOrientationComments3, projectManagementRatings, projectManagementComments, leadershipRatings, leadershipComments, communicationRatings, communicationComments, domainRatings, domainComments, technicalSolutionsRatings1, technicalSolutionsComments1, technicalSolutionsRatings2,technicalSolutionsComments2, technicalSolutionsRatings3, technicalSolutionsComments3, technicalSolutionsRatings4,  technicalSolutionsComments4, managerInterviewStatus} = this.state;
     // Candidate Manager
-     const managerRecord = Object.assign({}, {candidateID: candidateData.candidateID}, {customerNeeds}, {clientProcess}, {clientRelationship}, {clientOrientationRatings}, {clientOrientationComments}, {planningControl}, {peopleManagement}, {projectManagementRatings},{ projectManagementComments}, {leadership}, {leadershipRatings}, {leadershipComments}, {communication}, {communicationRatings}, {communicationComments}, {domain}, {domainRatings}, {domainComments}, {requirementGathering}, {architecht},{coding}, {testing}, {technicalSolutionsRatings}, {technicalSolutionsComments}, {managerInterviewStatus}, {interviewerName2}, {jobTitle}, {interviewerRound});
+     const managerRecord = Object.assign({}, {candidateFullname}, {candidateID: candidateData.candidateID}, {interviewerName2}, {jobTitle}, {interviewerRound}, {clientOrientationRatings1}, {clientOrientationComments1}, {clientOrientationRatings2}, {clientOrientationComments2}, {clientOrientationRatings3}, {clientOrientationComments3}, {projectManagementRatings}, {projectManagementComments}, {leadershipRatings}, {leadershipComments}, {communicationRatings}, {communicationComments}, {domainRatings}, {domainComments}, {technicalSolutionsRatings1}, {technicalSolutionsComments1}, {technicalSolutionsRatings2}, {technicalSolutionsComments2}, {technicalSolutionsRatings3}, {technicalSolutionsComments3}, {technicalSolutionsRatings4},  {technicalSolutionsComments4}, {managerInterviewStatus});
 
     this.setState({ show: false });
       if(managerRecord) {
@@ -215,9 +224,10 @@ class ManagerEvaluation extends Component {
   handleUpdateManagerForm(e, id, record) {
     e.preventDefault();
     const {candidateData} = this.props;
-    const {customerNeeds, clientProcess, clientRelationship, clientOrientationRatings, clientOrientationComments, planningControl, peopleManagement, projectManagementRatings, projectManagementComments, leadership, leadershipRatings, leadershipComments, communication, communicationRatings, communicationComments, domain, domainRatings, domainComments, requirementGathering, architecht, coding, testing, technicalSolutionsRatings, technicalSolutionsComments, managerInterviewStatus, interviewerName2, jobTitle, interviewerRound} = this.state;
+    const {interviewerName2, jobTitle, interviewerRound, clientOrientationRatings1, clientOrientationComments1, clientOrientationRatings2, clientOrientationComments2, clientOrientationRatings3, clientOrientationComments3, projectManagementRatings, projectManagementComments, leadershipRatings, leadershipComments, communicationRatings, communicationComments, domainRatings, domainComments, technicalSolutionsRatings1, technicalSolutionsComments1, technicalSolutionsRatings2,technicalSolutionsComments2, technicalSolutionsRatings3, technicalSolutionsComments3, technicalSolutionsRatings4,  technicalSolutionsComments4, managerInterviewStatus} = this.state;
+    const candidateFullname = candidateData.firstname + " " + candidateData.lastname;
 
-    const updatedManagerRecord = Object.assign({},{candidateID: candidateData.candidateID}, {customerNeeds}, {clientProcess}, {clientRelationship}, {clientOrientationRatings}, {clientOrientationComments}, {planningControl}, {peopleManagement}, {projectManagementRatings},{ projectManagementComments}, {leadership}, {leadershipRatings}, {leadershipComments}, {communication}, {communicationRatings}, {communicationComments}, {domain}, {domainRatings}, {domainComments}, {requirementGathering}, {architecht},{coding}, {testing}, {technicalSolutionsRatings}, {technicalSolutionsComments}, {managerInterviewStatus}, {interviewerName2}, {jobTitle}, {interviewerRound})
+    const updatedManagerRecord = Object.assign({},{candidateFullname}, {candidateID: candidateData.candidateID}, {interviewerName2}, {jobTitle}, {interviewerRound}, {clientOrientationRatings1}, {clientOrientationComments1}, {clientOrientationRatings2}, {clientOrientationComments2}, {clientOrientationRatings3}, {clientOrientationComments3}, {projectManagementRatings}, {projectManagementComments}, {leadershipRatings}, {leadershipComments}, {communicationRatings}, {communicationComments}, {domainRatings}, {domainComments}, {technicalSolutionsRatings1}, {technicalSolutionsComments1}, {technicalSolutionsRatings2}, {technicalSolutionsComments2}, {technicalSolutionsRatings3}, {technicalSolutionsComments3}, {technicalSolutionsRatings4},  {technicalSolutionsComments4}, {managerInterviewStatus})
 
     let iaUrl = this.props.url + '/newManagerForm';
     this.setState({ show: false });
@@ -231,18 +241,17 @@ class ManagerEvaluation extends Component {
   }
 
   render() {
-    const {managerEvaluationData, customerNeeds, clientProcess, clientRelationship, clientOrientationRatings, clientOrientationComments, planningControl, peopleManagement, projectManagementRatings, projectManagementComments, leadership, leadershipRatings, leadershipComments, communication, communicationRatings, communicationComments, domain, domainRatings, domainComments, requirementGathering, architecht, coding, testing, technicalSolutionsRatings, technicalSolutionsComments, managerInterviewStatus, interviewerName2, jobTitle, interviewerRound}
-     = this.state;
-
     const {candidateData, interViewToBeTaken} = this.props;
+    const candidateFullname = candidateData.firstname + " " + candidateData.lastname;
+    const {managerEvaluationData, interviewerName2, jobTitle, interviewerRound, clientOrientationRatings1, clientOrientationComments1, clientOrientationRatings2, clientOrientationComments2, clientOrientationRatings3, clientOrientationComments3, projectManagementRatings, projectManagementComments, leadershipRatings, leadershipComments, communicationRatings, communicationComments, domainRatings, domainComments, technicalSolutionsRatings1, technicalSolutionsComments1, technicalSolutionsRatings2,technicalSolutionsComments2, technicalSolutionsRatings3, technicalSolutionsComments3, technicalSolutionsRatings4,  technicalSolutionsComments4, managerInterviewStatus }
+     = this.state;
 
     let currentManagerRecord = managerEvaluationData.filter((record) => {
       return candidateData.candidateID === record.candidateID
     });
-    currentManagerRecord = currentManagerRecord[0];
-    console.log("currentManagerRecord", currentManagerRecord)
 
-    const candidateFullname = candidateData.firstname + " " + candidateData.lastname;
+    currentManagerRecord = currentManagerRecord[0];
+    const currManagerObject = currentManagerRecord || {};
 
     return (
       <div>
@@ -263,40 +272,40 @@ class ManagerEvaluation extends Component {
                           className="table table-bordered table-responsive" id="manager_evaluation_detais_id">
                           <tbody>
                             <tr>
-                              <td>Candidate Name</td><td>{candidateFullname}</td>
-                              <td>Candidate Id</td><td>{candidateData.candidateID}</td>
-                              <td>Interview Type</td><td>{interViewToBeTaken}</td>
+                              <td><strong>Candidate Name</strong></td><td>{candidateFullname}</td>
+                              <td><strong>Candidate Id</strong></td><td>{candidateData.candidateID}</td>
+                              <td><strong>Interview Type</strong></td><td className="interview-round">{interViewToBeTaken}</td>
                             </tr>
                             <tr>
-                              <td>Interviewer</td><td><InputBox
+                              <td><strong>Interviewer</strong><span className="mandatory">*</span></td><td><InputBox
                                   type="text"
                                   placeholder="Enter Interviewer's name"
                                   classname="form-control"
                                   name="interviewerName2"
                                   id="interviewerId2"
-                                  value = {currentManagerRecord ? currentManagerRecord.interviewerName2 : this.state.interviewerName2 }
+                                  value = {currManagerObject.interviewerName2 || this.state.interviewerName2 }
                                   maxLength="20"
                                   required
                                   onChange = {this.handleOnChange}
                               /></td>
-                              <td>Job Title</td><td><InputBox
+                            <td><strong>Job Title</strong><span className="mandatory">*</span></td><td><InputBox
                                   type="text"
-                                  placeholder="Enter Interviewer's name"
+                                  placeholder="Enter Job title"
                                   classname="form-control"
                                   name="jobTitle"
                                   id="jobTitleId"
-                                  value = {currentManagerRecord ? currentManagerRecord.jobTitle : this.state.jobTitle }
+                                  value = {currManagerObject.jobTitle || this.state.jobTitle }
                                   maxLength="20"
                                   required
                                   onChange = {this.handleOnChange}
                               /></td>
-                              <td>Interview Round</td><td><InputBox
+                            <td><strong>Interview Round</strong><span className="mandatory">*</span></td><td><InputBox
                                   type="text"
                                   placeholder="Enter the round"
                                   classname="form-control"
                                   name="interviewerRound"
                                   id="interviewerRoundId1"
-                                  value = {currentManagerRecord ? currentManagerRecord.interviewerRound : this.state.interviewerRound }
+                                  value = {currManagerObject.interviewerRound || this.state.interviewerRound }
                                   maxLength="20"
                                   required
                                   onChange = {this.handleOnChange}
@@ -308,61 +317,18 @@ class ManagerEvaluation extends Component {
                         <table className="table table-bordered table-responsive">
                         <thead>
                           <tr>
-                            <th colSpan="2" className="evaluation-criteria">Evaluation Criteria</th>
-                            <th>Ratings</th>
-                            <th>Comments</th>
+                            <th colSpan="2" className="evaluation-criteria">Evaluation Criteria<span className="mandatory">*</span></th>
+                            <th>Ratings<span className="mandatory">*</span></th>
+                            <th>Comments<span className="mandatory">*</span></th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <td>Client Orientation</td>
-                            <td className="col-sm-2">
-                              <tr>
-                                <td>Understanding Customer Needs
-                                  <InputBox
-                                      type="text"
-                                      classname="form-control"
-                                      name="customerNeeds"
-                                      id="customerNeedsId"
-                                      value= {currentManagerRecord ? currentManagerRecord.customerNeeds : customerNeeds}
-                                      autoFocus="true"
-                                      maxLength="15"
-                                      required
-                                      onChange = {this.handleOnChange}
-                                  />
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>Follow client process
-                                  <InputBox
-                                      type="text"
-                                      classname="form-control"
-                                      name="clientProcess"
-                                      id="clientProcessId"
-                                      value={currentManagerRecord ? currentManagerRecord.clientProcess : clientProcess}
-                                      required
-                                      onChange = {this.handleOnChange}
-                                  />
-
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>Developing relationships with client
-                                  <InputBox
-                                      type="text"
-                                      classname="form-control"
-                                      name="clientRelationship"
-                                      id="clientRelationshipId"
-                                      value={currentManagerRecord ? currentManagerRecord.clientRelationship : clientRelationship}
-                                      required
-                                      onChange = {this.handleOnChange}
-                                  />
-                                </td>
-                              </tr>
-                            </td>
+                            <td rowSpan="3">Client Orientation<span className="mandatory">*</span></td>
+                            <td className="col-sm-3">Understanding Customer Needs</td>
                             <td>
-                              <select className="form-control" id="ratings_id1" name="clientOrientationRatings" onChange={this.handleOnChange}
-                                value={clientOrientationRatings}>
+                              <select className="form-control" id="ratings_id1" name="clientOrientationRatings1" onChange={this.handleOnChange}
+                                value={currManagerObject.clientOrientationRatings1}>
                                   <option>Select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
@@ -372,44 +338,54 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="clientOrientationComments"
-                              id="clientOrientationCommentsId" value={currentManagerRecord ? currentManagerRecord.clientOrientationComments : clientOrientationComments}></TextArea>
+                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="clientOrientationComments1"
+                              id="clientOrientationCommentsId1" placeholder="Please enter the comments" value={currManagerObject.clientOrientationComments1}></TextArea>
+                            </td>
+                          </tr>
+                          <tr>
+
+                            <td className="col-sm-3">Follow client process</td>
+                            <td>
+                              <select className="form-control" id="ratings_id2" name="clientOrientationRatings2" onChange={this.handleOnChange}
+                                value={currManagerObject.clientOrientationRatings2}>
+                                  <option>Select</option>
+                                  <option>0 - Not Applicaple</option>
+                                  <option>1 - Below Expectation</option>
+                                  <option>2 - Needs Improvement</option>
+                                  <option>3 - Meets Expectation</option>
+                                  <option>4 - Exceeds Expectation</option>
+                              </select>
+                            </td>
+                            <td>
+                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="clientOrientationComments2"
+                              id="clientOrientationCommentsId2" placeholder="Please enter the comments" value={currManagerObject.clientOrientationComments2}></TextArea>
+                            </td>
+                          </tr>
+                          <tr>
+
+                            <td className="col-sm-3">Developing relationships with client</td>
+                            <td>
+                              <select className="form-control" id="ratings_id3" name="clientOrientationRatings3" onChange={this.handleOnChange}
+                                value={currManagerObject.clientOrientationRatings3}>
+                                  <option>Select</option>
+                                  <option>0 - Not Applicaple</option>
+                                  <option>1 - Below Expectation</option>
+                                  <option>2 - Needs Improvement</option>
+                                  <option>3 - Meets Expectation</option>
+                                  <option>4 - Exceeds Expectation</option>
+                              </select>
+                            </td>
+                            <td>
+                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="clientOrientationComments3"
+                              id="clientOrientationCommentsId3" placeholder="Please enter the comments" value={currManagerObject.clientOrientationComments3}></TextArea>
                             </td>
                           </tr>
 
                           <tr>
-                            <td>Project Management</td>
-                            <td className="col-sm-2">
-                              <tr>
-                                <td>Planning Control
-                                  <InputBox
-                                      type="text"
-                                      classname="form-control"
-                                      name="planningControl"
-                                      id="planningControlId"
-                                      value={currentManagerRecord ? currentManagerRecord.planningControl : planningControl}
-                                      required
-                                      onChange = {this.handleOnChange}
-                                  />
-
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>People Management
-                                  <InputBox
-                                      type="text"
-                                      classname="form-control"
-                                      name="peopleManagement"
-                                      id="peopleManagementId"
-                                      value={currentManagerRecord ? currentManagerRecord.peopleManagement : peopleManagement}
-                                      required
-                                      onChange = {this.handleOnChange}
-                                  />
-                                </td>
-                              </tr>
-                            </td>
+                            <td>Project Management<span className="mandatory">*</span></td>
+                            <td className="col-sm-3">People Management</td>
                             <td>
-                              <select className="form-control" id="ratings_id2" name="projectManagementRatings" onChange={this.handleOnChange} value={ projectManagementRatings}>
+                              <select className="form-control" id="ratings_id4" name="projectManagementRatings" onChange={this.handleOnChange} value={ currManagerObject.projectManagementRatings}>
                                   <option>Select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
@@ -420,29 +396,15 @@ class ManagerEvaluation extends Component {
                             </td>
                             <td>
                               <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="projectManagementComments"
-                              id="projectManagementCommentsId" value={currentManagerRecord ? currentManagerRecord.projectManagementComments : projectManagementComments}></TextArea>
+                              id="projectManagementCommentsId" placeholder="Please enter the comments" value={currManagerObject.projectManagementComments}></TextArea>
                             </td>
                           </tr>
 
                           <tr>
-                            <td>Leadership</td>
-                            <td className="col-sm-2">
-                              <tr>
-                                <td>
-                                  <InputBox
-                                      type="text"
-                                      classname="form-control"
-                                      name="leadership"
-                                      id="leadershipId"
-                                      value={currentManagerRecord ? currentManagerRecord.leadership : leadership}
-                                      required
-                                      onChange = {this.handleOnChange}
-                                  />
-                                </td>
-                              </tr>
-                            </td>
+                            <td>Leadership<span className="mandatory">*</span></td>
+                            <td className="col-sm-3"></td>
                             <td>
-                              <select className="form-control" id="ratings_id3" name="leadershipRatings" onChange={this.handleOnChange} value={currentManagerRecord ? currentManagerRecord.leadershipRatings : leadershipRatings}>
+                              <select className="form-control" id="ratings_id5" name="leadershipRatings" onChange={this.handleOnChange} value={currManagerObject.leadershipRatings}>
                                   <option>Select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
@@ -453,29 +415,15 @@ class ManagerEvaluation extends Component {
                             </td>
                             <td>
                               <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="leadershipComments"
-                              id="leadershipCommentsId" value={currentManagerRecord ? currentManagerRecord.leadershipComments : leadershipComments}></TextArea>
+                              id="leadershipCommentsId" placeholder="Please enter the comments" value={currManagerObject.leadershipComments}></TextArea>
                             </td>
                           </tr>
 
                           <tr>
-                            <td>Communication</td>
-                            <td className="col-sm-2">
-                              <tr>
-                                <td><InputBox
-                                    type="text"
-                                    classname="form-control"
-                                    name="communication"
-                                    id="communicationId"
-                                    value={currentManagerRecord ? currentManagerRecord.communication : communication}
-                                    required
-                                    onChange = {this.handleOnChange}
-                                />
-
-                                </td>
-                              </tr>
-                            </td>
+                            <td>Communication<span className="mandatory">*</span></td>
+                            <td className="col-sm-3"></td>
                             <td>
-                              <select className="form-control" id="ratings_id3" onChange={this.handleOnChange} name="communicationRatings" value={currentManagerRecord ? currentManagerRecord.communicationRatings : communicationRatings}>
+                              <select className="form-control" id="ratings_id6" onChange={this.handleOnChange} name="communicationRatings" value={currManagerObject.communicationRatings}>
                                   <option>Select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
@@ -486,29 +434,15 @@ class ManagerEvaluation extends Component {
                             </td>
                             <td>
                               <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="communicationComments"
-                              id="communicationCommentsId" value={currentManagerRecord ? currentManagerRecord.communicationComments : communicationComments} ></TextArea>
+                              id="communicationCommentsId" placeholder="Please enter the comments" value={currManagerObject.communicationComments} ></TextArea>
                             </td>
                           </tr>
 
                           <tr>
-                            <td>Domain (Business/Technology)</td>
-                            <td className="col-sm-2">
-                              <tr>
-                                <td>
-                                  <InputBox
-                                      type="text"
-                                      classname="form-control"
-                                      name="domain"
-                                      id="domainId"
-                                      value={currentManagerRecord ? currentManagerRecord.domain : domain}
-                                      required
-                                      onChange = {this.handleOnChange}
-                                  />
-                                </td>
-                              </tr>
-                            </td>
+                            <td>Domain (Business/Technology)<span className="mandatory">*</span></td>
+                            <td className="col-sm-3"></td>
                             <td>
-                              <select className="form-control" id="ratings_id3" name = "domainRatings" onChange={this.handleOnChange} value={currentManagerRecord ? currentManagerRecord.domainRatings : domainRatings}>
+                              <select className="form-control" id="ratings_id7" name = "domainRatings" onChange={this.handleOnChange} value={currManagerObject.domainRatings}>
                                   <option>Select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
@@ -519,63 +453,14 @@ class ManagerEvaluation extends Component {
                             </td>
                             <td>
                               <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="domainComments"
-                              id="domainCommentsId" value={currentManagerRecord ? currentManagerRecord.domainComments : domainComments}></TextArea>
+                              id="domainCommentsId" placeholder="Please enter the comments" value={currManagerObject.domainComments}></TextArea>
                             </td>
                           </tr>
                           <tr>
-                            <td>Technical Solutions</td>
-                            <td className="col-sm-2">
-                              <tr>
-                                <td>Requirement gathering
-                                  <InputBox
-                                      type="text"
-                                      classname="form-control"
-                                      name="requirementGathering"
-                                      id="requirementGatheringId"
-                                      value={currentManagerRecord ? currentManagerRecord.requirementGathering : requirementGathering}
-                                      onChange = {this.handleOnChange}
-                                  />
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>Architect/ Design
-                                  <InputBox
-                                      type="text"
-                                      classname="form-control"
-                                      name="architecht"
-                                      id="architechtId"
-                                      value={currentManagerRecord ? currentManagerRecord.architecht : architecht}
-                                      onChange = {this.handleOnChange}
-                                  />
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>Coding
-                                  <InputBox
-                                      type="text"
-                                      classname="form-control"
-                                      name="coding"
-                                      id="codingId"
-                                      value={currentManagerRecord ? currentManagerRecord.coding : coding}
-                                      onChange = {this.handleOnChange}
-                                  />
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>Testing
-                                  <InputBox
-                                      type="text"
-                                      classname="form-control"
-                                      name="testing"
-                                      id="testingId"
-                                      value={currentManagerRecord ? currentManagerRecord.testing : testing}
-                                      onChange = {this.handleOnChange}
-                                  />
-                                </td>
-                              </tr>
-                            </td>
+                            <td rowSpan="4">Technical Solutions<span className="mandatory">*</span></td>
+                            <td className="col-sm-3">Requirement gathering</td>
                             <td>
-                              <select className="form-control" id="ratings_id1" onChange={this.handleOnChange} name="technicalSolutionsRatings" value={currentManagerRecord ? currentManagerRecord.technicalSolutionsRatings : technicalSolutionsRatings}>
+                              <select className="form-control" id="ratings_id8" onChange={this.handleOnChange} name="technicalSolutionsRatings1" value={currManagerObject.technicalSolutionsRatings1}>
                                   <option>Select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
@@ -585,29 +470,80 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="technicalSolutionsComments"
-                              id="technicalSolutionsCommentsId" value={currentManagerRecord ? currentManagerRecord.technicalSolutionsComments : technicalSolutionsComments}></TextArea>
+                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="technicalSolutionsComments1"
+                              id="technicalSolutionsCommentsId1" placeholder="Please enter the comments" value={currManagerObject.technicalSolutionsComments1}></TextArea>
+                            </td>
+                            </tr>
+
+                            <tr>
+                            <td className="col-sm-3">Architect/ Design</td>
+                            <td>
+                              <select className="form-control" id="ratings_id9" onChange={this.handleOnChange} name="technicalSolutionsRatings2" value={currManagerObject.technicalSolutionsRatings2}>
+                                  <option>Select</option>
+                                  <option>0 - Not Applicaple</option>
+                                  <option>1 - Below Expectation</option>
+                                  <option>2 - Needs Improvement</option>
+                                  <option>3 - Meets Expectation</option>
+                                  <option>4 - Exceeds Expectation</option>
+                              </select>
+                            </td>
+                            <td>
+                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="technicalSolutionsComments2"
+                              id="technicalSolutionsCommentsId2" placeholder="Please enter the comments" value={currManagerObject.technicalSolutionsComments2}></TextArea>
                             </td>
                           </tr>
+                          <tr>
 
+                            <td className="col-sm-3">Coding</td>
+                            <td>
+                              <select className="form-control" id="ratings_id10" onChange={this.handleOnChange} name="technicalSolutionsRatings3" value={currManagerObject.technicalSolutionsRatings3}>
+                                  <option>Select</option>
+                                  <option>0 - Not Applicaple</option>
+                                  <option>1 - Below Expectation</option>
+                                  <option>2 - Needs Improvement</option>
+                                  <option>3 - Meets Expectation</option>
+                                  <option>4 - Exceeds Expectation</option>
+                              </select>
+                            </td>
+                            <td>
+                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="technicalSolutionsComments3"
+                              id="technicalSolutionsCommentsId3" placeholder="Please enter the comments" value={currManagerObject.technicalSolutionsComments3}></TextArea>
+                            </td>
+                          </tr>
+                          <tr>
+
+                            <td className="col-sm-3">Testing</td>
+                            <td>
+                              <select className="form-control" id="ratings_id11" onChange={this.handleOnChange} name="technicalSolutionsRatings4" value={currManagerObject.technicalSolutionsRatings4}>
+                                  <option>Select</option>
+                                  <option>0 - Not Applicaple</option>
+                                  <option>1 - Below Expectation</option>
+                                  <option>2 - Needs Improvement</option>
+                                  <option>3 - Meets Expectation</option>
+                                  <option>4 - Exceeds Expectation</option>
+                              </select>
+                            </td>
+                            <td>
+                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="technicalSolutionsComments4"
+                              id="technicalSolutionsCommentsId4" placeholder="Please enter the comments" value={currManagerObject.technicalSolutionsComments4}></TextArea>
+                            </td>
+                          </tr>
                         </tbody>
                       </table>
 
 
                     </div>
-                    <div className="margin-small">
+                    <div className="margin-small pd-small">
                       <div className="col-sm-4"><label>Interview Status</label><span className="mandatory">*</span></div>
                         <div className="col-sm-6">
                           <div className="form-group experience-width">
                             <select required className="form-control experience-width" onChange = {this.handleOnChange} name="managerInterviewStatus"
-                            id="managerInterviewStatusId" value ={managerInterviewStatus}>
+                            id="managerInterviewStatusId" value ={currManagerObject.managerInterviewStatus}>
                               <option>Yet to be interviewed</option>
                               <option>Rejected</option>
                               <option>Selected</option>
                               <option>On Hold</option>
                               <option>Withdraw</option>
-                              <option>Move to Technical round 2</option>
-                              <option>Move to Manager round</option>
                               <option>Move to HR round</option>
                               <option>Took other offer</option>
                             </select>
@@ -615,16 +551,16 @@ class ManagerEvaluation extends Component {
                         </div>
                       </div>
                       <div className="margin-small">
-                      {
-                        currentManagerRecord &&
-                        <Button className="move-right"
-                          onClick={(e)=>this.handleUpdateManagerForm(e, currentManagerRecord._id, managerEvaluationData)}>Update</Button>
-                      }
-                      { !currentManagerRecord &&
-                         <Button className="move-right" type="submit">Save</Button>
-                      }
+                        {
+                          currentManagerRecord &&
+                          <Button className="move-right"
+                            onClick={(e)=>this.handleUpdateManagerForm(e, currentManagerRecord._id, managerEvaluationData)}>Update</Button>
+                        }
+                        { !currentManagerRecord &&
+                           <Button className="move-right" type="submit">Save</Button>
+                        }
 
-                      <Button className="" onClick={this.handleClose}>Close</Button>
+                        <Button className="" onClick={this.handleClose}>Cancel</Button>
                       </div>
                       </fieldset>
               </form>

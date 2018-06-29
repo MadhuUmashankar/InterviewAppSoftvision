@@ -28,23 +28,23 @@ class HumanResourceEvaluation extends Component {
 
    componentDidMount() {
        this.loadHRDetails();
-       const {hrEvaluationData} = this.state;
-       const {candidateData, sendInterviewStatus} = this.props;
-       let currentHRRecord = hrEvaluationData.filter((record) => {
-         return candidateData.candidateID === record.candidateID
-       });
-
-       currentHRRecord = currentHRRecord[0];
-
-       if(currentHRRecord != undefined) {
-         if(Object.keys(currentHRRecord).length > 0) {
-           const hrInterviewStatus = currentHRRecord.hrInterviewStatus ? currentHRRecord.hrInterviewStatus : "";
-           this.setState({hrInterviewStatus},()=>{
-             sendInterviewStatus(hrInterviewStatus, "hr");
-           });
-
-         }
-     }
+     //   const {hrEvaluationData} = this.state;
+     //   const {candidateData, sendInterviewStatus} = this.props;
+     //   let currentHRRecord = hrEvaluationData.filter((record) => {
+     //     return candidateData.candidateID === record.candidateID
+     //   });
+     //
+     //   currentHRRecord = currentHRRecord[0];
+     //
+     //   if(currentHRRecord != undefined) {
+     //     if(Object.keys(currentHRRecord).length > 0) {
+     //       const hrInterviewStatus = currentHRRecord.hrInterviewStatus ? currentHRRecord.hrInterviewStatus : "";
+     //       this.setState({hrInterviewStatus},()=>{
+     //         sendInterviewStatus(hrInterviewStatus, "hr");
+     //       });
+     //
+     //     }
+     // }
    }
 
 
@@ -156,7 +156,7 @@ class HumanResourceEvaluation extends Component {
     });
 
     currentHRRecord = currentHRRecord[0];
-
+    const currHRObject = currentHRRecord || {};
     const candidateFullname = candidateData.firstname + " " + candidateData.lastname;
 
     return (
@@ -178,40 +178,40 @@ class HumanResourceEvaluation extends Component {
                           className="table table-bordered table-responsive" id="manager_evaluation_detais_id">
                           <tbody>
                             <tr>
-                              <td>Candidate Name</td><td>{candidateFullname}</td>
-                              <td>Candidate Id</td><td>{candidateData.candidateID}</td>
-                              <td>Interview Type</td><td>{interViewToBeTaken}</td>
+                              <td><strong>Candidate Name</strong></td><td>{candidateFullname}</td>
+                              <td><strong>Candidate Id</strong></td><td>{candidateData.candidateID}</td>
+                              <td><strong>Interview Type</strong></td><td className="interview-round">{interViewToBeTaken}</td>
                             </tr>
                             <tr>
-                              <td>Interviewer</td><td><InputBox
+                              <td><strong>Interviewer</strong><span className="mandatory">*</span></td><td><InputBox
                                   type="text"
                                   placeholder="Enter Interviewer's name"
                                   classname="form-control"
                                   name="interviewerName1"
                                   id="interviewerId1"
-                                  value = {currentHRRecord ? currentHRRecord.interviewerName1 : this.state.interviewerName1 }
+                                  value = {currHRObject.interviewerName1 || this.state.interviewerName1 }
                                   maxLength="20"
                                   required
                                   onChange = {this.handleOnChange}
                               /></td>
-                              <td>Job Title</td><td><InputBox
+                            <td><strong>Job Title</strong><span className="mandatory">*</span></td><td><InputBox
                                   type="text"
-                                  placeholder="Enter Interviewer's name"
+                                  placeholder="Enter Job title"
                                   classname="form-control"
                                   name="jobTitle"
                                   id="jobTitleId"
-                                  value = {currentHRRecord ? currentHRRecord.jobTitle : this.state.jobTitle }
+                                  value = {currHRObject.jobTitle || this.state.jobTitle }
                                   maxLength="20"
                                   required
                                   onChange = {this.handleOnChange}
                               /></td>
-                              <td>Interview Round</td><td><InputBox
+                            <td><strong>Interview Round</strong><span className="mandatory">*</span></td><td><InputBox
                                   type="text"
                                   placeholder="Enter the round"
                                   classname="form-control"
                                   name="interviewerRound"
                                   id="interviewerRoundId"
-                                  value = {currentHRRecord ? currentHRRecord.interviewerRound : this.state.interviewerRound }
+                                  value = {currHRObject.interviewerRound || this.state.interviewerRound }
                                   maxLength="20"
                                   required
                                   onChange = {this.handleOnChange}
@@ -224,46 +224,43 @@ class HumanResourceEvaluation extends Component {
                     <div>
 
                       <div className="margin-small">
-                        <p><u>Intelligence</u></p>
+                        <p><u>Intelligence</u><span className="mandatory">*</span></p>
                         In terms of academic achievement, verbal expression, perception, analytic, conceptual ability, and judgement, how would you rate the candidates ability?
-                            <span className=""><TextArea required rows="4" cols="100" placeholder="Comments" onChange = {this.handleOnChange} name="intelligence" id="intelligenceId" value={currentHRRecord ? currentHRRecord.intelligence: intelligence}></TextArea></span>
+                            <span className=""><TextArea required rows="4" cols="100" placeholder="Comments" onChange = {this.handleOnChange} name="intelligence" id="intelligenceId" value={currHRObject.intelligence}></TextArea></span>
                       </div>
 
                       <div className="margin-small">
-                        <p><u>Intensity</u></p>
+                        <p><u>Intensity</u><span className="mandatory">*</span></p>
                         In terms of academic achievement, verbal expression, perception, analytic, conceptual ability, and judgement, how would you rate the candidates ability?
-                          <span className=""><TextArea required rows="4" cols="100" placeholder="Comments" onChange = {this.handleOnChange} name="intensity" id="intensityId" value={currentHRRecord ? currentHRRecord.intensity : intensity}></TextArea></span>
+                          <span className=""><TextArea required rows="4" cols="100" placeholder="Comments" onChange = {this.handleOnChange} name="intensity" id="intensityId" value={currHRObject.intensity}></TextArea></span>
                       </div>
 
                       <div className="margin-small">
-                        <p><u>Commitment</u></p>
+                        <p><u>Commitment</u><span className="mandatory">*</span></p>
                         In terms of academic achievement, verbal expression, perception, analytic, conceptual ability, and judgement, how would you rate the candidates ability?
-                            <span className=""><TextArea required rows="4" cols="100" placeholder="Comments" onChange = {this.handleOnChange} name="commitment" id="commitmentId" value={currentHRRecord ? currentHRRecord.commitment : commitment}></TextArea></span>
+                            <span className=""><TextArea required rows="4" cols="100" placeholder="Comments" onChange = {this.handleOnChange} name="commitment" id="commitmentId" value={currHRObject.commitment}></TextArea></span>
                       </div>
 
                       <div className="margin-small">
-                        <p><u>TeamWork</u></p>
+                        <p><u>TeamWork</u><span className="mandatory">*</span></p>
                         In terms of academic achievement, verbal expression, perception, analytic, conceptual ability, and judgement, how would you rate the candidates ability?
-                            <span className=""><TextArea required rows="4" cols="100" placeholder="Comments" onChange = {this.handleOnChange} name="teamWork" id="teamWorkId" value={currentHRRecord ? currentHRRecord.teamWork : teamWork} ></TextArea></span>
+                            <span className=""><TextArea required rows="4" cols="100" placeholder="Comments" onChange = {this.handleOnChange} name="teamWork" id="teamWorkId" value={currHRObject.teamWork} ></TextArea></span>
                       </div>
 
                     </div>
 
-                    <div className="margin-small">
+                    <div className="margin-small pd-small">
 
                       <div className="col-sm-4"><label>Interview Status</label><span className="mandatory">*</span></div>
                       <div className="col-sm-6">
                         <div className="form-group experience-width">
                           <select required className="form-control" onChange = {this.handleOnChange} name="hrInterviewStatus"
-                          id="hrInterviewStatusId" value ={hrInterviewStatus}>
+                          id="hrInterviewStatusId" value ={currHRObject.hrInterviewStatus}>
                             <option>Yet to be interviewed</option>
                             <option>Rejected</option>
                             <option>Selected</option>
                             <option>On Hold</option>
                             <option>Withdraw</option>
-                            <option>Move to Technical round 2</option>
-                            <option>Move to Manager round</option>
-                            <option>Move to HR round</option>
                             <option>Took other offer</option>
                           </select>
                         </div>
@@ -279,7 +276,7 @@ class HumanResourceEvaluation extends Component {
                          <Button className="move-right" type="submit">Save</Button>
                       }
 
-                      <Button className="" onClick={this.handleClose}>Close</Button>
+                      <Button className="" onClick={this.handleClose}>Cancel</Button>
                       </div>
                       </fieldset>
               </form>

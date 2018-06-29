@@ -70,7 +70,7 @@ router.get('/candidateInfo', function(req, res, next){
 
 // Get All IA Info
 router.get('/candidateInfo/newIAForm', function(req, res, next){
-    db.evaluationSheetInformationTables.find(function(err, evaluationSheetInformationTables){
+    db.evaluationSheetInformationTables.find({candidateID: "kb9381165hc"}, function(err, evaluationSheetInformationTables){
         if(err){
             res.send(err);
         }
@@ -308,90 +308,87 @@ router.put('/candidateInfo/newManagerForm/:id', function(req, res, next){
     var managerEvaluator = req.body;
      let updatedManagerInfo = {};
 
-     if(managerEvaluator._id){
-        updatedManagerInfo._id = managerEvaluator._id;
+    if(managerEvaluator.candidateID){
+        updatedManagerInfo.candidateID = managerEvaluator.candidateID;
     }
-    if(managerEvaluator.customerNeeds){
-        updatedManagerInfo.customerNeeds = managerEvaluator.customerNeeds;
+    if(managerEvaluator.interviewerName2){
+        updatedManagerInfo.interviewerName2 = managerEvaluator.interviewerName2;
     }
-    if(managerEvaluator.clientProcess){
-        updatedManagerInfo.clientProcess = managerEvaluator.clientProcess;
+    if(managerEvaluator.jobTitle){
+        updatedManagerInfo.jobTitle = managerEvaluator.jobTitle;
     }
-    if(managerEvaluator.clientRelationship){
-        updatedManagerInfo.clientRelationship = managerEvaluator.clientRelationship;
+    if(managerEvaluator.interviewerRound){
+        updatedManagerInfo.interviewerRound = managerEvaluator.interviewerRound;
     }
-    if(managerEvaluator.clientOrientationRatings){
-        updatedManagerInfo.clientOrientationRatings = managerEvaluator.clientOrientationRatings;
+    if(managerEvaluator.managerInterviewStatus){
+        updatedManagerInfo.managerInterviewStatus = managerEvaluator.managerInterviewStatus;
     }
-    if(managerEvaluator.clientOrientationComments){
-        updatedManagerInfo.clientOrientationComments = managerEvaluator.clientOrientationComments;
+    if(managerEvaluator.clientOrientationRatings1){
+        updatedManagerInfo.clientOrientationRatings1 = managerEvaluator.clientOrientationRatings1;
     }
-    if(managerEvaluator.planningControl){
-       updatedManagerInfo.planningControl = managerEvaluator.planningControl;
-   }
-   if(managerEvaluator.peopleManagement){
-       updatedManagerInfo.peopleManagement = managerEvaluator.peopleManagement;
-   }
-   if(managerEvaluator.projectManagementRatings){
-       updatedManagerInfo.projectManagementRatings = managerEvaluator.projectManagementRatings;
-   }
-   if(managerEvaluator.projectManagementComments){
-       updatedManagerInfo.projectManagementComments = managerEvaluator.projectManagementComments;
-   }
-   if(managerEvaluator.leadership){
-       updatedManagerInfo.leadership = managerEvaluator.leadership;
-   }
-   if(managerEvaluator.leadershipRatings){
-       updatedManagerInfo.leadershipRatings = managerEvaluator.leadershipRatings;
-   }
-   if(managerEvaluator.leadershipComments){
-       updatedManagerInfo.leadershipComments = managerEvaluator.leadershipComments;
-   }
-   if(managerEvaluator.communication){
-      updatedManagerInfo.communication = managerEvaluator.communication;
-  }
-  if(managerEvaluator.communicationRatings){
-      updatedManagerInfo.communicationRatings = managerEvaluator.communicationRatings;
-  }
-  if(managerEvaluator.communicationComments){
-      updatedManagerInfo.communicationComments = managerEvaluator.communicationComments;
-  }
-  if(managerEvaluator.domain){
-      updatedManagerInfo.domain = managerEvaluator.domain;
-  }
-  if(managerEvaluator.domainRatings){
-      updatedManagerInfo.domainRatings = managerEvaluator.domainRatings;
-  }
-  if(managerEvaluator.domainComments){
-      updatedManagerInfo.domainComments = managerEvaluator.domainComments;
-  }
-  if(managerEvaluator.requirementGathering){
-      updatedManagerInfo.requirementGathering = managerEvaluator.requirementGathering;
-  }
-  if(managerEvaluator.architecht){
-      updatedManagerInfo.architecht = managerEvaluator.architecht;
-  }
-  if(managerEvaluator.coding){
-      updatedManagerInfo.coding = managerEvaluator.coding;
-  }
-  if(managerEvaluator.testing){
-      updatedManagerInfo.testing = managerEvaluator.testing;
-  }
-  if(managerEvaluator.technicalSolutionsRatings){
-      updatedManagerInfo.technicalSolutionsRatings = managerEvaluator.technicalSolutionsRatings;
-  }
-  if(managerEvaluator.technicalSolutionsComments){
-      updatedManagerInfo.technicalSolutionsComments = managerEvaluator.technicalSolutionsComments;
-  }
-  if(managerEvaluator.interviewerName2){
-      updatedManagerInfo.interviewerName2 = managerEvaluator.interviewerName2;
-  }
-  if(managerEvaluator.jobTitle){
-      updatedManagerInfo.jobTitle = managerEvaluator.jobTitle;
-  }
-  if(managerEvaluator.interviewerRound){
-      updatedManagerInfo.interviewerRound = managerEvaluator.interviewerRound;
-  }
+    if(managerEvaluator.clientOrientationComments1){
+        updatedManagerInfo.clientOrientationComments1 = managerEvaluator.clientOrientationComments1;
+    }
+    if(managerEvaluator.clientOrientationRatings2){
+        updatedManagerInfo.clientOrientationRatings2 = managerEvaluator.clientOrientationRatings2;
+    }
+    if(managerEvaluator.clientOrientationComments2){
+        updatedManagerInfo.clientOrientationComments2 = managerEvaluator.clientOrientationComments2;
+    }
+    if(managerEvaluator.clientOrientationRatings3){
+        updatedManagerInfo.clientOrientationRatings3 = managerEvaluator.clientOrientationRatings3;
+    }
+    if(managerEvaluator.clientOrientationComments3){
+        updatedManagerInfo.clientOrientationComments3 = managerEvaluator.clientOrientationComments3;
+    }
+    if(managerEvaluator.projectManagementRatings){
+        updatedManagerInfo.projectManagementRatings = managerEvaluator.projectManagementRatings;
+    }
+    if(managerEvaluator.projectManagementComments){
+        updatedManagerInfo.projectManagementComments = managerEvaluator.projectManagementComments;
+    }
+    if(managerEvaluator.leadershipRatings){
+        updatedManagerInfo.leadershipRatings = managerEvaluator.leadershipRatings;
+    }
+    if(managerEvaluator.leadershipComments){
+        updatedManagerInfo.leadershipComments = managerEvaluator.leadershipComments;
+    }
+    if(managerEvaluator.communicationRatings){
+        updatedManagerInfo.communicationRatings = managerEvaluator.communicationRatings;
+    }
+    if(managerEvaluator.communicationComments){
+        updatedManagerInfo.communicationComments = managerEvaluator.communicationComments;
+    }
+    if(managerEvaluator.domainRatings){
+        updatedManagerInfo.domainRatings = managerEvaluator.domainRatings;
+    }
+    if(managerEvaluator.domainComments){
+        updatedManagerInfo.domainComments = managerEvaluator.domainComments;
+    }
+    if(managerEvaluator.technicalSolutionsRatings1){
+        updatedManagerInfo.technicalSolutionsRatings1 = managerEvaluator.technicalSolutionsRatings1;
+    }
+    if(managerEvaluator.technicalSolutionsComments1){
+        updatedManagerInfo.technicalSolutionsComments1 = managerEvaluator.technicalSolutionsComments1;
+    }
+    if(managerEvaluator.technicalSolutionsRatings2){
+        updatedManagerInfo.technicalSolutionsRatings2 = managerEvaluator.technicalSolutionsRatings2;
+    }
+    if(managerEvaluator.technicalSolutionsComments2){
+        updatedManagerInfo.technicalSolutionsComments2 = managerEvaluator.technicalSolutionsComments2;
+    }
+    if(managerEvaluator.technicalSolutionsRatings3){
+        updatedManagerInfo.technicalSolutionsRatings3 = managerEvaluator.technicalSolutionsRatings3;
+    }
+    if(managerEvaluator.technicalSolutionsComments3){
+        updatedManagerInfo.technicalSolutionsComments3 = managerEvaluator.technicalSolutionsComments3;
+    }
+    if(managerEvaluator.technicalSolutionsRatings4){
+        updatedManagerInfo.technicalSolutionsRatings4 = managerEvaluator.technicalSolutionsRatings4;
+    }
+    if(managerEvaluator.technicalSolutionsComments4){
+        updatedManagerInfo.technicalSolutionsComments4 = managerEvaluator.technicalSolutionsComments4;
+    }
 
     if(!Object.keys(updatedManagerInfo).length){
         res.status(400);

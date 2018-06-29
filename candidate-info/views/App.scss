@@ -63,6 +63,12 @@ button.close {
 .form-container {
     // background-color: lightblue;
     padding: 20px 0;
+
+    .form-horizontal .control-label {
+      text-align: left;
+          padding-left: 50px;
+    }
+
     label {
         padding-top: 7px;
         padding-left: 11px;
@@ -178,4 +184,10 @@ margin-top: 15px;
 
 .interview-round {
   text-transform: uppercase;
+}
+
+.interview-selection{
+  width: 250px;
+  margin: 5px;
+  display: inline-block;
 }

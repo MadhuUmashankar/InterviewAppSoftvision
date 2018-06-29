@@ -40,7 +40,7 @@ class CandidateInfoList extends Component {
 
       //
     hashHistory.push({
-        pathname: '#/CandidateAcessment',
+        pathname: '#/CandidateAssessment',
          query: {
           id: candidateID
          }

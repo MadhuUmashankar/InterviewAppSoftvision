@@ -195,7 +195,7 @@ class Evaluation extends Component {
                         !currentIARecord && <Button className="move-right" type="submit">Save</Button>
                       }
 
-                      <Button className="" onClick={this.handleClose}>Close</Button>
+                      <Button className="" onClick={this.handleClose}>Cancel</Button>
                       </div>
                       </fieldset>
               </form>
