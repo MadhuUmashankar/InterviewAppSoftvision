@@ -26,7 +26,7 @@ export default class Login extends Component {
         
         axios.post(this.props.url+'/login', { username, password })
           .then((result) => {
-            localStorage.setItem('jwtToken', result.data.token);
+            sessionStorage.setItem('jwtToken', result.data.token);
             this.setState({ message: '' });
             hashHistory.push({
                 pathname: '#/app'

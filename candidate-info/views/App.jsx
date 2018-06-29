@@ -49,9 +49,14 @@ class App extends Component {
     loadDetailsFromServerForIASheet() {
         axios.get(this.props.IAurl)
             .then(res => {
-            console.log('response from server', res.data);
                 this.setState({ IAData: res.data });
-            })
+            }).catch((error) => {
+                if(error.response.status === 401) {
+                  hashHistory.push({
+                    pathname: '#/'
+                  })
+                }
+            });
     }
 
     handleSubmit(record) {
@@ -128,7 +133,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
+        axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('jwtToken');
         this.loadDetailsFromServer();
         this.loadDetailsFromServerForIASheet();            
     }
@@ -146,7 +151,7 @@ class App extends Component {
     }
     
     logout() {
-        localStorage.removeItem('jwtToken');
+        sessionStorage.removeItem('jwtToken');
         window.location.reload();
         hashHistory.push({
             pathname: '#/'
@@ -165,7 +170,7 @@ class App extends Component {
             <div className="">
                 <h3> Candidate List </h3>
             </div>
-            {localStorage.getItem('jwtToken') &&
+            {sessionStorage.getItem('jwtToken') &&
               <button className="btn btn-primary log-in" onClick={this.logout}>Logout</button>
             }
             <div>

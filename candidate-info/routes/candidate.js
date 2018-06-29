@@ -4,6 +4,8 @@ var path = require('path');
 var multer = require('multer');
 var mongojs = require('mongojs');
 var uuid = require('uuid');
+var passport = require('passport');
+require('../config/passport')(passport);
 var db = mongojs('mongodb://localhost:27017/candidateInformationTable', ['candidateInformationTables', 'evaluationSheetInformationTables', 'managerEvaluationInformationTables', 'hrEvaluationInformationTables']);
 
 
@@ -58,15 +60,19 @@ router.post('/candidateInfo/newManagerForm', function(req, res, next){
 
 
 // Get All candidate Info
-router.get('/candidateInfo', function(req, res, next){
-    db.candidateInformationTables.find(function(err, candidateInformationTables){
-        if(err){
-            res.send(err);
-        }
-        res.json(candidateInformationTables);
-    });
+router.get('/candidateInfo', passport.authenticate('jwt', { session: false}), function(req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        db.candidateInformationTables.find(function(err, candidateInformationTables){
+            if(err){
+                res.send(err);
+            }
+            res.json(candidateInformationTables);
+        });
+    } else {
+      return res.status(401).send({success: false, msg: 'Unauthorized.'});
+    }
 });
-
 
 // Get All IA Info
 router.get('/candidateInfo/newIAForm', function(req, res, next){
@@ -92,14 +98,32 @@ router.get('/candidateInfo/newIAForm/:id', function(req, res, next){
 
 
 // Get Single Task
-router.get('/candidateInfo/:id', function(req, res, next){
-    db.candidateInformationTables.findOne({_id: mongojs.ObjectId(req.params.id)}, function(err, candidate){
-        if(err){
-            res.send(err);
-        }
-        res.json(candidate);
-    });
+router.get('/candidateInfo/:id', passport.authenticate('jwt', { session: false}), function(req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        db.candidateInformationTables.findOne({_id: mongojs.ObjectId(req.params.id)}, function(err, candidate){
+            if(err){
+                res.send(err);
+            }
+            res.json(candidate);
+        });
+    } else {
+      return res.status(401).send({success: false, msg: 'Unauthorized.'});
+    }
 });
+
+getToken = function (headers) {
+    if (headers && headers.authorization) {
+      var parted = headers.authorization.split(' ');
+      if (parted.length === 2) {
+        return parted[1];
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  };
 
 //Save Candidate Resume
 var storage = multer.diskStorage({

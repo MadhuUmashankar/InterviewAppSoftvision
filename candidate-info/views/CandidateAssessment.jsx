@@ -3,6 +3,7 @@ import ManagerEvaluation from './ManagerEvaluation';
 import HumanResourceEvaluation from './HumanResourceEvaluation';
 import Evaluation from './Evaluation';
 import axios from 'axios';
+import {hashHistory} from 'react-router';
 import {
   BrowserRouter as Router,
   Link,
@@ -33,6 +34,7 @@ export default class CandidateAssessment extends Component {
     }
 
     componentDidMount() {
+        axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('jwtToken');
         this.loadCandidateDetails();
         this.loadDetailsFromServerForIASheet();
     }
@@ -77,9 +79,13 @@ export default class CandidateAssessment extends Component {
             this.setState({ candidateData: response.data });
             console.log(response.data);
           })
-          .catch(err => {
-              console.log(err);
-          })
+          .catch(error => {
+            if(error.response.status === 401) {
+               hashHistory.push({
+                 pathname: '#/'
+               })
+             }
+         })
     }
 
     loadDetailsFromServerForIASheet() {
@@ -101,7 +107,7 @@ export default class CandidateAssessment extends Component {
      }
 
      logout() {
-      localStorage.removeItem('jwtToken');
+      sessionStorage.removeItem('jwtToken');
       window.location.reload();
       hashHistory.push({
           pathname: '#/'
@@ -112,11 +118,7 @@ export default class CandidateAssessment extends Component {
       e.preventDefault();
       const item = {};
       this.state.listOfInterviewRounds.push(item);
-    this.setState(this.state.listOfInterviewRounds);
-      // this.setState({
-      //    listOfInterviewRounds: [...this.state.listOfInterviewRounds, item]
-      //  });
-      console.log('add another interview')
+      this.setState(this.state.listOfInterviewRounds);
     }
 
     render() {
@@ -127,15 +129,11 @@ export default class CandidateAssessment extends Component {
       if(interViewToBeTaken === "Technical Round") {
         currentStatus = status
       }
-      // if(currentStatus !== "Rejected" || currentStatus !== "Took other offer") {
-      //   console.log(' The candidate is been Rejected/ have taken other offer.')
-      // }
-
 
         return (
             <div className="App">
-              {localStorage.getItem('jwtToken') &&
-                <Link to="/" className="btn btn-primary log-in">Log Out</Link>
+              {sessionStorage.getItem('jwtToken') &&
+                <Link to="/" className="btn btn-primary log-in" onClick={this.logout}>Log Out</Link>
               }
               <div>
                 <label className="candidate-assessment-label">{fullname}</label>
