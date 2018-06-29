@@ -30,7 +30,7 @@ button.close {
 // Login CSS
 
 .signin-form {
-    width: 350px;
+    width: 540px;
     margin: auto;
 }
 .sub-title {
@@ -47,6 +47,11 @@ button.close {
     position: absolute;
     right: 20px;
     top: 40px;
+    .username {
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-right: 10px;
+    }
 }
 .login-btn {
     margin-right: 10px;
@@ -211,4 +216,11 @@ margin-top: 15px;
   width: 250px;
   margin: 5px;
   display: inline-block;
+}
+
+//Register 
+
+.sign-up {
+    margin-bottom: 10px;
+    text-transform: uppercase;
 }

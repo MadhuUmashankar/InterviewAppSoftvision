@@ -13,7 +13,7 @@ import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 export default class Register extends Component {
     constructor(props) {
         super(props);
-        this.state = { username:'', email: '', password:'', confirmpassword:'' };
+        this.state = { username:'', email: '', role: '', password:'', confirmpassword:'' };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleOnChange = this.handleOnChange.bind(this);
     }
@@ -27,6 +27,9 @@ export default class Register extends Component {
                 break;
             case "email":
                 this.setState({email : value})
+                break;
+            case "role":
+                this.setState({role : value})
                 break;
             case "password":
                 this.setState({password : value})
@@ -48,11 +51,12 @@ export default class Register extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const { username, email, password, confirmpassword} = this.state;
+        const { username, email, role, password, confirmpassword} = this.state;
 
         const user = {
             username,
             email,
+            role,
             password,
             confirmpassword
         }
@@ -86,11 +90,11 @@ export default class Register extends Component {
         return (
             <div className="signin-form">
 				<h3 className="sub-title">Sign Up to continue</h3>
-                <form className="form-horizontal" onSubmit={ this.handleSubmit }>
+                <form className="form-horizontal form-container" onSubmit={ this.handleSubmit }>
                     <fieldset className = "background">
                         <div className="form-group">
                             <label className="col-md-4 control-label">User Name</label>
-                            <div className="col-md-8 inputGroupContainer">
+                            <div className="col-md-6 inputGroupContainer">
                                 <div className="input-group">
                                         <InputBox
                                             type="text"
@@ -108,7 +112,7 @@ export default class Register extends Component {
                         </div>
                         <div className="form-group">
                             <label className="col-md-4 control-label">Email</label>
-                            <div className="col-md-8 inputGroupContainer">
+                            <div className="col-md-6 inputGroupContainer">
                                 <div className="input-group">
                                         <InputBox
                                             type="email"
@@ -123,8 +127,24 @@ export default class Register extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-4 control-label">Password</label>
-                            <div className="col-md-8 inputGroupContainer pwd-message">
+                            <label className="col-md-4 control-label">Role</label>  
+                            <div className="col-md-6 inputGroupContainer">
+                                <div className="input-group login-btn position">
+                                        <InputBox
+                                            type="text"
+                                            placeholder="Role"
+                                            classname="form-control"
+                                            name="role"
+                                            required
+                                            onChange = {this.handleOnChange}                                    
+                                        />
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-md-4 control-label">Password</label>  
+                            <div className="col-md-6 inputGroupContainer pwd-message">
                                 <div className="input-group login-btn position">
                                         <InputBox
                                             type="password"
@@ -146,8 +166,8 @@ export default class Register extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-4 control-label">Confirm Password</label>
-                            <div className="col-md-8 inputGroupContainer">
+                            <label className="col-md-4 control-label">Confirm Password</label>  
+                            <div className="col-md-6 inputGroupContainer">
                                 <div className="input-group">
                                         <InputBox
                                             type="password"
@@ -166,10 +186,10 @@ export default class Register extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-4 control-label"></label>
-                                <div className="col-md-8">
-                                    <button className="btn btn-primary">Sign Up<span className="glyphicon glyphicon-submit"></span></button>
-
+                            <label className="col-md-4"></label>
+                                <div className="col-md-6">
+                                    <button className="btn btn-primary sign-up">Sign Up<span className="glyphicon glyphicon-submit"></span></button>
+                                    
                                     <p>
                                         Already Have Account? <Link to="/" className="register-btn">SIGN IN</Link>
                                     </p>

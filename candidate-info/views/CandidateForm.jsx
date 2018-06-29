@@ -117,12 +117,12 @@ export default class CandidateForm extends React.Component{
              }
              }
 
-            if(typeof candidate["skills"] !== "undefined"){
-                if(!candidate["skills"].match(/^[A-Za-z]{1}[a-zA-Z0-9- ]+$/)){
-                    formIsValid = false;
-                    errors["skills"] = "Please enter the valid skills separated with a comma(,). eg. Java or Java, Angular";
-                }
-           }
+        //     if(typeof candidate["skills"] !== "undefined"){
+        //         if(!candidate["skills"].match(/^[A-Za-z]{1}[a-zA-Z0-9- ]+$/)){
+        //             formIsValid = false;
+        //             errors["skills"] = "Please enter the valid skills separated with a comma(,). eg. Java or Java, Angular";
+        //         }
+        //    }
 
             if(typeof candidate["email"] !== "undefined"){
               let arr = this.state.data;
@@ -135,7 +135,6 @@ export default class CandidateForm extends React.Component{
           }
 
            if(typeof candidate["phone"] !== "undefined"){
-           // if(!candidate["phone"].match(/^[0-9]+$/)){   [7-9]{1}[0-9]{9}
             if(!candidate["phone"].match(/[7-9]{1}[0-9]{9}/)){
                 formIsValid = false;
                 errors["phone"] = "Please enter the valid phone number.";
@@ -147,7 +146,6 @@ export default class CandidateForm extends React.Component{
        }
 
        if(typeof candidate["alternateNumber"] !== "undefined"){
-       // if(!candidate["alternateNumber"].match(/^[0-9]+$/)){   [7-9]{1}[0-9]{9}
         if(!candidate["alternateNumber"].match(/[7-9]{1}[0-9]{9}/)){
             formIsValid = false;
             errors["alternateNumber"] = "Please enter the valid alternate number.";

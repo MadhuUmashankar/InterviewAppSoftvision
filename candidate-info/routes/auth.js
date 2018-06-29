@@ -14,7 +14,8 @@ router.post('/candidateInfo/register', function(req, res) {
     var newUser = new User({
       username: req.body.username,
       password: req.body.password,
-      email:req.body.email,
+      role: req.body.role,
+      email: req.body.email,
       confirmpassword:req.body.confirmpassword
     });
     // save the user
@@ -42,7 +43,7 @@ router.post('/candidateInfo/login', function(req, res) {
           // if user is found and password is right create a token
           var token = jwt.sign(user.toJSON(), settings.secret);
           // return the information including token as JSON
-          res.json({success: true, token: 'JWT ' + token});
+          res.json({username : req.body.username, success: true, token: 'JWT ' + token});
         } else {
           res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
         }

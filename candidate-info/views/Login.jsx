@@ -27,6 +27,7 @@ export default class Login extends Component {
 
         axios.post(this.props.url+'/login', { username, password })
           .then((result) => {
+            sessionStorage.setItem('username', result.data.username);
             sessionStorage.setItem('jwtToken', result.data.token);
             this.setState({ message: '' });
             hashHistory.push({
@@ -80,8 +81,8 @@ export default class Login extends Component {
                                     </div>
                       </div>
                         <div className="form-group">
-                            <label className="col-md-4 control-label">User Name</label>
-                            <div className="col-md-8 inputGroupContainer">
+                            <label className="col-md-4 control-label">User Name</label>  
+                            <div className="col-md-6 inputGroupContainer">
                                 <div className="input-group">
                                         <InputBox
                                             type="text"
@@ -99,7 +100,7 @@ export default class Login extends Component {
                         </div>
                         <div className="form-group">
                             <label className="col-md-4 control-label">Password</label>
-                            <div className="col-md-8 inputGroupContainer pwd-message">
+                            <div className="col-md-6 inputGroupContainer pwd-message">
                                 <div className="input-group login-btn">
                                         <InputBox
                                             type="password"
@@ -119,8 +120,8 @@ export default class Login extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-4 control-label"></label>
-                                <div className="col-md-8 btn-wrapper">
+                            <label className="col-md-4"></label>
+                                <div className="col-md-6 btn-wrapper">
                                     <button className="btn btn-lg btn-primary btn-block sign-in" type="submit">Sign In</button>
                                     <p>
                                         Not a member? <Link to="/register" className="register-btn">Register here</Link>

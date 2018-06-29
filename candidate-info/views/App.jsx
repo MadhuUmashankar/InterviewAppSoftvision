@@ -171,7 +171,7 @@ class App extends Component {
                 <h3> Candidate List </h3>
             </div>
             {sessionStorage.getItem('jwtToken') &&
-              <button className="btn btn-primary log-in" onClick={this.logout}>Logout</button>
+              <div className="log-in"><span className="username">{sessionStorage.getItem('username')}</span><button className="btn btn-primary" onClick={this.logout}> Logout</button></div>
             }
             <div>
                 <Button bsStyle="primary" bsSize="large" onClick={this.handleShow}>

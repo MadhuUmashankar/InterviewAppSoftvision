@@ -34,21 +34,14 @@ class CandidateInfoList extends Component {
         onModalView(this.modalStatus, candidate);
     }
 
-    handleEvalution(candidateID) {
-      event.preventDefault();
-      //  // browserHistory.push('#/CandidateAcessment');
-
-      //
-    hashHistory.push({
-        pathname: '#/CandidateAssessment',
-         query: {
-          id: candidateID
-         }
-      })
-      //   // this.props.history.push('#/CandidateAcessment');
-      // window.location.hash = "#/CandidateAcessment";
-      // return false;
-
+    handleEvalution(event,candidateID) {
+        event.preventDefault();
+        hashHistory.push({
+            pathname: '#/CandidateAssessment',
+            query: {
+            id: candidateID
+            }
+        })
     }
 
     render() {
@@ -63,13 +56,6 @@ class CandidateInfoList extends Component {
                 return candidate.firstname.toLowerCase().indexOf(searchKey.toLowerCase()) > -1 || candidate.lastname.toLowerCase().indexOf(searchKey.toLowerCase()) > -1 || candidate.skills.toLowerCase().indexOf(searchKey.toLowerCase()) > -1 || fullName.toLowerCase().indexOf(searchKey.toLowerCase()) > -1;
             })
         }
-
-        // let currentIARecord = dataFromIA.filter((record) => {
-        //   return candidate.candidateID === record.candidateID
-        // });
-        //
-        // currentIARecord = currentIARecord[0];
-
 
         candidateNodes = candidateNodes && candidateNodes.map((candidate, index) => {
 
@@ -89,7 +75,7 @@ class CandidateInfoList extends Component {
                            </div>
                         </div>
                             <div>
-                                <h5><label><a onClick={()=>this.handleEvalution(candidateID)}>{candidate.firstname} {candidate.lastname}</a></label></h5>
+                                <h5><label><a href="" onClick={(e)=>this.handleEvalution(e,candidateID)}>{candidate.firstname} {candidate.lastname}</a></label></h5>
                                 <h5><span className="margin-tiny glyphicon glyphicon-wrench"></span>Skills: {candidate.skills}</h5>
                                 <h5><span className="margin-tiny glyphicon glyphicon-map-marker"></span>Location: {candidate.city}</h5>
                                 <h5><span className="margin-tiny glyphicon glyphicon-phone"></span>Phone No.: {candidate.phone}</h5>

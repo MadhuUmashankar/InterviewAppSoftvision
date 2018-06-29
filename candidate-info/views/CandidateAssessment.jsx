@@ -133,7 +133,7 @@ export default class CandidateAssessment extends Component {
         return (
             <div className="App">
               {sessionStorage.getItem('jwtToken') &&
-                <Link to="/" className="btn btn-primary log-in" onClick={this.logout}>Log Out</Link>
+                <div className="log-in"><span className="username">{sessionStorage.getItem('username')}</span><button className="btn btn-primary" onClick={this.logout}> Logout</button></div>
               }
               <div>
                 <label className="candidate-assessment-label">{fullname}</label>
