@@ -46,21 +46,21 @@ class Details extends React.Component {
     onDetailsSave({interviewDate, interviewerName});
   }
 
-  componentDidMount() {
-    const { data, onDetailsSave } = this.props;
-      if (data != undefined) {
-        if(Object.keys(data).length > 0) {
-        this.setState({interviewDate:data.interviewDate, interviewerName : data.interviewerName},() => {
-          onDetailsSave({interviewDate:data.interviewDate, interviewerName : data.interviewerName})
-        });
-      }
-    }
-  }
+  // componentDidMount() {
+  //   const { data, onDetailsSave } = this.props;
+  //     if (data != undefined) {
+  //       if(Object.keys(data).length > 0) {
+  //       this.setState({interviewDate:data.interviewDate, interviewerName : data.interviewerName},() => {
+  //         onDetailsSave({interviewDate:data.interviewDate, interviewerName : data.interviewerName})
+  //       });
+  //     }
+  //   }
+  // }
 
   render(){
 
     const {candidate, data} = this.state;
-
+      const currTechnicalObject = data || {};
     return(
           <div>
                   <div className="form-group required details-width padding">
@@ -86,7 +86,7 @@ class Details extends React.Component {
                         classname="form-control details-label"
                         name="interviewDate"
                         id="interviewDateId"
-                        value = {data ? data.interviewDate : this.state.interviewDate}
+                        value = {currTechnicalObject.interviewDate || this.state.interviewDate}
                         required
                         onChange = {this.handleOnChange}
                     />
@@ -101,7 +101,7 @@ class Details extends React.Component {
                         classname="form-control details-label"
                         name="interviewerName"
                         id="interviewerId"
-                        value = {data ? data.interviewerName : this.state.interviewerName }
+                        value = {currTechnicalObject.interviewerName || this.state.interviewerName }
                         maxLength="20"
                         required
                         onChange = {this.handleOnChange}

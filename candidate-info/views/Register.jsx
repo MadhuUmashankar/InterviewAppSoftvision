@@ -7,6 +7,8 @@ import {hashHistory} from 'react-router';
 import {
     Link
   } from 'react-router-dom';
+import './App.scss';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 export default class Register extends Component {
     constructor(props) {
@@ -32,13 +34,13 @@ export default class Register extends Component {
             case "confirmpassword":
                 const element = event.target;
                 (() => {
-                    this.setState({confirmpassword : value}, () => {                    
+                    this.setState({confirmpassword : value}, () => {
                         this.validatePassword(element);
                     })
                 })(element)
 
                 break;
-                  
+
             default:
                 break;
         }
@@ -69,20 +71,25 @@ export default class Register extends Component {
     validatePassword(element){
         const { password, confirmpassword} = this.state;
         if(password != confirmpassword) {
-            element.setCustomValidity("Passwords Don't Match");            
+            element.setCustomValidity("Passwords Don't Match");
         } else {
             element.setCustomValidity("");
         }
     }
 
     render() {
+      const tooltip = (
+        <Tooltip id="tooltip" >
+          <strong>Password must be 6 characters long, including lowercase, uppercase and number.</strong>
+        </Tooltip>
+      );
         return (
             <div className="signin-form">
-				<h3 className="sub-title">Sign Up Form</h3>
+				<h3 className="sub-title">Sign Up to continue</h3>
                 <form className="form-horizontal" onSubmit={ this.handleSubmit }>
                     <fieldset className = "background">
                         <div className="form-group">
-                            <label className="col-md-4 control-label">User Name</label>  
+                            <label className="col-md-4 control-label">User Name</label>
                             <div className="col-md-8 inputGroupContainer">
                                 <div className="input-group">
                                         <InputBox
@@ -91,58 +98,70 @@ export default class Register extends Component {
                                             classname="form-control"
                                             name="username"
                                             autoFocus="true"
+                                            pattern="\w+"
                                             required
-                                            onChange = {this.handleOnChange}                                    
+                                            onChange = {this.handleOnChange}
                                         />
-                                    
+
                                 </div>
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-4 control-label">Email</label>  
+                            <label className="col-md-4 control-label">Email</label>
                             <div className="col-md-8 inputGroupContainer">
                                 <div className="input-group">
                                         <InputBox
                                             type="email"
-                                            placeholder="email"
+                                            placeholder="E-mail"
                                             classname="form-control"
                                             name="email"
                                             required
-                                            onChange = {this.handleOnChange}                                    
+                                            onChange = {this.handleOnChange}
                                         />
-                                    
+
                                 </div>
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-4 control-label">Password</label>  
-                            <div className="col-md-8 inputGroupContainer">
-                                <div className="input-group">
+                            <label className="col-md-4 control-label">Password</label>
+                            <div className="col-md-8 inputGroupContainer pwd-message">
+                                <div className="input-group login-btn position">
                                         <InputBox
                                             type="password"
-                                            placeholder="password"
+                                            placeholder="Password"
                                             classname="form-control"
                                             name="password"
+                                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
                                             required
-                                            onChange = {this.handleOnChange}                                    
+                                            onChange = {this.handleOnChange}
                                         />
-                                    
+                                      <OverlayTrigger placement="right" overlay={tooltip}>
+                                            <a href="#" className="pwd-icon">
+                                              <span className="glyphicon glyphicon-exclamation-sign"></span>
+                                            </a>
+                                          </OverlayTrigger>
+
                                 </div>
+
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-4 control-label">Confirm Password</label>  
+                            <label className="col-md-4 control-label">Confirm Password</label>
                             <div className="col-md-8 inputGroupContainer">
                                 <div className="input-group">
                                         <InputBox
                                             type="password"
-                                            placeholder="password"
+                                            placeholder="Password"
                                             classname="form-control"
                                             name="confirmpassword"
                                             required
-                                            onChange = {this.handleOnChange}                                    
+                                            onChange = {this.handleOnChange}
                                         />
-                                    
+                                      <OverlayTrigger placement="right" overlay={tooltip}>
+                                          <a href="#" className="pwd-icon">
+                                            <span className="glyphicon glyphicon-exclamation-sign"></span>
+                                          </a>
+                                        </OverlayTrigger>
                                 </div>
                             </div>
                         </div>
@@ -150,7 +169,7 @@ export default class Register extends Component {
                             <label className="col-md-4 control-label"></label>
                                 <div className="col-md-8">
                                     <button className="btn btn-primary">Sign Up<span className="glyphicon glyphicon-submit"></span></button>
-                                    
+
                                     <p>
                                         Already Have Account? <Link to="/" className="register-btn">SIGN IN</Link>
                                     </p>

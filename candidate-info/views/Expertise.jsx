@@ -61,6 +61,7 @@ class Expertise extends React.Component {
 
   render(){
     let {candidate, IAdata} = this.state;
+    // const currTechnicalObject = data || {};
     let rows = Object.keys(IAdata).length > 0 ? IAdata.rows : [{}];
 
     return (

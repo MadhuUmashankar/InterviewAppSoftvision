@@ -36,6 +36,7 @@ button.close {
 .sub-title {
     text-align: center;
     text-transform: uppercase;
+    margin-left: 73px;
 }
 .title {
     text-transform: uppercase;
@@ -56,8 +57,28 @@ button.close {
 .btn-wrapper button{
     text-transform: uppercase;
 }
+.pwd-message {
+    display: -webkit-inline-box;
+}
+.pwd-icon {
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  z-index: 2;
+}
+.position {
+  position: relative;
+}
 
-
+.profile-img {
+  width: 96px;
+  height: 96px;
+  margin: 0 200px 10px;
+  display: block;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
 //Candidate form css
 
 .form-container {

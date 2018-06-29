@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import InputBox from './InputBox';
 import axios from 'axios';
 import {hashHistory} from 'react-router';
-
+import './App.scss';
 import {
     BrowserRouter as Router,
     Link,
@@ -10,6 +10,7 @@ import {
     Switch,
     HashRouter
   } from 'react-router-dom';
+  import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 
 export default class Login extends Component {
@@ -23,7 +24,7 @@ export default class Login extends Component {
     handleSubmit(e) {
         e.preventDefault();
         const { username, password } = this.state;
-        
+
         axios.post(this.props.url+'/login', { username, password })
           .then((result) => {
             sessionStorage.setItem('jwtToken', result.data.token);
@@ -57,10 +58,15 @@ export default class Login extends Component {
 
 
     render() {
+      const tooltip = (
+        <Tooltip id="tooltip">
+          <strong>Password must be 6 characters long, including lowercase, uppercase and number.</strong>
+        </Tooltip>
+      );
         const { message } = this.state;
         return (
             <div className="signin-form">
-				<h3 className="sub-title">Login Form</h3>
+				<h3 className="sub-title">Login in to continue</h3>
                 <form className="form-horizontal" onSubmit={ this.handleSubmit }>
                 {message !== '' &&
                     <div className="alert alert-warning alert-dismissible" role="alert">
@@ -68,8 +74,13 @@ export default class Login extends Component {
                     </div>
                 }
                     <fieldset className = "background">
+                      <div className="row">
+                                    <div className="center-block">
+                                        <img className="profile-img" src="https://picsum.photos/200/300/?random" alt="" />
+                                    </div>
+                      </div>
                         <div className="form-group">
-                            <label className="col-md-4 control-label">User Name</label>  
+                            <label className="col-md-4 control-label">User Name</label>
                             <div className="col-md-8 inputGroupContainer">
                                 <div className="input-group">
                                         <InputBox
@@ -78,26 +89,32 @@ export default class Login extends Component {
                                             classname="form-control"
                                             name="username"
                                             autoFocus="true"
+                                            pattern="\w+"
                                             required
-                                            onChange = {this.handleOnChange}                                    
+                                            onChange = {this.handleOnChange}
                                         />
-                                    
+
                                 </div>
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-4 control-label">Password</label>  
-                            <div className="col-md-8 inputGroupContainer">
-                                <div className="input-group">
+                            <label className="col-md-4 control-label">Password</label>
+                            <div className="col-md-8 inputGroupContainer pwd-message">
+                                <div className="input-group login-btn">
                                         <InputBox
                                             type="password"
-                                            placeholder="password"
+                                            placeholder="Password"
                                             classname="form-control"
                                             name="password"
+                                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
                                             required
-                                            onChange = {this.handleOnChange}                                    
+                                            onChange = {this.handleOnChange}
                                         />
-                                    
+                                        <OverlayTrigger placement="left" overlay={tooltip}>
+                                          <a href="#" className="pwd-icon">
+                                            <span className="glyphicon glyphicon-exclamation-sign"></span>
+                                          </a>
+                                        </OverlayTrigger>
                                 </div>
                             </div>
                         </div>
