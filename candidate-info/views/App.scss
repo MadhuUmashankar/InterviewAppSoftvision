@@ -84,6 +84,12 @@ button.close {
   -webkit-border-radius: 50%;
   border-radius: 50%;
 }
+
+.center-block {
+    display: block;
+    margin-right: auto;
+    margin-left: 70px;
+}
 //Candidate form css
 
 .form-container {
@@ -195,7 +201,9 @@ margin-top: 15px;
 .evaluation-criteria {
   text-align: center;
 }
-
+.remarks-width {
+  width: 60%;
+}
 
 // candidate assessment form
 
@@ -218,7 +226,7 @@ margin-top: 15px;
   display: inline-block;
 }
 
-//Register 
+//Register
 
 .sign-up {
     margin-bottom: 10px;

@@ -38,7 +38,12 @@ class ManagerEvaluation extends Component {
        technicalSolutionsComments3: '',
        technicalSolutionsRatings4: '',
        technicalSolutionsComments4: '',
-       managerInterviewStatus:''
+       managerInterviewStatus:'',
+       excellentRemark: '',
+       goodRemark: '',
+       averageRemark: '',
+       poorRemark: '',
+       finalRemark: ''
      };
 
     this.handleShow = this.handleShow.bind(this);
@@ -50,45 +55,6 @@ class ManagerEvaluation extends Component {
 
    componentDidMount() {
        this.loadManagerDetails();
-
-     //   const {managerEvaluationData} = this.state;
-     //   const {candidateData, sendInterviewStatus} = this.props;
-     //   let currentManagerRecord = managerEvaluationData.filter((record) => {
-     //     return candidateData.candidateID === record.candidateID
-     //   });
-     //
-     //   currentManagerRecord = currentManagerRecord[0];
-     //   console.log("currentManagerRecord", currentManagerRecord);
-     //   if(currentManagerRecord != undefined) {
-     //     if(Object.keys(currentManagerRecord).length > 0) {
-     //      const clientOrientationRatings1= currentManagerRecord.clientOrientationRatings1;
-     //      const clientOrientationComments1= currentManagerRecord.clientOrientationComments1;
-     //      const clientOrientationRatings2= currentManagerRecord.clientOrientationRatings2 ? currentManagerRecord.clientOrientationRatings2 : "";
-     //      const clientOrientationComments2= currentManagerRecord.clientOrientationComments2 ? currentManagerRecord.clientOrientationComments2 : "";
-     //      const clientOrientationRatings3= currentManagerRecord.clientOrientationRatings3 ? currentManagerRecord.clientOrientationRatings3 : "";
-     //      const clientOrientationComments3= currentManagerRecord.clientOrientationComments3 ? currentManagerRecord.clientOrientationComments3 : "";
-     //      const projectManagementRatings= currentManagerRecord.projectManagementRatings ? currentManagerRecord.projectManagementRatings : "";
-     //      const projectManagementComments= currentManagerRecord.projectManagementComments ? currentManagerRecord.projectManagementComments : "";
-     //      const leadershipRatings= currentManagerRecord.leadershipRatings ? currentManagerRecord.leadershipRatings : "";
-     //      const leadershipComments= currentManagerRecord.leadershipComments ? currentManagerRecord.leadershipComments : "";
-     //      const communicationRatings= currentManagerRecord.communicationRatings ? currentManagerRecord.communicationRatings : "";
-     //      const communicationComments= currentManagerRecord.communicationComments ? currentManagerRecord.communicationComments : "";
-     //      const domainRatings= currentManagerRecord.domainRatings ? currentManagerRecord.domainRatings : "";
-     //      const domainComments= currentManagerRecord.domainComments ? currentManagerRecord.domainComments : "";
-     //      const technicalSolutionsRatings1= currentManagerRecord.technicalSolutionsRatings1 ? currentManagerRecord.technicalSolutionsRatings1 : "";
-     //      const technicalSolutionsComments1= currentManagerRecord.technicalSolutionsComments1 ? currentManagerRecord.technicalSolutionsComments1 : "";
-     //      const technicalSolutionsRatings2 = currentManagerRecord.technicalSolutionsRatings2 ? currentManagerRecord.technicalSolutionsRatings2 : "";
-     //      const technicalSolutionsComments2= currentManagerRecord.technicalSolutionsComments2 ? currentManagerRecord.technicalSolutionsComments2 : "";
-     //      const technicalSolutionsRatings3= currentManagerRecord.technicalSolutionsRatings3 ? currentManagerRecord.technicalSolutionsRatings3 : "";
-     //      const technicalSolutionsComments3= currentManagerRecord.technicalSolutionsComments3 ? currentManagerRecord.technicalSolutionsComments3 : "";
-     //      const technicalSolutionsRatings4= currentManagerRecord.technicalSolutionsRatings4 ? currentManagerRecord.technicalSolutionsRatings4 : "";
-     //      const technicalSolutionsComments4= currentManagerRecord.technicalSolutionsComments4 ? currentManagerRecord.technicalSolutionsComments4 : "";
-     //      const managerInterviewStatus = currentManagerRecord.managerInterviewStatus ? currentManagerRecord.managerInterviewStatus : "";
-     //
-     //       this.setState({clientOrientationRatings1, clientOrientationComments1, clientOrientationRatings2, clientOrientationComments2, clientOrientationRatings3, clientOrientationComments3, projectManagementRatings, projectManagementComments, leadershipRatings, leadershipComments, communicationRatings, communicationComments, domainRatings, domainComments, technicalSolutionsRatings1, technicalSolutionsComments1, technicalSolutionsRatings2,technicalSolutionsComments2, technicalSolutionsRatings3, technicalSolutionsComments3, technicalSolutionsRatings4,  technicalSolutionsComments4,  managerInterviewStatus }, ()=>{
-     //         sendInterviewStatus(hrInterviewStatus, "manager")});
-     //     }
-     // }
    }
 
 
@@ -192,6 +158,22 @@ class ManagerEvaluation extends Component {
         case "technicalSolutionsComments4":
             this.setState({technicalSolutionsComments4 : event.target.value})
             break;
+        case "excellentRemark":
+            this.setState({excellentRemark : event.target.value})
+            break;
+        case "goodRemark":
+            this.setState({goodRemark : event.target.value})
+            break;
+        case "averageRemark":
+            this.setState({averageRemark : event.target.value})
+            break;
+        case "poorRemark":
+            this.setState({poorRemark : event.target.value})
+            break;
+        case "finalRemark":
+            this.setState({finalRemark : event.target.value})
+            break;
+
         default:
             break;
     }
@@ -202,9 +184,9 @@ class ManagerEvaluation extends Component {
     e.preventDefault();
     const {candidateData} = this.props;
     const candidateFullname = candidateData.firstname + " " + candidateData.lastname;
-    const {interviewerName2, jobTitle, interviewerRound, clientOrientationRatings1, clientOrientationComments1, clientOrientationRatings2, clientOrientationComments2, clientOrientationRatings3, clientOrientationComments3, projectManagementRatings, projectManagementComments, leadershipRatings, leadershipComments, communicationRatings, communicationComments, domainRatings, domainComments, technicalSolutionsRatings1, technicalSolutionsComments1, technicalSolutionsRatings2,technicalSolutionsComments2, technicalSolutionsRatings3, technicalSolutionsComments3, technicalSolutionsRatings4,  technicalSolutionsComments4, managerInterviewStatus} = this.state;
+    const {interviewerName2, jobTitle, interviewerRound, clientOrientationRatings1, clientOrientationComments1, clientOrientationRatings2, clientOrientationComments2, clientOrientationRatings3, clientOrientationComments3, projectManagementRatings, projectManagementComments, leadershipRatings, leadershipComments, communicationRatings, communicationComments, domainRatings, domainComments, technicalSolutionsRatings1, technicalSolutionsComments1, technicalSolutionsRatings2,technicalSolutionsComments2, technicalSolutionsRatings3, technicalSolutionsComments3, technicalSolutionsRatings4,  technicalSolutionsComments4, managerInterviewStatus, excellentRemark, goodRemark, averageRemark, poorRemark, finalRemark } = this.state;
     // Candidate Manager
-     const managerRecord = Object.assign({}, {candidateFullname}, {candidateID: candidateData.candidateID}, {interviewerName2}, {jobTitle}, {interviewerRound}, {clientOrientationRatings1}, {clientOrientationComments1}, {clientOrientationRatings2}, {clientOrientationComments2}, {clientOrientationRatings3}, {clientOrientationComments3}, {projectManagementRatings}, {projectManagementComments}, {leadershipRatings}, {leadershipComments}, {communicationRatings}, {communicationComments}, {domainRatings}, {domainComments}, {technicalSolutionsRatings1}, {technicalSolutionsComments1}, {technicalSolutionsRatings2}, {technicalSolutionsComments2}, {technicalSolutionsRatings3}, {technicalSolutionsComments3}, {technicalSolutionsRatings4},  {technicalSolutionsComments4}, {managerInterviewStatus});
+     const managerRecord = Object.assign({}, {candidateFullname}, {candidateID: candidateData.candidateID}, {interviewerName2}, {jobTitle}, {interviewerRound}, {clientOrientationRatings1}, {clientOrientationComments1}, {clientOrientationRatings2}, {clientOrientationComments2}, {clientOrientationRatings3}, {clientOrientationComments3}, {projectManagementRatings}, {projectManagementComments}, {leadershipRatings}, {leadershipComments}, {communicationRatings}, {communicationComments}, {domainRatings}, {domainComments}, {technicalSolutionsRatings1}, {technicalSolutionsComments1}, {technicalSolutionsRatings2}, {technicalSolutionsComments2}, {technicalSolutionsRatings3}, {technicalSolutionsComments3}, {technicalSolutionsRatings4},  {technicalSolutionsComments4}, {managerInterviewStatus}, {excellentRemark}, {goodRemark}, {averageRemark}, {poorRemark}, {finalRemark});
 
     this.setState({ show: false });
       if(managerRecord) {
@@ -224,10 +206,10 @@ class ManagerEvaluation extends Component {
   handleUpdateManagerForm(e, id, record) {
     e.preventDefault();
     const {candidateData} = this.props;
-    const {interviewerName2, jobTitle, interviewerRound, clientOrientationRatings1, clientOrientationComments1, clientOrientationRatings2, clientOrientationComments2, clientOrientationRatings3, clientOrientationComments3, projectManagementRatings, projectManagementComments, leadershipRatings, leadershipComments, communicationRatings, communicationComments, domainRatings, domainComments, technicalSolutionsRatings1, technicalSolutionsComments1, technicalSolutionsRatings2,technicalSolutionsComments2, technicalSolutionsRatings3, technicalSolutionsComments3, technicalSolutionsRatings4,  technicalSolutionsComments4, managerInterviewStatus} = this.state;
+    const {interviewerName2, jobTitle, interviewerRound, clientOrientationRatings1, clientOrientationComments1, clientOrientationRatings2, clientOrientationComments2, clientOrientationRatings3, clientOrientationComments3, projectManagementRatings, projectManagementComments, leadershipRatings, leadershipComments, communicationRatings, communicationComments, domainRatings, domainComments, technicalSolutionsRatings1, technicalSolutionsComments1, technicalSolutionsRatings2,technicalSolutionsComments2, technicalSolutionsRatings3, technicalSolutionsComments3, technicalSolutionsRatings4,  technicalSolutionsComments4, managerInterviewStatus, excellentRemark, goodRemark, averageRemark, poorRemark, finalRemark} = this.state;
     const candidateFullname = candidateData.firstname + " " + candidateData.lastname;
 
-    const updatedManagerRecord = Object.assign({},{candidateFullname}, {candidateID: candidateData.candidateID}, {interviewerName2}, {jobTitle}, {interviewerRound}, {clientOrientationRatings1}, {clientOrientationComments1}, {clientOrientationRatings2}, {clientOrientationComments2}, {clientOrientationRatings3}, {clientOrientationComments3}, {projectManagementRatings}, {projectManagementComments}, {leadershipRatings}, {leadershipComments}, {communicationRatings}, {communicationComments}, {domainRatings}, {domainComments}, {technicalSolutionsRatings1}, {technicalSolutionsComments1}, {technicalSolutionsRatings2}, {technicalSolutionsComments2}, {technicalSolutionsRatings3}, {technicalSolutionsComments3}, {technicalSolutionsRatings4},  {technicalSolutionsComments4}, {managerInterviewStatus})
+    const updatedManagerRecord = Object.assign({},{candidateFullname}, {candidateID: candidateData.candidateID}, {interviewerName2}, {jobTitle}, {interviewerRound}, {clientOrientationRatings1}, {clientOrientationComments1}, {clientOrientationRatings2}, {clientOrientationComments2}, {clientOrientationRatings3}, {clientOrientationComments3}, {projectManagementRatings}, {projectManagementComments}, {leadershipRatings}, {leadershipComments}, {communicationRatings}, {communicationComments}, {domainRatings}, {domainComments}, {technicalSolutionsRatings1}, {technicalSolutionsComments1}, {technicalSolutionsRatings2}, {technicalSolutionsComments2}, {technicalSolutionsRatings3}, {technicalSolutionsComments3}, {technicalSolutionsRatings4},  {technicalSolutionsComments4}, {managerInterviewStatus}, {excellentRemark}, {goodRemark}, {averageRemark}, {poorRemark}, {finalRemark})
 
     let iaUrl = this.props.url + '/newManagerForm';
     this.setState({ show: false });
@@ -243,7 +225,7 @@ class ManagerEvaluation extends Component {
   render() {
     const {candidateData, interViewToBeTaken} = this.props;
     const candidateFullname = candidateData.firstname + " " + candidateData.lastname;
-    const {managerEvaluationData, interviewerName2, jobTitle, interviewerRound, clientOrientationRatings1, clientOrientationComments1, clientOrientationRatings2, clientOrientationComments2, clientOrientationRatings3, clientOrientationComments3, projectManagementRatings, projectManagementComments, leadershipRatings, leadershipComments, communicationRatings, communicationComments, domainRatings, domainComments, technicalSolutionsRatings1, technicalSolutionsComments1, technicalSolutionsRatings2,technicalSolutionsComments2, technicalSolutionsRatings3, technicalSolutionsComments3, technicalSolutionsRatings4,  technicalSolutionsComments4, managerInterviewStatus }
+    const {managerEvaluationData, interviewerName2, jobTitle, interviewerRound, clientOrientationRatings1, clientOrientationComments1, clientOrientationRatings2, clientOrientationComments2, clientOrientationRatings3, clientOrientationComments3, projectManagementRatings, projectManagementComments, leadershipRatings, leadershipComments, communicationRatings, communicationComments, domainRatings, domainComments, technicalSolutionsRatings1, technicalSolutionsComments1, technicalSolutionsRatings2,technicalSolutionsComments2, technicalSolutionsRatings3, technicalSolutionsComments3, technicalSolutionsRatings4,  technicalSolutionsComments4, managerInterviewStatus, excellentRemark, goodRemark, averageRemark, poorRemark, finalRemark }
      = this.state;
 
     let currentManagerRecord = managerEvaluationData.filter((record) => {
@@ -533,7 +515,7 @@ class ManagerEvaluation extends Component {
 
 
                     </div>
-                    <div className="margin-small pd-small">
+                    <div className="margin-small">
                       <div className="col-sm-4"><label>Interview Status</label><span className="mandatory">*</span></div>
                         <div className="col-sm-6">
                           <div className="form-group experience-width">
@@ -549,6 +531,47 @@ class ManagerEvaluation extends Component {
                             </select>
                           </div>
                         </div>
+                      </div>
+
+                      <div className="pd-small">
+                        <center>
+                        <table className="table table-bordered table-responsive remarks-width" id="manager_evaluation_remarks_id">
+                          <thead>
+                            <tr>
+                              <th>Proficiency</th>
+                              <th>Technical Skills</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td><strong>Excellent In</strong></td>
+                              <td><TextArea required rows="2" cols="50" onChange = {this.handleOnChange} name="excellentRemark"
+                              id="excellentRemarkId" placeholder="Please enter the comments" value={currManagerObject.excellentRemark}></TextArea></td>
+                            </tr>
+                            <tr>
+                              <td><strong>Good In</strong></td>
+                              <td><TextArea required rows="2" cols="50" onChange = {this.handleOnChange} name="goodRemark"
+                              id="goodRemarkId" placeholder="Please enter the comments" value={currManagerObject.goodRemark}></TextArea></td>
+                            </tr>
+                            <tr>
+                              <td><strong>Average In</strong></td>
+                              <td><TextArea required rows="2" cols="50" onChange = {this.handleOnChange} name="averageRemark"
+                              id="averageRemarkId" placeholder="Please enter the comments" value={currManagerObject.averageRemark}></TextArea></td>
+                            </tr>
+                            <tr>
+                              <td><strong>Poor In</strong></td>
+                              <td><TextArea required rows="2" cols="50" onChange = {this.handleOnChange} name="poorRemark"
+                              id="poorRemarkId" placeholder="Please enter the comments" value={currManagerObject.poorRemark}></TextArea></td>
+                            </tr>
+
+                            <tr>
+                              <td><strong>Comments</strong></td>
+                              <td><TextArea required rows="2" cols="50" onChange = {this.handleOnChange} name="finalRemark"
+                              id="finalRemarkId" placeholder="Please enter the comments" value={currManagerObject.finalRemark}></TextArea></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        </center>
                       </div>
                       <div className="margin-small">
                         {

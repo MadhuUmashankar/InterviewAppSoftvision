@@ -76,7 +76,7 @@ router.get('/candidateInfo', passport.authenticate('jwt', { session: false}), fu
 
 // Get All IA Info
 router.get('/candidateInfo/newIAForm', function(req, res, next){
-    db.evaluationSheetInformationTables.find({candidateID: "kb9381165hc"}, function(err, evaluationSheetInformationTables){
+    db.evaluationSheetInformationTables.find(function(err, evaluationSheetInformationTables){
         if(err){
             res.send(err);
         }
@@ -412,6 +412,21 @@ router.put('/candidateInfo/newManagerForm/:id', function(req, res, next){
     }
     if(managerEvaluator.technicalSolutionsComments4){
         updatedManagerInfo.technicalSolutionsComments4 = managerEvaluator.technicalSolutionsComments4;
+    }
+    if(managerEvaluator.excellentRemark){
+        updatedManagerInfo.excellentRemark = managerEvaluator.excellentRemark;
+    }
+    if(managerEvaluator.goodRemark){
+        updatedManagerInfo.goodRemark = managerEvaluator.goodRemark;
+    }
+    if(managerEvaluator.averageRemark){
+        updatedManagerInfo.averageRemark = managerEvaluator.averageRemark;
+    }
+    if(managerEvaluator.poorRemark){
+        updatedManagerInfo.poorRemark = managerEvaluator.poorRemark;
+    }
+    if(managerEvaluator.finalRemark){
+        updatedManagerInfo.finalRemark = managerEvaluator.finalRemark;
     }
 
     if(!Object.keys(updatedManagerInfo).length){

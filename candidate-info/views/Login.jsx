@@ -81,7 +81,7 @@ export default class Login extends Component {
                                     </div>
                       </div>
                         <div className="form-group">
-                            <label className="col-md-4 control-label">User Name</label>  
+                            <label className="col-md-4 control-label">User Name</label>
                             <div className="col-md-6 inputGroupContainer">
                                 <div className="input-group">
                                         <InputBox
@@ -111,7 +111,7 @@ export default class Login extends Component {
                                             required
                                             onChange = {this.handleOnChange}
                                         />
-                                        <OverlayTrigger placement="left" overlay={tooltip}>
+                                      <OverlayTrigger placement="right" overlay={tooltip}>
                                           <a href="#" className="pwd-icon">
                                             <span className="glyphicon glyphicon-exclamation-sign"></span>
                                           </a>
