@@ -4,6 +4,7 @@ import HumanResourceEvaluation from './HumanResourceEvaluation';
 import Evaluation from './Evaluation';
 import axios from 'axios';
 import {hashHistory} from 'react-router';
+import { Modal, Button } from 'react-bootstrap';
 import {
   BrowserRouter as Router,
   Link,
@@ -25,13 +26,24 @@ export default class CandidateAssessment extends Component {
           showText: true,
           listOfInterviewRounds: [],
           IAData: [],
-          users:[]
+          users:[],
+          show: false
         };
-  this.handleInterviewChange = this.handleInterviewChange.bind(this);
-  this.startEvaluating = this.startEvaluating.bind(this);
-  this.sendInterviewStatus = this.sendInterviewStatus.bind(this);
-  this.logout = this.logout.bind(this);
-  this.addInterviews = this.addInterviews.bind(this);
+      this.handleInterviewChange = this.handleInterviewChange.bind(this);
+      this.startEvaluating = this.startEvaluating.bind(this);
+      this.sendInterviewStatus = this.sendInterviewStatus.bind(this);
+      this.logout = this.logout.bind(this);
+      this.addInterviews = this.addInterviews.bind(this);
+      this.handleShow = this.handleShow.bind(this);
+      this.handleClose = this.handleClose.bind(this);
+    }
+
+    handleClose() {
+        this.setState({ show: false });
+    }
+
+    handleShow() {
+        this.setState({ show: true, modalLabelView:false });
     }
 
     componentDidMount() {
@@ -44,7 +56,7 @@ export default class CandidateAssessment extends Component {
     }
 
     handleInterviewChange(e){
-      this.setState({showTable: true, interViewToBeTaken : e.target.value})
+      this.setState({showTable: true, interViewToBeTaken : e.target.value, show: false})
     }
 
     getCandidateIDqs(key) {
@@ -129,14 +141,15 @@ export default class CandidateAssessment extends Component {
 
       if(interViewToBeTaken === "Technical Round") {
         currentStatus = status
-      }
 
+      }
+console.log('currentStatus', currentStatus)
       const username = sessionStorage.getItem('username');
 
       const currentUser = users.length > 0 && users.filter((user)=> (user.username == username));
 
       const firstname = currentUser.length > 0 && currentUser[0].firstname,
-      lastname = currentUser.length > 0 && currentUser[0].lastname, 
+      lastname = currentUser.length > 0 && currentUser[0].lastname,
       role = currentUser.length > 0 && currentUser[0].role.toLowerCase();
       //classname = (role === "interviewer" || role === "manager" || role === "hr") ? true : false;
 
@@ -164,8 +177,32 @@ export default class CandidateAssessment extends Component {
                   <div><p>Please select the interview round here<span className="glyphicon glyphicon-arrow-down"></span></p></div>
                 }
 
+                {showInterviews ?
+                  <div>
+                    <div>
+                        <Button bsStyle="primary" bsSize="large" onClick={this.handleShow} >
+                            Proceed interview
+                        </Button>
+                    </div>
 
-                  { showInterviews ? <table
+                    <Modal show={this.state.show} onHide={this.handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title><h3>Select the round of interview</h3></Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                          <select className="form-control experience-width" id="interViewToBeTakenId" onChange = {this.handleInterviewChange} value = {interViewToBeTaken}>
+                              <option value="manager">Manager Round</option>
+                              <option value="technical">Technical Round</option>
+                              <option value="hr">HR Round</option>
+                          </select>
+                        </Modal.Body>
+                    </Modal>
+                  </div>
+                  :
+                  null
+                }
+
+                  { showTable  ? <table
                   className="table table-bordered table-responsive" id="interview_round_id">
                       <thead>
                           <tr>
@@ -182,7 +219,7 @@ export default class CandidateAssessment extends Component {
                             </td>
                           <td>{currentStatus}</td>
                           </tr>
-                          
+
                           {  listOfInterviewRounds.map((list, index)=> (
                               <tr key={index}>
                                 <td className="interview-round">Technical Round</td>
@@ -213,7 +250,7 @@ export default class CandidateAssessment extends Component {
                     :
                   null
                   }
-                 
+
 
                 </center>
             </div>

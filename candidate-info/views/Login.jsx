@@ -90,6 +90,7 @@ export default class Login extends Component {
                                             classname="form-control"
                                             name="username"
                                             autoFocus="true"
+                                            autoComplete="off"
                                             required
                                             onChange = {this.handleOnChange}
                                         />
@@ -108,6 +109,7 @@ export default class Login extends Component {
                                             name="password"
                                             pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
                                             required
+                                            autoComplete="off"
                                             onChange = {this.handleOnChange}
                                         />
                                       <OverlayTrigger placement="right" overlay={tooltip}>

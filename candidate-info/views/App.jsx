@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import CandidateForm from './CandidateForm';
 import CandidateInfoList from './CandidateInfoList';
 import './App.scss';
-import { Modal,Button } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import InputBox from './InputBox';
 import {hashHistory} from 'react-router';
 
@@ -50,7 +50,7 @@ class App extends Component {
             .then(res => {
                   this.setState({ users: res.data });
             })
-            
+
     }
 
     loadDetailsFromServerForIASheet() {
@@ -140,9 +140,9 @@ class App extends Component {
         this.loadDetailsFromServer();
     }
 
-    componentDidMount() { 
+    componentDidMount() {
         this.loadDetailsFromServer();
-        this.loadDetailsFromServerForIASheet();            
+        this.loadDetailsFromServerForIASheet();
     }
 
     handleClose() {
@@ -156,7 +156,7 @@ class App extends Component {
     handleSearch(e) {
         this.setState({searchKey:e.target.value})
     }
-    
+
     logout() {
         sessionStorage.removeItem('jwtToken');
         window.location.reload();
@@ -173,13 +173,13 @@ class App extends Component {
     const currentUser = users.length > 0 && users.filter((user)=> (user.username == username));
 
     const firstname = currentUser.length > 0 && currentUser[0].firstname,
-    lastname = currentUser.length > 0 && currentUser[0].lastname, 
+    lastname = currentUser.length > 0 && currentUser[0].lastname,
     role = currentUser.length > 0 && currentUser[0].role.toLowerCase(),
     classname = (role === "interviewer" || role === "manager" || role === "hr") ? true : false;
 
     return (
 
-    
+
       <div className="App">
         <div className="App-header">
             <div className="">
@@ -223,7 +223,7 @@ class App extends Component {
             searchKey= { searchKey }
             url = {url}
             role={role}/>
-            
+
       </div>
     );
   }
