@@ -1,3 +1,4 @@
+
 .App {
     max-width: 960px;
     margin: auto;
@@ -42,6 +43,16 @@ button.close {
     text-transform: uppercase;
     text-align: center;
     padding: 20px;
+
+    h1 {
+        position: relative;
+    }
+    .logo {
+        position: absolute;
+        left: 30px;
+        top: 15px;
+        width: 200px;
+    }
 }
 .log-in {
     position: absolute;
@@ -69,7 +80,7 @@ button.close {
   position: absolute;
   right: 7px;
   top: 7px;
-  z-index: 2;
+  z-index: 4;
 }
 .position {
   position: relative;

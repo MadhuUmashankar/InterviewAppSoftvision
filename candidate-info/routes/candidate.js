@@ -6,8 +6,19 @@ var mongojs = require('mongojs');
 var uuid = require('uuid');
 var passport = require('passport');
 require('../config/passport')(passport);
-var db = mongojs('mongodb://localhost:27017/candidateInformationTable', ['candidateInformationTables', 'evaluationSheetInformationTables', 'managerEvaluationInformationTables', 'hrEvaluationInformationTables']);
+var db = mongojs('mongodb://localhost:27017/candidateInformationTable', ['candidateInformationTables', 'evaluationSheetInformationTables', 'managerEvaluationInformationTables', 'hrEvaluationInformationTables', 'users']);
 
+
+// Get all Manager Evaluaton  Info
+router.get('/candidateInfo/users', function(req, res, next){
+
+    db.users.find(function(err, users){
+        if(err){
+            res.send(err);
+        }
+        res.json(users);
+    });
+});
 
 // Get all Manager Evaluaton  Info
 router.get('/candidateInfo/newManagerForm', function(req, res, next){

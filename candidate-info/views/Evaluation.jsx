@@ -108,7 +108,7 @@ class Evaluation extends Component {
   handleSubmitIAForm(e) {
     e.preventDefault();
     this.loadDetailsFromServerForIASheet();
-    const {candidateData} = this.props;
+    const {candidateData, addInterviews} = this.props;
     const candidate = candidateData;
     const {detailsData, experience, expertiseData, impression, summaryData, interviewStatus} = this.state;
     // Candidate IA Form data
@@ -116,6 +116,9 @@ class Evaluation extends Component {
 
     const record = Object.assign({}, {candidateID: candidate.candidateID}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
     this.setState({ show: false });
+
+    addInterviews(e);
+    
       if(record) {
           let records = this.state.IAdata;
           let newIAForm = records.concat(record);
@@ -141,8 +144,9 @@ class Evaluation extends Component {
     let total = ((0.1*experience) + (0.8*overallAvgScore) + (0.1*impression)) || 0;
     let totalValue = parseFloat(Number(total).toFixed(2));
 
+    
 
-    let currentIARecord = IAdata.filter((record) => {
+    let currentIARecord = IAdata.length> 0 && IAdata.filter((record) => {
       return candidate.candidateID === record.candidateID
     });
 

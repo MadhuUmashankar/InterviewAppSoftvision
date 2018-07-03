@@ -21,7 +21,7 @@ class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { data: [], show: false, searchKey:"", modalLabelView: false, candidate:{}, IAData:[]};
+        this.state = { data: [], show: false, searchKey:"", modalLabelView: false, candidate:{}, IAData:[], users:[]};
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.loadDetailsFromServer = this.loadDetailsFromServer.bind(this);
@@ -34,6 +34,7 @@ class App extends Component {
     }
 
     loadDetailsFromServer() {
+        axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('jwtToken');
         axios.get(this.props.url)
             .then(res => {
                 this.setState({ data: res.data });
@@ -44,9 +45,16 @@ class App extends Component {
                   })
                 }
             });
+
+            axios.get(this.props.userListurl)
+            .then(res => {
+                  this.setState({ users: res.data });
+            })
+            
     }
 
     loadDetailsFromServerForIASheet() {
+        axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('jwtToken');
         axios.get(this.props.IAurl)
             .then(res => {
                 this.setState({ IAData: res.data });
@@ -132,8 +140,7 @@ class App extends Component {
         this.loadDetailsFromServer();
     }
 
-    componentDidMount() {
-        axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('jwtToken');
+    componentDidMount() { 
         this.loadDetailsFromServer();
         this.loadDetailsFromServerForIASheet();            
     }
@@ -159,8 +166,16 @@ class App extends Component {
     }
 
    render() {
-    const {data, searchKey, candidate, modalLabelView, IAData } = this.state;
+    const {data, searchKey, candidate, modalLabelView, IAData, users } = this.state;
     let url = this.props.url;
+    const username = sessionStorage.getItem('username');
+
+    const currentUser = users.length > 0 && users.filter((user)=> (user.username == username));
+
+    const firstname = currentUser.length > 0 && currentUser[0].firstname,
+    lastname = currentUser.length > 0 && currentUser[0].lastname, 
+    role = currentUser.length > 0 && currentUser[0].role.toLowerCase(),
+    classname = (role === "interviewer" || role === "manager" || role === "hr") ? true : false;
 
     return (
 
@@ -171,10 +186,10 @@ class App extends Component {
                 <h3> Candidate List </h3>
             </div>
             {sessionStorage.getItem('jwtToken') &&
-              <div className="log-in"><span className="username">{sessionStorage.getItem('username')}</span><button className="btn btn-primary" onClick={this.logout}> Logout</button></div>
+              <div className="log-in"><span className="username">{ firstname + " " + lastname}</span><button className="btn btn-primary" onClick={this.logout}> Logout</button></div>
             }
             <div>
-                <Button bsStyle="primary" bsSize="large" onClick={this.handleShow}>
+                <Button bsStyle="primary" bsSize="large" onClick={this.handleShow} disabled={classname}>
                     Add New Candidate
                 </Button>
             </div>
@@ -206,7 +221,9 @@ class App extends Component {
             data={ data }
             IAData={IAData}
             searchKey= { searchKey }
-            url = {url}/>
+            url = {url}
+            role={role}/>
+            
       </div>
     );
   }

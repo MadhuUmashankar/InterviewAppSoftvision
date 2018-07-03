@@ -24,7 +24,8 @@ export default class CandidateAssessment extends Component {
           type:'',
           showText: true,
           listOfInterviewRounds: [],
-          IAData: []
+          IAData: [],
+          users:[]
         };
   this.handleInterviewChange = this.handleInterviewChange.bind(this);
   this.startEvaluating = this.startEvaluating.bind(this);
@@ -34,24 +35,12 @@ export default class CandidateAssessment extends Component {
     }
 
     componentDidMount() {
-        axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('jwtToken');
+      axios.get("http://localhost:3000/candidateInfo/users")
+            .then(res => {
+                  this.setState({ users: res.data });
+            })
         this.loadCandidateDetails();
         this.loadDetailsFromServerForIASheet();
-    }
-
-    componentWillReceiveProps(nextProps){
-      const {interviewStatus} = this.state;
-
-
-          const iaValue= this.loadDetailsFromServerForIASheet();
-          // iaValue.filter(candidateID)
-          console.log('iaValue',iaValue );
-
-      if(interviewStatus === "Move to Manager round") {
-        const item = {};
-        this.state.listOfInterviewRounds.push(item);
-      this.setState(this.state.listOfInterviewRounds);
-      }
     }
 
     handleInterviewChange(e){
@@ -72,6 +61,7 @@ export default class CandidateAssessment extends Component {
 
 
     loadCandidateDetails() {
+      axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('jwtToken');
       let id = this.getCandidateIDqs('id');
       let url = "http://localhost:3000/candidateInfo";
       axios.get(`${url}/${id}`)
@@ -89,6 +79,7 @@ export default class CandidateAssessment extends Component {
     }
 
     loadDetailsFromServerForIASheet() {
+      axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('jwtToken');
       let url = "http://localhost:3000/candidateInfo";
         let iaUrl = url + '/newIAForm';
           axios.get(iaUrl)
@@ -116,13 +107,23 @@ export default class CandidateAssessment extends Component {
 
     addInterviews(e) {
       e.preventDefault();
-      const item = {};
-      this.state.listOfInterviewRounds.push(item);
-      this.setState(this.state.listOfInterviewRounds);
+      const {status, listOfInterviewRounds} = this.state;
+      let item;
+      if(status === 'Move to Manager round') {
+        item = 'ManagerEvaluation'
+      }
+      else if(status === 'Move to Technical round 2'){
+        item = 'Evaluation'
+      }
+      else {
+         item = 'HumanResourceEvaluation'
+      }
+      listOfInterviewRounds.push(item);
+      this.setState({listOfInterviewRounds : listOfInterviewRounds});
     }
 
     render() {
-      const {interViewToBeTaken, candidateData, showInterviews, showTable, status, type, showText, listOfInterviewRounds, interviewStatus} = this.state;
+      const {interViewToBeTaken, candidateData, showInterviews, showTable, status, type, showText, listOfInterviewRounds, interviewStatus, users} = this.state;
       const fullname = candidateData.firstname + " " + candidateData.lastname;
       let url = "http://localhost:3000/candidateInfo", currentStatus;
 
@@ -130,10 +131,19 @@ export default class CandidateAssessment extends Component {
         currentStatus = status
       }
 
+      const username = sessionStorage.getItem('username');
+
+      const currentUser = users.length > 0 && users.filter((user)=> (user.username == username));
+
+      const firstname = currentUser.length > 0 && currentUser[0].firstname,
+      lastname = currentUser.length > 0 && currentUser[0].lastname, 
+      role = currentUser.length > 0 && currentUser[0].role.toLowerCase();
+      //classname = (role === "interviewer" || role === "manager" || role === "hr") ? true : false;
+
         return (
             <div className="App">
               {sessionStorage.getItem('jwtToken') &&
-                <div className="log-in"><span className="username">{sessionStorage.getItem('username')}</span><button className="btn btn-primary" onClick={this.logout}> Logout</button></div>
+                <div className="log-in"><span className="username">{firstname + " " +lastname}</span><button className="btn btn-primary" onClick={this.logout}> Logout</button></div>
               }
               <div>
                 <label className="candidate-assessment-label">{fullname}</label>
@@ -168,31 +178,29 @@ export default class CandidateAssessment extends Component {
                           <tr>
                             <td className="interview-round">Technical Round</td>
                               <td>
-                              <Evaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} />
+                              <Evaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} addInterviews = {this.addInterviews} />
                             </td>
                           <td>{currentStatus}</td>
                           </tr>
-                          <tr>
-                            <td className="interview-round">Manager Round</td>
-                              <td>
-                              <ManagerEvaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} />
-                            </td>
-                          <td>{currentStatus}</td>
-                          </tr>
-                          <tr>
-                            <td className="interview-round">HR Round</td>
-                              <td>
-                              <HumanResourceEvaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} />
-                            </td>
-                          <td>{currentStatus}</td>
-                          </tr>
+                          
                           {  listOfInterviewRounds.map((list, index)=> (
                               <tr key={index}>
                                 <td className="interview-round">Technical Round</td>
+                                { list === 'Evaluation' ?
                                   <td>
-                                  <Evaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} />
+                                  <Evaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} addInterviews = {this.addInterviews}/>
                                 </td>
-                              <td>{currentStatus}</td>
+                                :
+                               ( list === 'ManagerEvaluation' ?
+                                <td>
+                                  <ManagerEvaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} addInterviews = {this.addInterviews}/>
+                                </td>
+                                :
+                                <td>
+                                  <HumanResourceEvaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus}/>
+                                </td>
+                               )}
+                                <td>{currentStatus}</td>
                               </tr>
 
                             ))
@@ -205,7 +213,7 @@ export default class CandidateAssessment extends Component {
                     :
                   null
                   }
-                  <button onClick={this.addInterviews}> Add Technical Interview</button>
+                 
 
                 </center>
             </div>

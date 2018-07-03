@@ -8,10 +8,12 @@ var router = express.Router();
 var User = require("../model/users");
 
 router.post('/candidateInfo/register', function(req, res) {
-  if (!req.body.username || !req.body.password || !req.body.email || !req.body.confirmpassword) {
+  if (!req.body.firstname || !req.body.lastname || !req.body.username || !req.body.password || !req.body.email || !req.body.confirmpassword) {
     res.json({success: false, msg: 'Please pass username and password.'});
   } else {
     var newUser = new User({
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
       username: req.body.username,
       password: req.body.password,
       role: req.body.role,
@@ -43,7 +45,7 @@ router.post('/candidateInfo/login', function(req, res) {
           // if user is found and password is right create a token
           var token = jwt.sign(user.toJSON(), settings.secret);
           // return the information including token as JSON
-          res.json({username : req.body.username, success: true, token: 'JWT ' + token});
+          res.json({success: true, token: 'JWT ' + token, username: req.body.username});
         } else {
           res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
         }

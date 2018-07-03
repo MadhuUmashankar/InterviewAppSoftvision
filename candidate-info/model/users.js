@@ -7,6 +7,14 @@ var bcrypt = require('bcrypt-nodejs');
 //create new instance of the mongoose.schema. the schema takes an object that shows
 //the shape of your database entries.
 var UserSchema = new Schema({
+    firstname: {
+        type: String,
+        required: true
+    },
+    lastname: {
+        type: String,
+        required: true
+    },
     username: {
       type: String,
       unique: true,

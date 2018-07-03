@@ -90,7 +90,6 @@ export default class Login extends Component {
                                             classname="form-control"
                                             name="username"
                                             autoFocus="true"
-                                            pattern="\w+"
                                             required
                                             onChange = {this.handleOnChange}
                                         />

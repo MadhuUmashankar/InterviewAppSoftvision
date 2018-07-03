@@ -45,7 +45,7 @@ class CandidateInfoList extends Component {
     }
 
     render() {
-        const {data, searchKey, url, IAData} = this.props;
+        const {data, searchKey, url, IAData, role} = this.props;
 
         let candidateNodes = data;
         let dataFromIA = IAData;

@@ -182,11 +182,13 @@ class ManagerEvaluation extends Component {
 
   handleSubmitManagerForm(e) {
     e.preventDefault();
-    const {candidateData} = this.props;
+    const {candidateData, addInterviews} = this.props;
     const candidateFullname = candidateData.firstname + " " + candidateData.lastname;
     const {interviewerName2, jobTitle, interviewerRound, clientOrientationRatings1, clientOrientationComments1, clientOrientationRatings2, clientOrientationComments2, clientOrientationRatings3, clientOrientationComments3, projectManagementRatings, projectManagementComments, leadershipRatings, leadershipComments, communicationRatings, communicationComments, domainRatings, domainComments, technicalSolutionsRatings1, technicalSolutionsComments1, technicalSolutionsRatings2,technicalSolutionsComments2, technicalSolutionsRatings3, technicalSolutionsComments3, technicalSolutionsRatings4,  technicalSolutionsComments4, managerInterviewStatus, excellentRemark, goodRemark, averageRemark, poorRemark, finalRemark } = this.state;
     // Candidate Manager
-     const managerRecord = Object.assign({}, {candidateFullname}, {candidateID: candidateData.candidateID}, {interviewerName2}, {jobTitle}, {interviewerRound}, {clientOrientationRatings1}, {clientOrientationComments1}, {clientOrientationRatings2}, {clientOrientationComments2}, {clientOrientationRatings3}, {clientOrientationComments3}, {projectManagementRatings}, {projectManagementComments}, {leadershipRatings}, {leadershipComments}, {communicationRatings}, {communicationComments}, {domainRatings}, {domainComments}, {technicalSolutionsRatings1}, {technicalSolutionsComments1}, {technicalSolutionsRatings2}, {technicalSolutionsComments2}, {technicalSolutionsRatings3}, {technicalSolutionsComments3}, {technicalSolutionsRatings4},  {technicalSolutionsComments4}, {managerInterviewStatus}, {excellentRemark}, {goodRemark}, {averageRemark}, {poorRemark}, {finalRemark});
+    const managerRecord = Object.assign({}, {candidateFullname}, {candidateID: candidateData.candidateID}, {interviewerName2}, {jobTitle}, {interviewerRound}, {clientOrientationRatings1}, {clientOrientationComments1}, {clientOrientationRatings2}, {clientOrientationComments2}, {clientOrientationRatings3}, {clientOrientationComments3}, {projectManagementRatings}, {projectManagementComments}, {leadershipRatings}, {leadershipComments}, {communicationRatings}, {communicationComments}, {domainRatings}, {domainComments}, {technicalSolutionsRatings1}, {technicalSolutionsComments1}, {technicalSolutionsRatings2}, {technicalSolutionsComments2}, {technicalSolutionsRatings3}, {technicalSolutionsComments3}, {technicalSolutionsRatings4},  {technicalSolutionsComments4}, {managerInterviewStatus}, {excellentRemark}, {goodRemark}, {averageRemark}, {poorRemark}, {finalRemark});
+
+    addInterviews(e);
 
     this.setState({ show: false });
       if(managerRecord) {
@@ -523,11 +525,8 @@ class ManagerEvaluation extends Component {
                             id="managerInterviewStatusId" value ={currManagerObject.managerInterviewStatus}>
                               <option>Yet to be interviewed</option>
                               <option>Rejected</option>
-                              <option>Selected</option>
                               <option>On Hold</option>
-                              <option>Withdraw</option>
                               <option>Move to HR round</option>
-                              <option>Took other offer</option>
                             </select>
                           </div>
                         </div>

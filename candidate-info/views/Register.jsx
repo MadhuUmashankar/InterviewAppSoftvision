@@ -13,7 +13,7 @@ import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 export default class Register extends Component {
     constructor(props) {
         super(props);
-        this.state = { username:'', email: '', role: '', password:'', confirmpassword:'' };
+        this.state = { firstname:'', lastname:'', username:'', email: '', role: '', password:'', confirmpassword:'' };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleOnChange = this.handleOnChange.bind(this);
     }
@@ -22,6 +22,12 @@ export default class Register extends Component {
         const { value } = event.target;
 
         switch (event.target.name) {
+            case "firstname":
+                this.setState({firstname : value})
+                break;
+            case "lastname":
+                this.setState({lastname : value})
+                break;
             case "username":
                 this.setState({username : value})
                 break;
@@ -51,9 +57,11 @@ export default class Register extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const { username, email, role, password, confirmpassword} = this.state;
+        const { firstname, lastname, username, email, role, password, confirmpassword} = this.state;
 
         const user = {
+            firstname,
+            lastname,
             username,
             email,
             role,
@@ -93,6 +101,41 @@ export default class Register extends Component {
                 <form className="form-horizontal form-container" onSubmit={ this.handleSubmit }>
                     <fieldset className = "background">
                         <div className="form-group">
+                            <label className="col-md-4 control-label">First Name</label>
+                            <div className="col-md-6 inputGroupContainer">
+                                <div className="input-group">
+                                        <InputBox
+                                            type="text"
+                                            placeholder="firstname"
+                                            classname="form-control"
+                                            name="firstname"
+                                            autoFocus="true"
+                                            pattern="\w+"
+                                            required
+                                            onChange = {this.handleOnChange}
+                                        />
+
+                                </div>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-md-4 control-label">Last Name</label>
+                            <div className="col-md-6 inputGroupContainer">
+                                <div className="input-group">
+                                        <InputBox
+                                            type="text"
+                                            placeholder="lastname"
+                                            classname="form-control"
+                                            name="lastname"
+                                            pattern="\w+"
+                                            required
+                                            onChange = {this.handleOnChange}
+                                        />
+
+                                </div>
+                            </div>
+                        </div>
+                        <div className="form-group">
                             <label className="col-md-4 control-label">User Name</label>
                             <div className="col-md-6 inputGroupContainer">
                                 <div className="input-group">
@@ -101,7 +144,6 @@ export default class Register extends Component {
                                             placeholder="Username"
                                             classname="form-control"
                                             name="username"
-                                            autoFocus="true"
                                             pattern="\w+"
                                             required
                                             onChange = {this.handleOnChange}
@@ -130,14 +172,13 @@ export default class Register extends Component {
                             <label className="col-md-4 control-label">Role</label>  
                             <div className="col-md-6 inputGroupContainer">
                                 <div className="input-group login-btn position">
-                                        <InputBox
-                                            type="text"
-                                            placeholder="Role"
-                                            classname="form-control"
-                                            name="role"
-                                            required
-                                            onChange = {this.handleOnChange}                                    
-                                        />
+                                <select className="form-control" id="role" name="role" onChange={this.handleOnChange}>                                
+                                    <option>Select</option>
+                                    <option>TA</option>
+                                    <option>Interviewer</option>
+                                    <option>Manager</option>
+                                    <option>HR</option>
+                                </select>
                                     
                                 </div>
                             </div>
