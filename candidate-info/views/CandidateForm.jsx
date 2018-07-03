@@ -11,7 +11,9 @@ export default class CandidateForm extends React.Component{
             skills : '',
             email: '',
             phone: '',
+            alternateNumber: '',
             city: '',
+            state: '',
             modalLabelView: props.modalLabelView,
             candidate: props.candidate,
             modalEditView: false,
@@ -198,7 +200,7 @@ export default class CandidateForm extends React.Component{
                     <form className="form-horizontal" id="contact_form" onSubmit={ this.handleSubmit }>
                         <fieldset className = "background">
                             <div className="form-group">
-                                <label className="col-md-4 control-label">First Name</label>
+                                <label className="col-md-4 control-label">First Name<span className="mandatory">*</span></label>
                                 <div className="col-md-6 inputGroupContainer">
                                     <div className="input-group">
 
@@ -235,7 +237,7 @@ export default class CandidateForm extends React.Component{
                             </div>
 
                             <div className="form-group">
-                                <label className="col-md-4 control-label" >Last Name</label>
+                                <label className="col-md-4 control-label" >Last Name<span className="mandatory">*</span></label>
                                     <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
 
@@ -273,7 +275,7 @@ export default class CandidateForm extends React.Component{
 
 
                             <div className="form-group">
-                                <label className="col-md-4 control-label">E-Mail</label>
+                                <label className="col-md-4 control-label">E-Mail<span className="mandatory">*</span></label>
                                     <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
 
@@ -309,7 +311,7 @@ export default class CandidateForm extends React.Component{
                             </div>
 
                             <div className="form-group">
-                                <label className="col-md-4 control-label">Phone</label>
+                                <label className="col-md-4 control-label">Phone<span className="mandatory">*</span></label>
                                     <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
 
@@ -381,7 +383,7 @@ export default class CandidateForm extends React.Component{
                             </div>
 
                             <div className="form-group">
-                                <label className="col-md-4 control-label">City</label>
+                                <label className="col-md-4 control-label">City<span className="mandatory">*</span></label>
                                     <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
 
@@ -418,7 +420,7 @@ export default class CandidateForm extends React.Component{
                             </div>
 
                             <div className="form-group">
-                                <label className="col-md-4 control-label">State</label>
+                                <label className="col-md-4 control-label">State<span className="mandatory">*</span></label>
                                     <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
 
@@ -455,7 +457,7 @@ export default class CandidateForm extends React.Component{
                             </div>
 
                               <div className="form-group">
-                                <label className="col-md-4 control-label">Key Skills</label>
+                                <label className="col-md-4 control-label">Key Skills<span className="mandatory">*</span></label>
                                     <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
                                         {!modalLabelView &&

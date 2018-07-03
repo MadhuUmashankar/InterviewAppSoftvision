@@ -96,8 +96,8 @@ button.close {
     // background-color: lightblue;
     padding: 20px 0;
 
-    .form-horizontal .control-label {
-      text-align: left;
+    .form-horizontal .background .form-group .control-label {
+          text-align: left;
           padding-left: 50px;
     }
 
@@ -118,13 +118,18 @@ button.close {
         margin-left: 28px;
         padding: 3px 8px;
     }
-    .form-group {
-      .control-label:after {
-        content: "*";
-        color: red;
-        padding: 5px;
-      }
-    }
+    // .form-group {
+    //   .not-mandatory:after {
+    //     content: "";
+    //     }
+    //
+    //   .control-label:after {
+    //     content: "*";
+    //     color: red;
+    //     padding: 5px;
+    //   }
+    // }
+
 }
 
 .inputGroupContainer {
