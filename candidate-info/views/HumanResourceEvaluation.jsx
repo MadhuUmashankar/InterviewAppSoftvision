@@ -65,7 +65,7 @@ class HumanResourceEvaluation extends Component {
   }
 
   handleOnChange(event) {
-     const {sendInterviewStatus} = this.props;
+     const {sendInterviewStatus,idx} = this.props;
       switch (event.target.name) {
           case "intelligence":
               this.setState({intelligence : event.target.value})
@@ -81,7 +81,7 @@ class HumanResourceEvaluation extends Component {
               break;
           case "hrInterviewStatus":
               this.setState({hrInterviewStatus : event.target.value});
-                sendInterviewStatus(event.target.value, "hr");
+                sendInterviewStatus(event.target.value, "hr",idx);
               break;
           case "interviewerName1":
               this.setState({interviewerName1 : event.target.value})

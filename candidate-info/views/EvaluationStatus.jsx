@@ -54,14 +54,8 @@ class EvaluationStatus extends Component {
          <select required className="form-control" onChange = {this.handleOnChange} name="interviewStatus"
          id="interviewStatusId" value ={interviewStatus}>
            <option>Yet to be interviewed</option>
-           <option>Rejected</option>
-           <option>Selected</option>
-           <option>On Hold</option>
-           <option>Withdraw</option>
-           <option>Move to Technical round 2</option>
-           <option>Move to Manager round</option>
-           <option>Move to HR round</option>
-           <option>Took other offer</option>
+           <option>Not Cleared</option>
+           <option>Cleared</option>     
          </select>
       </div></div>
   </div>

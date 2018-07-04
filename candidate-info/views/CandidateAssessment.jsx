@@ -56,7 +56,28 @@ export default class CandidateAssessment extends Component {
     }
 
     handleInterviewChange(e){
-      this.setState({showTable: true, interViewToBeTaken : e.target.value, show: false})
+      const {status, listOfInterviewRounds} = this.state;
+      let item = {};
+      let round,item1,sts;
+      if(e.target.value === 'manager') {
+        item =  {round : "Manager Round",
+        item1 : 'ManagerEvaluation',
+        sts : "In-Progress"
+      }}
+      else if(e.target.value === 'technical'){
+         item = {round : "Technical Round",
+        item1 : 'Evaluation',
+        sts : "In-Progress"
+      }}
+      else {
+        item = {round : "HR Round", 
+         item1 : 'HumanResourceEvaluation',
+         sts : "In-Progress"
+      }}
+      listOfInterviewRounds.push(item);
+      this.setState({showTable: true, interViewToBeTaken : e.target.value, 
+        show: false,listOfInterviewRounds : listOfInterviewRounds,showInterviews :false,
+        status : ''})
     }
 
     getCandidateIDqs(key) {
@@ -105,8 +126,10 @@ export default class CandidateAssessment extends Component {
        this.setState({ showInterviews: true , showText: false});
      }
 
-     sendInterviewStatus(status, type) {
-       this.setState({status,type});
+     sendInterviewStatus(status, type,idx) {
+       console.log("Inside iNterveiw Statys", status, type , idx)
+      this.state.listOfInterviewRounds[idx].sts = "Cleared";
+      this.setState({status,type,listOfInterviewRounds:this.state.listOfInterviewRounds});
      }
 
      logout() {
@@ -119,7 +142,7 @@ export default class CandidateAssessment extends Component {
 
     addInterviews(e) {
       e.preventDefault();
-      const {status, listOfInterviewRounds} = this.state;
+     /* const {status, listOfInterviewRounds} = this.state;
       let item;
       if(status === 'Move to Manager round') {
         item = 'ManagerEvaluation'
@@ -132,18 +155,17 @@ export default class CandidateAssessment extends Component {
       }
       listOfInterviewRounds.push(item);
       this.setState({listOfInterviewRounds : listOfInterviewRounds});
-    }
+    */}
 
     render() {
       const {interViewToBeTaken, candidateData, showInterviews, showTable, status, type, showText, listOfInterviewRounds, interviewStatus, users} = this.state;
       const fullname = candidateData.firstname + " " + candidateData.lastname;
       let url = "http://localhost:3000/candidateInfo", currentStatus;
 
-      if(interViewToBeTaken === "Technical Round") {
+    //  if(interViewToBeTaken === "Technical Round") {
         currentStatus = status
 
-      }
-console.log('currentStatus', currentStatus)
+     // }
       const username = sessionStorage.getItem('username');
 
       const currentUser = users.length > 0 && users.filter((user)=> (user.username == username));
@@ -191,8 +213,9 @@ console.log('currentStatus', currentStatus)
                         </Modal.Header>
                         <Modal.Body>
                           <select className="form-control experience-width" id="interViewToBeTakenId" onChange = {this.handleInterviewChange} value = {interViewToBeTaken}>
-                              <option value="manager">Manager Round</option>
+                              <option>Select</option>
                               <option value="technical">Technical Round</option>
+                              <option value="manager">Manager Round</option>
                               <option value="hr">HR Round</option>
                           </select>
                         </Modal.Body>
@@ -212,32 +235,25 @@ console.log('currentStatus', currentStatus)
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td className="interview-round">Technical Round</td>
-                              <td>
-                              <Evaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} addInterviews = {this.addInterviews} />
-                            </td>
-                          <td>{currentStatus}</td>
-                          </tr>
 
-                          {  listOfInterviewRounds.map((list, index)=> (
+                           {  listOfInterviewRounds.map((list, index)=> (
                               <tr key={index}>
-                                <td className="interview-round">Technical Round</td>
-                                { list === 'Evaluation' ?
+                                <td className="interview-round">{list.round}</td>
+                                { list.item1 === 'Evaluation' ?
                                   <td>
-                                  <Evaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} addInterviews = {this.addInterviews}/>
+                                  <Evaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} idx = {index}/>
                                 </td>
                                 :
-                               ( list === 'ManagerEvaluation' ?
+                               ( list.item1 === 'ManagerEvaluation' ?
                                 <td>
-                                  <ManagerEvaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} addInterviews = {this.addInterviews}/>
+                                  <ManagerEvaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} idx = {index}/>
                                 </td>
                                 :
                                 <td>
-                                  <HumanResourceEvaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus}/>
+                                  <HumanResourceEvaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} idx = {index}/>
                                 </td>
                                )}
-                                <td>{currentStatus}</td>
+                                <td>{list.sts}</td>
                               </tr>
 
                             ))
@@ -250,6 +266,30 @@ console.log('currentStatus', currentStatus)
                     :
                   null
                   }
+                   {currentStatus === 'Cleared' ? 
+               <div>
+                    <div>
+                        <Button bsStyle="primary" bsSize="large" onClick={this.handleShow} >
+                            Proceed interview
+                        </Button>
+                    </div>
+
+                    <Modal show={this.state.show} onHide={this.handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title><h3>Select the round of interview</h3></Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                          <select className="form-control experience-width" id="interViewToBeTakenId" onChange = {this.handleInterviewChange} value = {interViewToBeTaken}>
+                          <option value="technical">Select</option>
+                              <option value="technical">Technical Round</option>
+                              <option value="manager">Manager Round</option>
+                              <option value="hr">HR Round</option>
+                          </select>
+                        </Modal.Body>
+                    </Modal>
+                  </div>
+                : 
+                null}
 
 
                 </center>

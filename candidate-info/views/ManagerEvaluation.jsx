@@ -77,7 +77,7 @@ class ManagerEvaluation extends Component {
   }
 
   handleOnChange(event) {
-     const {sendInterviewStatus} = this.props;
+     const {sendInterviewStatus,idx} = this.props;
      switch (event.target.name) {
         case "interviewerName2":
             this.setState({interviewerName2 : event.target.value})
@@ -90,7 +90,7 @@ class ManagerEvaluation extends Component {
             break;
         case "managerInterviewStatus":
             this.setState({managerInterviewStatus : event.target.value})
-            sendInterviewStatus(event.target.value, "manager");
+            sendInterviewStatus(event.target.value, "manager",idx);
             break;
         case "clientOrientationRatings1":
             this.setState({clientOrientationRatings1 : event.target.value})
@@ -188,7 +188,7 @@ class ManagerEvaluation extends Component {
     // Candidate Manager
     const managerRecord = Object.assign({}, {candidateFullname}, {candidateID: candidateData.candidateID}, {interviewerName2}, {jobTitle}, {interviewerRound}, {clientOrientationRatings1}, {clientOrientationComments1}, {clientOrientationRatings2}, {clientOrientationComments2}, {clientOrientationRatings3}, {clientOrientationComments3}, {projectManagementRatings}, {projectManagementComments}, {leadershipRatings}, {leadershipComments}, {communicationRatings}, {communicationComments}, {domainRatings}, {domainComments}, {technicalSolutionsRatings1}, {technicalSolutionsComments1}, {technicalSolutionsRatings2}, {technicalSolutionsComments2}, {technicalSolutionsRatings3}, {technicalSolutionsComments3}, {technicalSolutionsRatings4},  {technicalSolutionsComments4}, {managerInterviewStatus}, {excellentRemark}, {goodRemark}, {averageRemark}, {poorRemark}, {finalRemark});
 
-    addInterviews(e);
+    //addInterviews(e);
 
     this.setState({ show: false });
       if(managerRecord) {
@@ -524,9 +524,9 @@ class ManagerEvaluation extends Component {
                             <select required className="form-control experience-width" onChange = {this.handleOnChange} name="managerInterviewStatus"
                             id="managerInterviewStatusId" value ={currManagerObject.managerInterviewStatus}>
                               <option>Yet to be interviewed</option>
-                              <option>Rejected</option>
+                              <option>Not Cleared</option>
                               <option>On Hold</option>
-                              <option>Move to HR round</option>
+                              <option>Cleared</option>
                             </select>
                           </div>
                         </div>

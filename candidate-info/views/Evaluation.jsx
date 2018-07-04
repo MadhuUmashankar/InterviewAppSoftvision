@@ -80,9 +80,9 @@ class Evaluation extends Component {
     this.setState({summaryData: summary});
   }
   handleEvaluationStatusSave(estatus) {
-    const {sendInterviewStatus} = this.props;
+    const {sendInterviewStatus,idx} = this.props;
     this.setState({interviewStatus: estatus});
-    sendInterviewStatus(estatus.interviewStatus, "technical");
+    sendInterviewStatus(estatus.interviewStatus, "technical",idx);
   }
 
   handleUpdate(e, id, record) {
@@ -117,7 +117,7 @@ class Evaluation extends Component {
     const record = Object.assign({}, {candidateID: candidate.candidateID}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
     this.setState({ show: false });
 
-    addInterviews(e);
+   // addInterviews(e);
     
       if(record) {
           let records = this.state.IAdata;
