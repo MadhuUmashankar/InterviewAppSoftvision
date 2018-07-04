@@ -165,7 +165,7 @@ export default class CandidateForm extends React.Component{
     handleSubmit(e) {
         e.preventDefault();
         const candidateID = Math.random().toString(26).slice(2);
-         const {firstname, lastname, skills, email, phone, alternateNumber, city, state, selectedFile_name,selectedFile} = this.state;
+         const {firstname, lastname, skills, email, phone, alternateNumber, city, state, selectedFile_name, selectedFile} = this.state;
         const {onHandleSubmit} = this.props;
           let formIsValid = true;
         if (!formIsValid) {
@@ -496,16 +496,19 @@ export default class CandidateForm extends React.Component{
 
                             {
                                 !modalLabelView &&
-
-
+                                // uploading resume takes below format only
+                                  // application/pdf means .pdf
+                                  // application/msword means .doc
+                                  // application/vnd.openxmlformats-officedocument.wordprocessingml.document means .docx
                                 <div className="form-group">
                                     <label className="col-md-4 control-label">Upload Resume</label>
                                     <div className="col-md-6 margin-resume inputGroupContainer">
                                         <div className="input-group">
-                                            <input type="file"
+                                            <InputBox type="file"
                                               className="form-control-file"
                                               id="exampleFormControlFile1"
                                               name = "resume"
+                                              accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                               onChange = {this.handleOnChange}/>
                                         </div>
                                     </div>

@@ -13,6 +13,7 @@ import {
   HashRouter
 } from 'react-router-dom';
 
+
 export default class CandidateAssessment extends Component {
     constructor(props) {
         super(props)
@@ -70,12 +71,12 @@ export default class CandidateAssessment extends Component {
         sts : "In-Progress"
       }}
       else {
-        item = {round : "HR Round", 
+        item = {round : "HR Round",
          item1 : 'HumanResourceEvaluation',
          sts : "In-Progress"
       }}
       listOfInterviewRounds.push(item);
-      this.setState({showTable: true, interViewToBeTaken : e.target.value, 
+      this.setState({showTable: true, interViewToBeTaken : e.target.value,
         show: false,listOfInterviewRounds : listOfInterviewRounds,showInterviews :false,
         status : ''})
     }
@@ -159,6 +160,8 @@ export default class CandidateAssessment extends Component {
 
     render() {
       const {interViewToBeTaken, candidateData, showInterviews, showTable, status, type, showText, listOfInterviewRounds, interviewStatus, users} = this.state;
+
+
       const fullname = candidateData.firstname + " " + candidateData.lastname;
       let url = "http://localhost:3000/candidateInfo", currentStatus;
 
@@ -266,7 +269,7 @@ export default class CandidateAssessment extends Component {
                     :
                   null
                   }
-                   {currentStatus === 'Cleared' ? 
+                   {currentStatus === 'Cleared' ?
                <div>
                     <div>
                         <Button bsStyle="primary" bsSize="large" onClick={this.handleShow} >
@@ -288,7 +291,7 @@ export default class CandidateAssessment extends Component {
                         </Modal.Body>
                     </Modal>
                   </div>
-                : 
+                :
                 null}
 
 

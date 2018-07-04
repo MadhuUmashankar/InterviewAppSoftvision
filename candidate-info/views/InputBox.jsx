@@ -14,7 +14,7 @@ export default class InputBox extends Component {
     }
 
     render() {
-        const {type, classname, placeholder, id, required, autoFocus, name, maxLength, readOnly, pattern, autoComplete} = this.props;
+        const {type, classname, placeholder, id, required, autoFocus, name, maxLength, readOnly, pattern, autoComplete, accept} = this.props;
         const {value} = this.state;
          return (
             <input type={type}
@@ -29,7 +29,8 @@ export default class InputBox extends Component {
              maxLength={maxLength}
              readOnly={readOnly}
              pattern={pattern}
-             autoComplete={autoComplete} />
+             autoComplete={autoComplete}
+             accept={accept} />
         );
     }
 }
