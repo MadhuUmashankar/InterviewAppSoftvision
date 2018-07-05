@@ -5,7 +5,7 @@ import './App.scss';
 import { Modal, Button } from 'react-bootstrap';
 import InputBox from './InputBox';
 import {hashHistory} from 'react-router';
-
+import ReactPaginate from 'react-paginate';
 import {
     BrowserRouter as Router,
     Link,
@@ -21,7 +21,19 @@ class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { data: [], show: false, searchKey:"", modalLabelView: false, candidate:{}, IAData:[], users:[]};
+        this.state = {
+          data: [],
+          show: false,
+          searchKey:"",
+          modalLabelView: false,
+          candidate:{},
+          IAData:[],
+          users:[],
+          pageCount: '',
+          offset: 0,
+          numberOfItemsPerPage: 2,
+          partialData:[]
+        };
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.loadDetailsFromServer = this.loadDetailsFromServer.bind(this);
@@ -31,6 +43,7 @@ class App extends Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.handleView = this.handleView.bind(this);
         this.logout = this.logout.bind(this);
+        this.handlePageClick = this.handlePageClick.bind(this);
     }
 
     loadDetailsFromServer() {
@@ -143,6 +156,8 @@ class App extends Component {
     componentDidMount() {
         this.loadDetailsFromServer();
         this.loadDetailsFromServerForIASheet();
+
+
     }
 
     handleClose() {
@@ -165,21 +180,46 @@ class App extends Component {
           })
     }
 
+    handlePageClick(arg) {
+
+    let {data, partialData, offset, numberOfItemsPerPage} = this.state;
+    let selected = arg.selected;
+    offset = Math.ceil(selected * numberOfItemsPerPage);
+    let countIndex = offset * numberOfItemsPerPage;
+    countIndex = countIndex ? countIndex : numberOfItemsPerPage;
+    partialData.length = 0;
+    for(let i=offset; i<countIndex; i++) {
+      if(data[i])
+      partialData[i]= data[i];
+      }
+
+      this.setState({
+        partialData: partialData, offset: offset
+      })
+
+  };
+
    render() {
-    const {data, searchKey, candidate, modalLabelView, IAData, users } = this.state;
+    let {data, searchKey, candidate, modalLabelView, IAData, users, pageCount, partialData, offset, numberOfItemsPerPage} = this.state;
     let url = this.props.url;
     const username = sessionStorage.getItem('username');
-
     const currentUser = users.length > 0 && users.filter((user)=> (user.username == username));
-
     const firstname = currentUser.length > 0 && currentUser[0].firstname,
     lastname = currentUser.length > 0 && currentUser[0].lastname,
     role = currentUser.length > 0 && currentUser[0].role.toLowerCase(),
     classname = (role === "interviewer" || role === "manager" || role === "hr") ? true : false;
 
+    let countIndex = numberOfItemsPerPage;
+    if(data.length >0 && offset==0) {
+      partialData.length = 0;
+      for(let i=offset; i<countIndex; i++) {
+        if(data[i])
+        partialData[i]= data[i];
+      }
+    }
+    pageCount = Math.ceil(data.length/numberOfItemsPerPage);
+
     return (
-
-
       <div className="App">
         <div className="App-header">
             <div className="">
@@ -190,7 +230,7 @@ class App extends Component {
             }
             <div>
                 <Button bsStyle="primary" bsSize="large" onClick={this.handleShow} disabled={classname}>
-                    Add New Candidate
+                    Add Candidate
                 </Button>
             </div>
         </div>
@@ -214,15 +254,28 @@ class App extends Component {
             </Modal.Body>
         </Modal>
 
-
         <CandidateInfoList
             onDelete={ this.handleDelete }
             onModalView={this.handleView }
             data={ data }
+            partialData = {partialData}
             IAData={IAData}
             searchKey= { searchKey }
             url = {url}
-            role={role}/>
+            role={role} />
+
+            <ReactPaginate previousLabel={"previous"}
+                                   nextLabel={"next"}
+                                   breakLabel={<a href="">...</a>}
+                                   breakClassName={"break-me"}
+                                   pageCount={pageCount}
+                                   marginPagesDisplayed={2}
+                                   pageRangeDisplayed={5}
+                                   onPageChange={this.handlePageClick}
+                                   containerClassName={"pagination"}
+                                   subContainerClassName={"pages pagination"}
+                                   activeClassName={"active"} />
+
 
       </div>
     );

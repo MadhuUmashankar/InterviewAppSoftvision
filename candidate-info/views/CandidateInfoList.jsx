@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import './candidateInfoList.scss';
-// import Evaluation from './Evaluation';
-// import {withRouter} from "react-router-dom";
 import {hashHistory} from 'react-router';
+// import Pagination from './Pagination';
+
+
 
 class CandidateInfoList extends Component {
     constructor(props) {
         super(props);
-        this.modalStatus = false;
 
+        this.modalStatus = false;
         this.handleEvalution = this.handleEvalution.bind(this);
     }
 
-    handleDelete(e, candidateID) {
+  handleDelete(e, candidateID) {
       console.log('inside delete', candidateID)
         if (confirm("You are about to delete this Candidate?")) {
           const {onDelete} = this.props;
@@ -45,9 +46,9 @@ class CandidateInfoList extends Component {
     }
 
     render() {
-        const {data, searchKey, url, IAData, role} = this.props;
+        const {data, searchKey, url, IAData, role, partialData} = this.props;
 
-        let candidateNodes = data;
+        let candidateNodes = partialData;
         let dataFromIA = IAData;
 
         if(searchKey) {
@@ -58,15 +59,13 @@ class CandidateInfoList extends Component {
         }
 
         candidateNodes = candidateNodes && candidateNodes.map((candidate, index) => {
+          console.log('candidateNodes', candidateNodes)
+          console.log('candidate', candidate)
 
             const candidateID = candidate._id;
-
-
             return (
-                <div key={index}>
-                        <div>
-                        <div className="candidate-colum panel">
-                          <div className= "evaluation-status date-status">
+                <div key={index} className="candidate-colum panel">
+                        <div className= "evaluation-status date-status">
                             <div className="">
                                <label>{dataFromIA[index] ? dataFromIA[index].interviewStatus : ''}</label>
                              </div>
@@ -80,15 +79,11 @@ class CandidateInfoList extends Component {
                                 <h5><span className="margin-tiny glyphicon glyphicon-map-marker"></span>Location: {candidate.city}</h5>
                                 <h5><span className="margin-tiny glyphicon glyphicon-phone"></span>Phone No.: {candidate.phone}</h5>
                             </div>
-
-
-
                               <div>
                                   <button className="btn margin-tiny" onClick={(e)=>this.handleView(e, candidate)}>View</button>
                                   <button className="btn btn-danger" onClick={(e)=>this.handleDelete(e, candidateID, candidate)}>Delete</button>
                               </div>
-                          </div>
-                        </div>
+
                 </div>
 
             )
@@ -97,12 +92,18 @@ class CandidateInfoList extends Component {
         return (
 
             <div className="candidate-list">
+              <ul>
                 {
                     candidateNodes.length > 0
                     && candidateNodes
                 }
                 { candidateNodes.length === 0 && <p className="no-record">No records available</p>}
+                </ul>
             </div>
+
+
+
+
         )
     }
 }
