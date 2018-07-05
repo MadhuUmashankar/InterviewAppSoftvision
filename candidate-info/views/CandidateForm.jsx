@@ -200,7 +200,7 @@ export default class CandidateForm extends React.Component{
                     <form className="form-horizontal" id="contact_form" onSubmit={ this.handleSubmit }>
                         <fieldset className = "background">
                             <div className="form-group">
-                                <label className="col-md-4 control-label">First Name<span className="mandatory">*</span></label>
+                                <label className="col-md-4 control-label">First Name{modalLabelView ? "" :<span className="mandatory">*</span>}</label>
                                 <div className="col-md-6 inputGroupContainer">
                                     <div className="input-group">
 
@@ -237,7 +237,7 @@ export default class CandidateForm extends React.Component{
                             </div>
 
                             <div className="form-group">
-                                <label className="col-md-4 control-label" >Last Name<span className="mandatory">*</span></label>
+                                <label className="col-md-4 control-label" >Last Name{modalLabelView ? "" :<span className="mandatory">*</span>}</label>
                                     <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
 
@@ -275,7 +275,7 @@ export default class CandidateForm extends React.Component{
 
 
                             <div className="form-group">
-                                <label className="col-md-4 control-label">E-Mail<span className="mandatory">*</span></label>
+                                <label className="col-md-4 control-label">E-Mail{modalLabelView ? "" :<span className="mandatory">*</span>}</label>
                                     <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
 
@@ -311,7 +311,7 @@ export default class CandidateForm extends React.Component{
                             </div>
 
                             <div className="form-group">
-                                <label className="col-md-4 control-label">Phone<span className="mandatory">*</span></label>
+                                <label className="col-md-4 control-label">Phone{modalLabelView ? "" :<span className="mandatory">*</span>}</label>
                                     <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
 
@@ -383,7 +383,7 @@ export default class CandidateForm extends React.Component{
                             </div>
 
                             <div className="form-group">
-                                <label className="col-md-4 control-label">City<span className="mandatory">*</span></label>
+                                <label className="col-md-4 control-label">City{modalLabelView ? "" :<span className="mandatory">*</span>}</label>
                                     <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
 
@@ -420,7 +420,7 @@ export default class CandidateForm extends React.Component{
                             </div>
 
                             <div className="form-group">
-                                <label className="col-md-4 control-label">State<span className="mandatory">*</span></label>
+                                <label className="col-md-4 control-label">State{modalLabelView ? "" :<span className="mandatory">*</span>}</label>
                                     <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
 
@@ -457,7 +457,7 @@ export default class CandidateForm extends React.Component{
                             </div>
 
                               <div className="form-group">
-                                <label className="col-md-4 control-label">Key Skills<span className="mandatory">*</span></label>
+                                <label className="col-md-4 control-label">Key Skills{modalLabelView ? "" :<span className="mandatory">*</span>}</label>
                                     <div className="col-md-6 inputGroupContainer">
                                         <div className="input-group">
                                         {!modalLabelView &&
