@@ -77,7 +77,7 @@ export default class CandidateAssessment extends Component {
       }}
       listOfInterviewRounds.push(item);
       this.setState({showTable: true, interViewToBeTaken : e.target.value,
-        show: false,listOfInterviewRounds : listOfInterviewRounds,showInterviews :false,
+        show: false, listOfInterviewRounds : listOfInterviewRounds, showInterviews :false,
         status : ''})
     }
 

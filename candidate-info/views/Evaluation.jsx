@@ -92,7 +92,10 @@ class Evaluation extends Component {
     const candidate = candidateData;
     const {detailsData, experience, expertiseData, impression, summaryData, interviewStatus} = this.state;
     const fullname = candidate.firstname + " " + candidate.lastname;
-    const updatedrecord = Object.assign({},{candidateID: candidate.candidateID}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
+    const candidateID = candidate.candidateID;
+
+    const updatedrecord = Object.assign({}, { candidateID, candidateName: fullname, interviewRounds : [{interviewDate:detailsData.interviewDate, interviewerName:detailsData.interviewerName, experience, rows: expertiseData, impression, summaryData, interviewStatus}]});
+    // const updatedrecord = Object.assign({},{candidateID: candidate.candidateID}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
     let iaUrl = this.props.url + '/newIAForm';
     this.setState({ show: false });
 
@@ -108,18 +111,24 @@ class Evaluation extends Component {
   handleSubmitIAForm(e) {
     e.preventDefault();
     this.loadDetailsFromServerForIASheet();
-    const {candidateData, addInterviews} = this.props;
+    const {candidateData} = this.props;
     const candidate = candidateData;
     const {detailsData, experience, expertiseData, impression, summaryData, interviewStatus} = this.state;
     // Candidate IA Form data
     const fullname = candidate.firstname + " " + candidate.lastname;
+    const candidateID = candidate.candidateID;
 
-    const record = Object.assign({}, {candidateID: candidate.candidateID}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
+    const record = Object.assign({}, { candidateID, candidateName: fullname, interviewRounds : [{interviewDate:detailsData.interviewDate, interviewerName:detailsData.interviewerName, experience, rows: expertiseData, impression, summaryData, interviewStatus}]});
+
+// , {experience}, {rows: expertiseData}, {impression}, {summaryData}, interviewStatus
+
+console.log('record', record);
+
+
+
     this.setState({ show: false });
 
-   // addInterviews(e);
-    
-      if(record) {
+         if(record) {
           let records = this.state.IAdata;
           let newIAForm = records.concat(record);
           this.setState({ IAdata: newIAForm });
@@ -130,6 +139,7 @@ class Evaluation extends Component {
                   this.setState({ IAdata: records });
               });
       }
+
   }
 
   render() {
@@ -144,13 +154,19 @@ class Evaluation extends Component {
     let total = ((0.1*experience) + (0.8*overallAvgScore) + (0.1*impression)) || 0;
     let totalValue = parseFloat(Number(total).toFixed(2));
 
-    
 
-    let currentIARecord = IAdata.length> 0 && IAdata.filter((record) => {
+
+    let currentIARecord = IAdata.length > 0 && IAdata.filter((record) => {
       return candidate.candidateID === record.candidateID
     });
 
     currentIARecord = currentIARecord[0];
+    if(currentIARecord !== undefined) {
+      const {candidateID, _id, candidateName } = currentIARecord;
+
+      currentIARecord = Object.assign({}, {candidateID}, {_id}, {candidateName}, currentIARecord.interviewRounds[this.props.idx]);
+    }
+
 
     return (
       <div>

@@ -1,27 +1,21 @@
 import React, { Component } from 'react';
 import './candidateInfoList.scss';
 import {hashHistory} from 'react-router';
-// import Pagination from './Pagination';
-
-
 
 class CandidateInfoList extends Component {
     constructor(props) {
         super(props);
-
         this.modalStatus = false;
         this.handleEvalution = this.handleEvalution.bind(this);
     }
 
   handleDelete(e, candidateID) {
-      console.log('inside delete', candidateID)
         if (confirm("You are about to delete this Candidate?")) {
           const {onDelete} = this.props;
           onDelete(candidateID);
         } else {
           false;
         }
-
     }
 
     handleUpdate(e, candidateID, candidate) {
@@ -47,7 +41,6 @@ class CandidateInfoList extends Component {
 
     render() {
         const {data, searchKey, url, IAData, role, partialData} = this.props;
-
         let candidateNodes = partialData;
         let dataFromIA = IAData;
 
@@ -59,10 +52,8 @@ class CandidateInfoList extends Component {
         }
 
         candidateNodes = candidateNodes && candidateNodes.map((candidate, index) => {
-          console.log('candidateNodes', candidateNodes)
-          console.log('candidate', candidate)
-
             const candidateID = candidate._id;
+
             return (
                 <div key={index} className="candidate-colum panel">
                         <div className= "evaluation-status date-status">
