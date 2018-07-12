@@ -31,7 +31,7 @@ class App extends Component {
           users:[],
           pageCount: '',
           offset: 0,
-          numberOfItemsPerPage: 2,
+          numberOfItemsPerPage: 5,
           partialData:[]
         };
         this.handleShow = this.handleShow.bind(this);

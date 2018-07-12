@@ -1,3 +1,4 @@
+@import "../node_modules/react-toggle-switch/dist/css/switch.min.css";
 
 .App {
     max-width: 960px;
@@ -208,7 +209,9 @@ margin-top: 15px;
     font-size: 15px;
 }
 
-
+.interview-status-align{
+  text-align: right;
+}
 
 
 
@@ -219,6 +222,16 @@ margin-top: 15px;
 }
 .remarks-width {
   width: 60%;
+}
+
+// HR form-group
+.hr-details{
+  display: -webkit-inline-box;
+  width: 50%;
+}
+
+.hr-details-sub-title{
+  margin-top: 10px;
 }
 
 // candidate assessment form

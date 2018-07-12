@@ -55,27 +55,27 @@ class CandidateInfoList extends Component {
             const candidateID = candidate._id;
 
             return (
-                <div key={index} className="candidate-colum panel">
-                        <div className= "evaluation-status date-status">
-                            <div className="">
-                               <label>{dataFromIA[index] ? dataFromIA[index].interviewStatus : ''}</label>
-                             </div>
-                           <div className="">
-                             <label>{dataFromIA[index] ? dataFromIA[index].interviewDate : ''}</label>
-                           </div>
-                        </div>
-                            <div>
-                                <h5><label><a href="" onClick={(e)=>this.handleEvalution(e,candidateID)}>{candidate.firstname} {candidate.lastname}</a></label></h5>
-                                <h5><span className="margin-tiny glyphicon glyphicon-wrench"></span>Skills: {candidate.skills}</h5>
-                                <h5><span className="margin-tiny glyphicon glyphicon-map-marker"></span>Location: {candidate.city}</h5>
-                                <h5><span className="margin-tiny glyphicon glyphicon-phone"></span>Phone No.: {candidate.phone}</h5>
-                            </div>
-                              <div>
-                                  <button className="btn margin-tiny" onClick={(e)=>this.handleView(e, candidate)}>View</button>
-                                  <button className="btn btn-danger" onClick={(e)=>this.handleDelete(e, candidateID, candidate)}>Delete</button>
-                              </div>
 
-                </div>
+                            <div  key={index} className="col-md-4 col-sm-6 card-wrapper">
+                              <div className="event-card">
+                                <div className="event-card-title-block"><label><a href="" onClick={(e)=>this.handleEvalution(e,candidateID)}>{candidate.firstname} {candidate.lastname}</a></label></div>
+
+
+                                <p className="event-card-blurb">
+                                <div><span className="margin-tiny glyphicon glyphicon-wrench"></span>Skills: {candidate.skills}</div>
+                                <div><span className="margin-tiny glyphicon glyphicon-map-marker"></span>Location: {candidate.city}</div>
+                                <div><span className="margin-tiny glyphicon glyphicon-phone"></span>Phone No.: {candidate.phone}</div>
+                                </p>
+                                <div className="event-card-btn-group">
+                                  <button className="btn margin-tiny" onClick={(e)=>this.handleView(e, candidate)}>View</button>
+                                  </div>
+                                  <div className="event-card-btn-group right">
+                                  <button className="btn btn-danger" onClick={(e)=>this.handleDelete(e, candidateID, candidate)}>Delete</button>
+                                  </div>
+                              </div>
+                            </div>
+
+
 
             )
         })
@@ -83,13 +83,13 @@ class CandidateInfoList extends Component {
         return (
 
             <div className="candidate-list">
-              <ul>
+
                 {
                     candidateNodes.length > 0
                     && candidateNodes
                 }
                 { candidateNodes.length === 0 && <p className="no-record">No records available</p>}
-                </ul>
+
             </div>
 
 

@@ -6,7 +6,7 @@ var mongojs = require('mongojs');
 var uuid = require('uuid');
 var passport = require('passport');
 require('../config/passport')(passport);
-var db = mongojs('mongodb://localhost:27017/candidateInformationTable', ['candidateInformationTables', 'evaluationSheetInformationTables', 'managerEvaluationInformationTables', 'hrEvaluationInformationTables', 'users']);
+var db = mongojs('mongodb://localhost:27017/candidateInformationTable', ['candidateInformationTables', 'evaluationSheetInformationTables', 'managerEvaluationInformationTables', 'hrEvaluationInformationTables', 'users', 'candidateInterviewRounds']);
 
 
 // Get all Manager Evaluaton  Info
@@ -56,6 +56,18 @@ router.post('/candidateInfo/newHREvaluationForm', function(req, res, next){
 
 });
 
+//saving interview rounds
+router.post('/candidateInfo/CandidateRounds', function(req, res, next){
+    var interviewRounds = req.body;
+    db.candidateInterviewRounds.save(interviewRounds, function(err, interviewRounds){
+        if(err){
+            res.send(err);
+        }
+        res.json(interviewRounds);
+    });
+});
+
+
 // Save Manager evaulation data
 router.post('/candidateInfo/newManagerForm', function(req, res, next){
     var managerEvaluator = req.body;
@@ -85,6 +97,20 @@ router.get('/candidateInfo', passport.authenticate('jwt', { session: false}), fu
     }
 });
 
+// Get All candidate rounds
+router.get('/candidateInfo/CandidateRounds/', function(req, res, next) {
+    //var candidateId_round = req.params.id;
+    // var query = {"candidateID" : candidateId_round};
+    // console.log("query ---", req.params);
+    db.candidateInterviewRounds.find(function(err, candidateInterviewRounds){
+        if(err){
+            res.send(err);
+        }
+        res.json(candidateInterviewRounds);
+    });
+});
+
+
 // Get All IA Info
 router.get('/candidateInfo/newIAForm', function(req, res, next){
     db.evaluationSheetInformationTables.find(function(err, evaluationSheetInformationTables){
@@ -105,6 +131,7 @@ router.get('/candidateInfo/newIAForm/:id', function(req, res, next){
         }
         res.json(evaluator);
     });
+    console.log('response from server------------------', evaluator);
 });
 
 
@@ -188,6 +215,12 @@ router.delete('/candidateInfo/newHREvaluationForm/:id', function(req, res, next)
     });
 });
 
+// Delete candidate Interview Rounds form
+router.delete('/candidateInfo/CandidateRounds/:id', function(req, res, next){
+    db.candidateInterviewRounds.remove({_id: mongojs.ObjectId(req.params.id)});
+});
+
+
 
 router.post('/candidateInfo/newCandidate', function(req, res, next){
     var candidate = req.body;
@@ -262,6 +295,9 @@ router.put('/candidateInfo/:id', function(req, res, next){
     if(candidate.resume){
         updcandidateInfo.resume = candidate.resume;
     }
+    if(candidate.offered){
+      updcandidateInfo.offered = candidate.offered;
+    }
     if(!updcandidateInfo){
         res.status(400);
         res.json({
@@ -273,6 +309,7 @@ router.put('/candidateInfo/:id', function(req, res, next){
                 res.send(err);
             }
             res.json(candidate);
+            console.log('candidate----------', updcandidateInfo.offered);
         });
     }
 });
@@ -287,7 +324,7 @@ router.post('/candidateInfo/newIAForm', function(req, res, next){
         }
         res.json(evaluator);
     });
-
+    console.log('inside server evaluator save======================', evaluator)
 });
 
 
@@ -296,7 +333,7 @@ router.post('/candidateInfo/newIAForm', function(req, res, next){
 router.put('/candidateInfo/newIAForm/:id', function(req, res, next){
     var evaluator = req.body;
      let updatedIA = {};
-
+     console.log('inside server evaluator update--------------------', evaluator)
      if(evaluator.candidateID){
         updatedIA.candidateID = evaluator.candidateID;
     }
@@ -335,6 +372,14 @@ router.put('/candidateInfo/newIAForm/:id', function(req, res, next){
             res.json(evaluator);
         });
     }
+
+    // db.evaluationSheetInformationTables.update({_id: mongojs.ObjectId(req.params.id)},evaluator, function(err, evaluator){
+    //     if(err){
+    //         res.send(err);
+    //     }
+    //     res.json(evaluator);
+    // });
+    console.log('inside update----------------------------evaluator',evaluator)
 });
 
 
@@ -464,18 +509,42 @@ router.put('/candidateInfo/newHREvaluationForm/:id', function(req, res, next){
      if(hrEvaluator.candidateID){
         updatedHRInfo.candidateID = hrEvaluator.candidateID;
     }
-    if(hrEvaluator.intelligence){
-        updatedHRInfo.intelligence = hrEvaluator.intelligence;
+    if(hrEvaluator.business){
+        updatedHRInfo.business = hrEvaluator.business;
     }
-    if(hrEvaluator.intensity){
-        updatedHRInfo.intensity = hrEvaluator.intensity;
+    if(hrEvaluator.project){
+        updatedHRInfo.project = hrEvaluator.project;
     }
-    if(hrEvaluator.commitment){
-        updatedHRInfo.commitment = hrEvaluator.commitment;
+    if(hrEvaluator.customerFocus){
+        updatedHRInfo.customerFocus = hrEvaluator.customerFocus;
     }
-    if(hrEvaluator.teamWork){
-        updatedHRInfo.teamWork = hrEvaluator.teamWork;
+    if(hrEvaluator.senseOfUrgency){
+        updatedHRInfo.senseOfUrgency = hrEvaluator.senseOfUrgency;
     }
+    if(hrEvaluator.orientationToDetails){
+       updatedHRInfo.orientationToDetails = hrEvaluator.orientationToDetails;
+   }
+   if(hrEvaluator.technologyExposure){
+       updatedHRInfo.technologyExposure = hrEvaluator.technologyExposure;
+   }
+   if(hrEvaluator.attitude){
+       updatedHRInfo.attitude = hrEvaluator.attitude;
+   }
+   if(hrEvaluator.culturalCompatibility){
+       updatedHRInfo.culturalCompatibility = hrEvaluator.culturalCompatibility;
+   }
+   if(hrEvaluator.communicationSkills){
+       updatedHRInfo.communicationSkills = hrEvaluator.communicationSkills;
+   }
+   if(hrEvaluator.interpersonalSkills){
+       updatedHRInfo.interpersonalSkills = hrEvaluator.interpersonalSkills;
+   }
+   if(hrEvaluator.analyticalCritical){
+       updatedHRInfo.analyticalCritical = hrEvaluator.analyticalCritical;
+   }
+   if(hrEvaluator.energyEnthusiasm){
+       updatedHRInfo.energyEnthusiasm = hrEvaluator.energyEnthusiasm;
+   }
     if(hrEvaluator.hrInterviewStatus){
         updatedHRInfo.hrInterviewStatus = hrEvaluator.hrInterviewStatus;
     }
@@ -503,4 +572,42 @@ router.put('/candidateInfo/newHREvaluationForm/:id', function(req, res, next){
         });
     }
 });
+
+
+
+
+
+// Update Candidate round's IA ID
+router.put('/candidateInfo/CandidateRounds/:id', function(req, res, next) {
+    var candidateRounds = req.body;
+    var candidateRoundsIAdata = {};
+
+    if(candidateRounds.IA_id){
+        candidateRoundsIAdata.IA_id = candidateRounds.IA_id;
+    }
+    if(candidateRounds.candidateID){
+        candidateRoundsIAdata.candidateID = candidateRounds.candidateID;
+    }
+    if(candidateRounds.item1){
+        candidateRoundsIAdata.item1 = candidateRounds.item1;
+    }
+    if(candidateRounds.round){
+        candidateRoundsIAdata.round = candidateRounds.round;
+    }
+    if(candidateRounds.sts){
+        candidateRoundsIAdata.sts = candidateRounds.sts;
+    }
+
+    // var updcandidateInfo = {};
+    console.log('in update method of round===================', candidateRounds);
+
+        db.candidateInterviewRounds.update({_id: mongojs.ObjectId(candidateRounds._id) },candidateRoundsIAdata, function(err, candidateRounds){
+            if(err){
+                res.send(err);
+            }
+            res.json(candidateRounds);
+        });
+
+});
+
 module.exports = router;

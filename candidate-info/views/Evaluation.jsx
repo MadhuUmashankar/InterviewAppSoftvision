@@ -88,63 +88,83 @@ class Evaluation extends Component {
   handleUpdate(e, id, record) {
     e.preventDefault();
 
-    const {candidateData} = this.props;
+    const {candidateData, candidateInterviewRecords,idx} = this.props;
     const candidate = candidateData;
     const {detailsData, experience, expertiseData, impression, summaryData, interviewStatus} = this.state;
     const fullname = candidate.firstname + " " + candidate.lastname;
     const candidateID = candidate.candidateID;
 
-    const updatedrecord = Object.assign({}, { candidateID, candidateName: fullname, interviewRounds : [{interviewDate:detailsData.interviewDate, interviewerName:detailsData.interviewerName, experience, rows: expertiseData, impression, summaryData, interviewStatus}]});
-    // const updatedrecord = Object.assign({},{candidateID: candidate.candidateID}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
+    // const updatedrecord = Object.assign({}, { candidateID, candidateName: fullname, interviewRounds : [{interviewDate:detailsData.interviewDate, interviewerName:detailsData.interviewerName, experience, rows: expertiseData, impression, summaryData, interviewStatus}]});
+    const updatedrecord = Object.assign({},{candidateID: candidate.candidateID}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
     let iaUrl = this.props.url + '/newIAForm';
+      let url = "http://localhost:3000/candidateInfo";
+      let roundUrl = url + '/CandidateRounds';
     this.setState({ show: false });
 
     //sends the new candidate id and new candidate to our api
     axios.put(`${iaUrl}/${id}`, updatedrecord)
+    .then(res => {
+        candidateInterviewRecords[idx].sts = updatedrecord.interviewStatus;
+        axios.put(`${roundUrl}/${candidateInterviewRecords[idx]._id}`, candidateInterviewRecords[idx])
+        .then(response => {
+          this.loadDetailsFromServerForIASheet();
+          location.reload();
+        })
+            .catch(err => {
+                console.log('error message in update-----------=========', err);
+            })
+    })
         .catch(err => {
             console.log(err);
         })
-    this.loadDetailsFromServerForIASheet();
   }
 
 
   handleSubmitIAForm(e) {
     e.preventDefault();
-    this.loadDetailsFromServerForIASheet();
-    const {candidateData} = this.props;
+
+    const {candidateData, candidateInterviewRecords, idx} = this.props;
     const candidate = candidateData;
     const {detailsData, experience, expertiseData, impression, summaryData, interviewStatus} = this.state;
     // Candidate IA Form data
     const fullname = candidate.firstname + " " + candidate.lastname;
     const candidateID = candidate.candidateID;
-
-    const record = Object.assign({}, { candidateID, candidateName: fullname, interviewRounds : [{interviewDate:detailsData.interviewDate, interviewerName:detailsData.interviewerName, experience, rows: expertiseData, impression, summaryData, interviewStatus}]});
+    const record = Object.assign({},{candidateID: candidate.candidateID}, detailsData, {candidateName: fullname}, {experience},{rows:  expertiseData}, {impression}, {summaryData}, interviewStatus)
+    // const record = Object.assign({}, { candidateID, candidateName: fullname, interviewRounds : [{interviewDate:detailsData.interviewDate, interviewerName:detailsData.interviewerName, experience, rows: expertiseData, impression, summaryData, interviewStatus}]});
 
 // , {experience}, {rows: expertiseData}, {impression}, {summaryData}, interviewStatus
 
-console.log('record', record);
-
-
-
     this.setState({ show: false });
-
          if(record) {
           let records = this.state.IAdata;
           let newIAForm = records.concat(record);
           this.setState({ IAdata: newIAForm });
-
+          let url = "http://localhost:3000/candidateInfo";
+          let roundUrl = url + '/CandidateRounds';
           axios.post(this.props.url + '/newIAForm', record)
+          .then(res => {
+              candidateInterviewRecords[idx].IA_id = res.data._id;
+              candidateInterviewRecords[idx].sts = record.interviewStatus;
+              axios.put(`${roundUrl}/${candidateInterviewRecords[idx]._id}`, candidateInterviewRecords[idx])
+              .then(response => {
+                this.loadDetailsFromServerForIASheet();
+                location.reload();
+              })
+                  .catch(err => {
+                      console.log('error message=========', err);
+                  })
+          })
               .catch(err => {
                   console.error(err);
                   this.setState({ IAdata: records });
               });
       }
 
-  }
+    }
 
   render() {
     let {url, IAdata, index, experience, expertiseData, impression, overallAvgScore} = this.state;
-    const {candidateData, sendInterviewStatus} = this.props;
+    const {candidateData, sendInterviewStatus,idx,candidateInterviewRecords} = this.props;
     const candidate = candidateData;
     let rows = expertiseData;
     if(rows.length) {
@@ -154,18 +174,16 @@ console.log('record', record);
     let total = ((0.1*experience) + (0.8*overallAvgScore) + (0.1*impression)) || 0;
     let totalValue = parseFloat(Number(total).toFixed(2));
 
-
-
     let currentIARecord = IAdata.length > 0 && IAdata.filter((record) => {
-      return candidate.candidateID === record.candidateID
+      return  candidateInterviewRecords[idx].IA_id === record._id
     });
 
     currentIARecord = currentIARecord[0];
-    if(currentIARecord !== undefined) {
-      const {candidateID, _id, candidateName } = currentIARecord;
-
-      currentIARecord = Object.assign({}, {candidateID}, {_id}, {candidateName}, currentIARecord.interviewRounds[this.props.idx]);
-    }
+    // if(currentIARecord !== undefined) {
+    //   const {candidateID, _id, candidateName } = currentIARecord;
+    //
+    //   currentIARecord = Object.assign({}, {candidateID}, {_id}, {candidateName}, currentIARecord.interviewRounds[this.props.idx]);
+    // }
 
 
     return (

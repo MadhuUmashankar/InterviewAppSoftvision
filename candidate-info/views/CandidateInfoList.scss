@@ -53,3 +53,41 @@
   padding-left : 40px;
   // color: grey;
 }
+
+
+.card-wrapper {
+  float: none;
+  display: inline-block;
+  margin-bottom: 30px;
+  vertical-align: top;
+}
+
+.event-card {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    padding-top: 0;
+    min-height: 240px;
+    box-shadow: 0 1px 3px rgba(158,158,158,0.12), 0 1px 2px rgba(158,158,158,0.24);
+    position: relative;
+}
+
+.event-card-title-block {
+  padding: 25px 25px 0px 100px;
+    // border-bottom: 1px solid #856a91;
+    // padding-bottom: 10px;
+}
+
+.event-card-blurb {
+    padding-top: 10px;
+    padding-bottom: 40px;
+}
+
+.event-card-btn-group {
+    position: absolute;
+    bottom: 15px;
+}
+
+.right {
+      right: 15px;
+}

@@ -215,6 +215,7 @@ export default class CandidateForm extends React.Component{
                                                 name="firstname"
                                                 value = { modalEditView &&  candidate ? candidate.firstname : this.state.firstname}
                                                 autoFocus="true"
+                                                autoComplete="off"
                                                 required
                                                 onChange = {this.handleOnChange}
                                             />
@@ -250,6 +251,7 @@ export default class CandidateForm extends React.Component{
                                                 placeholder="Last Name"
                                                 classname="form-control"
                                                 name="lastname"
+                                                autoComplete="off"
                                                 value = { modalEditView &&  candidate ? candidate.lastname : this.state.lastname}
                                                 required
                                                 onChange = {this.handleOnChange}
@@ -288,6 +290,7 @@ export default class CandidateForm extends React.Component{
                                                 placeholder="E-Mail Address"
                                                 classname="form-control"
                                                 name="email"
+                                                autoComplete="off"
                                                 value = { modalEditView &&  candidate ? candidate.email : this.state.email}
                                                 required
                                                 onChange = {this.handleOnChange}
@@ -324,6 +327,7 @@ export default class CandidateForm extends React.Component{
                                                 placeholder="(91)12345-67890"
                                                 classname="form-control"
                                                 name="phone"
+                                                autoComplete="off"
                                                 maxLength="10"
                                                 value = { modalEditView &&  candidate ? candidate.phone : this.state.phone}
                                                 onChange = {this.handleOnChange}
@@ -361,6 +365,7 @@ export default class CandidateForm extends React.Component{
                                                 classname="form-control"
                                                 name="alternateNumber"
                                                 maxLength="10"
+                                                autoComplete="off"
                                                 value = { modalEditView &&  candidate ? candidate.alternateNumber : this.state.alternateNumber}
                                                 onChange = {this.handleOnChange}
                                             />
@@ -397,6 +402,7 @@ export default class CandidateForm extends React.Component{
                                                 placeholder="City"
                                                 classname="form-control"
                                                 name="city"
+                                                autoComplete="off"
                                                 value = { modalEditView &&  candidate ? candidate.city : this.state.city}
                                                 required
                                                 onChange = {this.handleOnChange}
@@ -434,6 +440,7 @@ export default class CandidateForm extends React.Component{
                                                 placeholder="State"
                                                 classname="form-control"
                                                 name="state"
+                                                autoComplete="off"
                                                 value = { modalEditView &&  candidate ? candidate.state : this.state.state}
                                                 required
                                                 onChange = {this.handleOnChange}
@@ -471,6 +478,7 @@ export default class CandidateForm extends React.Component{
                                                 placeholder="Key skills"
                                                 classname="form-control"
                                                 name="skills"
+                                                autoComplete="off"
                                                 value = { modalEditView &&  candidate ? candidate.skills : this.state.skills}
                                                 required
                                                 onChange = {this.handleOnChange}
@@ -508,6 +516,7 @@ export default class CandidateForm extends React.Component{
                                               className="form-control-file"
                                               id="exampleFormControlFile1"
                                               name = "resume"
+                                              autoComplete="off"
                                               accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                               onChange = {this.handleOnChange}/>
                                         </div>

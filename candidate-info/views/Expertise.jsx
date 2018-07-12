@@ -99,6 +99,7 @@ class Expertise extends React.Component {
                             name="expertisedArea"
                             id="candidateExpertiseId"
                             value={item.expertisedArea}
+                            autoComplete="off"
                             autoFocus="true"
                             maxLength="10"
                             required

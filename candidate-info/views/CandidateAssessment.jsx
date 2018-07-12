@@ -9,10 +9,11 @@ import {
   BrowserRouter as Router,
   Link,
   Route,
-  Switch,
   HashRouter
 } from 'react-router-dom';
-
+import {getRole, getCandidateRecords, getOverallRole} from './ruleEngine';
+import Switch from 'react-toggle-switch';
+// import "node_modules/react-toggle-switch/dist/css/switch.min.css"
 
 export default class CandidateAssessment extends Component {
     constructor(props) {
@@ -20,7 +21,6 @@ export default class CandidateAssessment extends Component {
         this.state = {
           candidateData: '',
           interViewToBeTaken: ['Technical Round', 'Manager Round', 'HR Round'],
-          showInterviews: false,
           showTable: false,
           status:'',
           type:'',
@@ -28,16 +28,98 @@ export default class CandidateAssessment extends Component {
           listOfInterviewRounds: [],
           IAData: [],
           users:[],
-          show: false
+          show: false,
+          candidateInterviewRecords: [],
+          newInterviewRound: {},
+          isShowProceedButton : false,
+          firstname: '',
+          lastname: '',
+          switched: false,
+          isOffered: false,
+          offered: false
         };
       this.handleInterviewChange = this.handleInterviewChange.bind(this);
       this.startEvaluating = this.startEvaluating.bind(this);
       this.sendInterviewStatus = this.sendInterviewStatus.bind(this);
       this.logout = this.logout.bind(this);
-      this.addInterviews = this.addInterviews.bind(this);
       this.handleShow = this.handleShow.bind(this);
       this.handleClose = this.handleClose.bind(this);
+      this.handleDeleteInterview = this.handleDeleteInterview.bind(this);
+      this.toggleSwitch = this.toggleSwitch.bind(this);
+      this.offeredToggleSwitch = this.offeredToggleSwitch.bind(this);
+  }
+      toggleSwitch() {
+        this.setState(prevState => {
+          return {
+            switched: !prevState.switched,
+            isOffered:true
+          };
+        });
+    };
+    offeredToggleSwitch() {
+      let {candidateData, offered} = this.state;
+      let url = "http://localhost:3000/candidateInfo";
+      this.setState({
+        offered: !this.state.offered
+      }, (prevState) => {
+        candidateData["offered"] = this.state.offered;
+        axios.put(`${url}/${candidateData._id}`, candidateData)
+        .then(response => {
+            console.log('response', response)
+          })
+      });
+
     }
+
+
+      // console.log(offered);
+      //
+      // // this.setState(prevState => {
+      //   candidateData["offered"] = offered;
+      //   axios.put(`${url}/${candidateData._id}`, candidateData)
+      //   .then(response => {
+      //       console.log('response', response)
+      //     })
+      // });
+
+      // candidateData["offered"] = this.state.offered;
+      // axios.put(`${url}/${candidateData._id}`, candidateData)
+      // .then(response => {
+      //     console.log('response', response)
+      // })
+
+    handleDeleteInterview(e, index, id) {
+      e.preventDefault();
+        if (confirm("Please confirm to delete this particular round?")) {
+      const {candidateInterviewRecords} = this.state;
+      let arr = candidateInterviewRecords
+      let url = "http://localhost:3000/candidateInfo";
+      let roundUrl = url + '/CandidateRounds';
+
+      for (var i = arr.length; i--;) {
+        if (i === index) {
+            arr.splice(i, 1);
+        }
+    }
+
+    this.setState({candidateInterviewRecords: arr, listOfInterviewRounds: arr });
+    if(arr.length === 0){
+        this.setState({ isShowProceedButton : false, listOfInterviewRounds: candidateInterviewRecords, showTable:false, showText: true, candidateInterviewRecords: candidateInterviewRecords });
+    }
+
+      axios.delete(`${roundUrl}/${id}`)
+        .then(res => {
+          console.log('Record deleted');
+          location.reload();
+        })
+        .catch(err=> {
+          console.error('err in delete-----------', err);
+        })
+      }
+      else {
+        false;
+      }
+    };
 
     handleClose() {
         this.setState({ show: false });
@@ -51,15 +133,33 @@ export default class CandidateAssessment extends Component {
       axios.get("http://localhost:3000/candidateInfo/users")
             .then(res => {
                   this.setState({ users: res.data });
+                  const username = sessionStorage.getItem('username');
+                  const {users} = this.state;
+                  const currentUser = users.length > 0 && users.filter((user)=> (user.username == username));
+                  const firstname = currentUser.length > 0 && currentUser[0].firstname,
+                  lastname = currentUser.length > 0 && currentUser[0].lastname,
+                  role = currentUser.length > 0 && currentUser[0].role,
+                  roleDef = getRole(role);
+                  this.setState({firstname:firstname, lastname:lastname, role:role})
+                  const roleOverall = getOverallRole(role);
+
+                  for( let props in roleOverall) {
+                      var object = {};
+                      object[props] = roleOverall[props];
+                      this.setState(object);
+                  }
+
+                  this.loadCandidateDetails();
+                  this.loadDetailsFromServerForIASheet();
+                  this.loadDetailsFromServerInterviewRounds();
             })
-        this.loadCandidateDetails();
-        this.loadDetailsFromServerForIASheet();
     }
 
     handleInterviewChange(e){
-      const {status, listOfInterviewRounds} = this.state;
+      let url = "http://localhost:3000/candidateInfo";
+      let {status, listOfInterviewRounds, IAdata, candidateData, candidateInterviewRecords} = this.state;
       let item = {};
-      let round,item1,sts;
+      let round, item1, sts;
       if(e.target.value === 'manager') {
         item =  {round : "Manager Round",
         item1 : 'ManagerEvaluation',
@@ -75,11 +175,40 @@ export default class CandidateAssessment extends Component {
          item1 : 'HumanResourceEvaluation',
          sts : "In-Progress"
       }}
-      listOfInterviewRounds.push(item);
-      this.setState({showTable: true, interViewToBeTaken : e.target.value,
-        show: false, listOfInterviewRounds : listOfInterviewRounds, showInterviews :false,
-        status : ''})
-    }
+
+      this.setState({showTable: true, interViewToBeTaken : e.target.value, listOfInterviewRounds : listOfInterviewRounds, isShowProceedButton :false,
+        status : '', show: false})
+
+      let rounds = item;
+      rounds["candidateID"] = candidateData._id;
+      rounds["IA_id"] = IAdata.length>0 ? IAdata._id : '';
+        axios.post(url + '/CandidateRounds', rounds)
+            .then(res => {
+              let array = candidateInterviewRecords || [];
+              array.push(res.data);
+              candidateInterviewRecords = listOfInterviewRounds = array;
+              let isShowProceedButton = true;
+              for(let i=0;i<listOfInterviewRounds.length;i++) {
+                 if(listOfInterviewRounds[i].sts === "Not Cleared" || listOfInterviewRounds[i].sts ==="Selected" || listOfInterviewRounds[i].sts ==="Rejected") {
+                    isShowProceedButton = false;
+                 }
+                 if(listOfInterviewRounds[i].sts === "In-Progress"){
+                    listOfInterviewRounds[i]["isShowDeleteButton"] = true
+                 }
+              }
+              if(listOfInterviewRounds.length===0){
+                this.setState({showText :true, showTable:false, isShowProceedButton:isShowProceedButton});
+              }else {
+                this.setState({showText :false, showTable:true, isShowProceedButton:isShowProceedButton});
+              }
+              this.setState({isShowProceedButton : isShowProceedButton, listOfInterviewRounds: listOfInterviewRounds, candidateInterviewRecords:candidateInterviewRecords });
+
+
+            })
+            .catch(err => {
+                console.error(err);
+            });
+      }
 
     getCandidateIDqs(key) {
         var vars = [], hash;
@@ -91,7 +220,7 @@ export default class CandidateAssessment extends Component {
             vars[hash[0]] = hash[1];
         }
         return vars[key];
-    }
+      }
 
 
     loadCandidateDetails() {
@@ -100,8 +229,8 @@ export default class CandidateAssessment extends Component {
       let url = "http://localhost:3000/candidateInfo";
       axios.get(`${url}/${id}`)
           .then(response => {
-            this.setState({ candidateData: response.data });
-            console.log(response.data);
+            this.setState({ candidateData: response.data, offered:response.data.offered , switched:response.data.offered});
+            console.log('candidate Data', response.data);
           })
           .catch(error => {
             if(error.response.status === 401) {
@@ -110,7 +239,7 @@ export default class CandidateAssessment extends Component {
                })
              }
          })
-    }
+      }
 
     loadDetailsFromServerForIASheet() {
       axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('jwtToken');
@@ -123,17 +252,55 @@ export default class CandidateAssessment extends Component {
               })
       }
 
-     startEvaluating() {
-       this.setState({ showInterviews: true , showText: false});
+
+    loadDetailsFromServerInterviewRounds() {
+      axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('jwtToken');
+      let url = "http://localhost:3000/candidateInfo";
+      let id = this.getCandidateIDqs('id');
+       let {candidateData,users} = this.state;
+        let roundUrl = url + '/CandidateRounds';
+            axios.get(roundUrl)
+              .then(res => {
+                console.log('loadDetailsFromServerInterviewRounds---------', res.data);
+
+                    let candidateInterviewRecords = res.data.length > 0 && res.data.filter((record) => {
+                      return id === record.candidateID
+                    });
+                    candidateInterviewRecords = getCandidateRecords(users[0].role, candidateInterviewRecords, candidateData, res.data);
+                    let isShowProceedButton = true;
+                    if(candidateInterviewRecords && candidateInterviewRecords.length>0) {
+                      for(let i=0;i<candidateInterviewRecords.length;i++) {
+                         if(candidateInterviewRecords[i].sts === "Not Cleared" || candidateInterviewRecords[i].sts ==="Selected" ||
+                            candidateInterviewRecords[i].sts ==="Rejected") {
+                            isShowProceedButton = false;
+                         }
+                         if(candidateInterviewRecords[i].sts === "In-Progress"){
+                           candidateInterviewRecords[i]["isShowDeleteButton"] = true;
+                         }
+                      }
+                    }
+                    if(candidateInterviewRecords.length===0){
+                      this.setState({showText :true, showTable:false, isShowProceedButton:isShowProceedButton});
+                    }else {
+                      this.setState({showText :false, showTable:true, isShowProceedButton:isShowProceedButton});
+                    }
+                    this.setState({isShowProceedButton : isShowProceedButton, listOfInterviewRounds: candidateInterviewRecords, candidateInterviewRecords: candidateInterviewRecords});
+              })
+              .catch(err => {
+                  console.error('erro message',err);
+              });
+      }
+
+    startEvaluating() {
+      this.setState({ isShowProceedButton: true , showText: false});
      }
 
-     sendInterviewStatus(status, type,idx) {
-       console.log("Inside iNterveiw Statys", status, type , idx)
-      this.state.listOfInterviewRounds[idx].sts = "Cleared";
-      this.setState({status,type,listOfInterviewRounds:this.state.listOfInterviewRounds});
+    sendInterviewStatus(status, type,idx) {
+      // this.state.listOfInterviewRounds[idx].sts = "Cleared";
+      // this.setState({status, type, listOfInterviewRounds:this.state.listOfInterviewRounds});
      }
 
-     logout() {
+    logout() {
       sessionStorage.removeItem('jwtToken');
       window.location.reload();
       hashHistory.push({
@@ -141,26 +308,11 @@ export default class CandidateAssessment extends Component {
         })
     }
 
-    addInterviews(e) {
-      e.preventDefault();
-     /* const {status, listOfInterviewRounds} = this.state;
-      let item;
-      if(status === 'Move to Manager round') {
-        item = 'ManagerEvaluation'
-      }
-      else if(status === 'Move to Technical round 2'){
-        item = 'Evaluation'
-      }
-      else {
-         item = 'HumanResourceEvaluation'
-      }
-      listOfInterviewRounds.push(item);
-      this.setState({listOfInterviewRounds : listOfInterviewRounds});
-    */}
 
     render() {
-      const {interViewToBeTaken, candidateData, showInterviews, showTable, status, type, showText, listOfInterviewRounds, interviewStatus, users} = this.state;
-
+      const {interViewToBeTaken, candidateData, showTable,
+        isShowProceedButton,status, type, showText, listOfInterviewRounds,
+        interviewStatus, users, candidateInterviewRecords, isShowDeleteButton, firstname, lastname, switched, offered} = this.state;
 
       const fullname = candidateData.firstname + " " + candidateData.lastname;
       let url = "http://localhost:3000/candidateInfo", currentStatus;
@@ -169,14 +321,7 @@ export default class CandidateAssessment extends Component {
         currentStatus = status
 
      // }
-      const username = sessionStorage.getItem('username');
 
-      const currentUser = users.length > 0 && users.filter((user)=> (user.username == username));
-
-      const firstname = currentUser.length > 0 && currentUser[0].firstname,
-      lastname = currentUser.length > 0 && currentUser[0].lastname,
-      role = currentUser.length > 0 && currentUser[0].role.toLowerCase();
-      //classname = (role === "interviewer" || role === "manager" || role === "hr") ? true : false;
 
         return (
             <div className="App">
@@ -202,31 +347,6 @@ export default class CandidateAssessment extends Component {
                   <div><p>Please select the interview round here<span className="glyphicon glyphicon-arrow-down"></span></p></div>
                 }
 
-                {showInterviews ?
-                  <div>
-                    <div>
-                        <Button bsStyle="primary" bsSize="large" onClick={this.handleShow} >
-                            Proceed interview
-                        </Button>
-                    </div>
-
-                    <Modal show={this.state.show} onHide={this.handleClose}>
-                        <Modal.Header closeButton>
-                            <Modal.Title><h3>Select the round of interview</h3></Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                          <select className="form-control experience-width" id="interViewToBeTakenId" onChange = {this.handleInterviewChange} value = {interViewToBeTaken}>
-                              <option>Select</option>
-                              <option value="technical">Technical Round</option>
-                              <option value="manager">Manager Round</option>
-                              <option value="hr">HR Round</option>
-                          </select>
-                        </Modal.Body>
-                    </Modal>
-                  </div>
-                  :
-                  null
-                }
 
                   { showTable  ? <table
                   className="table table-bordered table-responsive" id="interview_round_id">
@@ -235,28 +355,33 @@ export default class CandidateAssessment extends Component {
                             <th>Interview Round</th>
                             <th>Evaluation</th>
                             <th>Status</th>
+                            <th>Delete</th>
                           </tr>
                         </thead>
                         <tbody>
 
-                           {  listOfInterviewRounds.map((list, index)=> (
+                           {  listOfInterviewRounds.length>0 && listOfInterviewRounds.map((list, index)=> (
                               <tr key={index}>
                                 <td className="interview-round">{list.round}</td>
                                 { list.item1 === 'Evaluation' ?
                                   <td>
-                                  <Evaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} idx = {index}/>
+                                  <Evaluation candidateInterviewRecords={listOfInterviewRounds}
+                                    candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} idx = {index}/>
                                 </td>
                                 :
                                ( list.item1 === 'ManagerEvaluation' ?
                                 <td>
-                                  <ManagerEvaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} idx = {index}/>
+                                  <ManagerEvaluation candidateInterviewRecords={listOfInterviewRounds} candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} idx = {index}/>
                                 </td>
                                 :
                                 <td>
-                                  <HumanResourceEvaluation candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} idx = {index}/>
+                                  <HumanResourceEvaluation candidateInterviewRecords={listOfInterviewRounds} candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} idx = {index}/>
                                 </td>
                                )}
                                 <td>{list.sts}</td>
+                                <td>{list.isShowDeleteButton ? <button onClick={(e)=>{this.handleDeleteInterview(e, index, list._id)}} className="btn btn-danger float-right">
+                                  Delete
+                                </button>: ''}</td>
                               </tr>
 
                             ))
@@ -269,7 +394,7 @@ export default class CandidateAssessment extends Component {
                     :
                   null
                   }
-                   {currentStatus === 'Cleared' ?
+                   {isShowProceedButton ?
                <div>
                     <div>
                         <Button bsStyle="primary" bsSize="large" onClick={this.handleShow} >
@@ -294,8 +419,19 @@ export default class CandidateAssessment extends Component {
                 :
                 null}
 
-
                 </center>
+                <div>
+                  <span>candidatefirstName, isHired or not?</span>
+                  <span><Switch onClick={this.toggleSwitch} on={this.state.switched}/></span>
+                </div>
+
+                  {switched ? <div>
+                  <span>candidatefirstName, isOffered or not?</span>
+                  <span><Switch onClick={this.offeredToggleSwitch} on={this.state.offered}/></span>
+                </div> : ''}
+                {offered && switched? <div className="alert alert-success">
+                  <strong>Success!</strong> Candidate have been offered.
+                </div>: ''}
             </div>
         )
     }

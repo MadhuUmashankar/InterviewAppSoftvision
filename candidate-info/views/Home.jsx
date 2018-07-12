@@ -25,23 +25,23 @@ import {
 
             <Switch>
               {
-                sessionStorage.getItem("jwtToken") && 
+                sessionStorage.getItem("jwtToken") &&
                 <Route path="/" exact component={() => <App url='http://localhost:3000/candidateInfo' IAurl= "http://localhost:3000/candidateInfo/newIAForm" userListurl="http://localhost:3000/candidateInfo/users"/> } />
               }
               {
-                !sessionStorage.getItem("jwtToken") && 
+                !sessionStorage.getItem("jwtToken") &&
                 <Route path="/" exact component={() => <Login url="http://localhost:3000/candidateInfo"/>} />
               }
                 <Route path="/" exact component={() => <Login url="http://localhost:3000/candidateInfo"/>} />
               {
-                sessionStorage.getItem("jwtToken") && 
+                sessionStorage.getItem("jwtToken") &&
                 <Route path="/register" component={() => <App url='http://localhost:3000/candidateInfo' IAurl= "http://localhost:3000/candidateInfo/newIAForm" userListurl="http://localhost:3000/candidateInfo/users"/>} />
               }
               {
-                !sessionStorage.getItem("jwtToken") && 
+                !sessionStorage.getItem("jwtToken") &&
                 <Route path="/register" component={() => <Register url="http://localhost:3000/candidateInfo"/>}/>
               }
-                
+
                 <Route path="/app" component={() => <App url='http://localhost:3000/candidateInfo' IAurl= "http://localhost:3000/candidateInfo/newIAForm" userListurl="http://localhost:3000/candidateInfo/users"/>}/>
                 <Route path="/candidateAssessment" component = {CandidateAssessment}/>
             </Switch>
