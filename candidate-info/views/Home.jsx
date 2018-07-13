@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Login from './Login';
+import LandingPage from './LandingPage';
+import RegisterPage from './RegisterPage';
 import Register from './Register';
 import App from './App';
 import CandidateAssessment from './CandidateAssessment';
@@ -16,13 +17,6 @@ import {
     return (
         <HashRouter>
           <div>
-            <div className="nav">
-              <div className="title">
-                <img className="logo" src="images/logo.png" alt="logo"/>
-                <h1>Interview Management System</h1>
-              </div>
-            </div>
-
             <Switch>
               {
                 sessionStorage.getItem("jwtToken") &&
@@ -30,16 +24,16 @@ import {
               }
               {
                 !sessionStorage.getItem("jwtToken") &&
-                <Route path="/" exact component={() => <Login url="http://localhost:3000/candidateInfo"/>} />
+                <Route path="/" exact component={() => <LandingPage /> } />
               }
-                <Route path="/" exact component={() => <Login url="http://localhost:3000/candidateInfo"/>} />
+                <Route path="/" exact component={() => <LandingPage />} />
               {
                 sessionStorage.getItem("jwtToken") &&
                 <Route path="/register" component={() => <App url='http://localhost:3000/candidateInfo' IAurl= "http://localhost:3000/candidateInfo/newIAForm" userListurl="http://localhost:3000/candidateInfo/users"/>} />
               }
               {
                 !sessionStorage.getItem("jwtToken") &&
-                <Route path="/register" component={() => <Register url="http://localhost:3000/candidateInfo"/>}/>
+                <Route path="/register" component={() => <RegisterPage /> }/>
               }
 
                 <Route path="/app" component={() => <App url='http://localhost:3000/candidateInfo' IAurl= "http://localhost:3000/candidateInfo/newIAForm" userListurl="http://localhost:3000/candidateInfo/users"/>}/>

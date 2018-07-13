@@ -5,6 +5,8 @@ import Evaluation from './Evaluation';
 import axios from 'axios';
 import {hashHistory} from 'react-router';
 import { Modal, Button } from 'react-bootstrap';
+import Header from './Header';
+import Footer from './Footer';
 import {
   BrowserRouter as Router,
   Link,
@@ -62,7 +64,7 @@ export default class CandidateAssessment extends Component {
       this.setState({
         offered: !this.state.offered
       }, (prevState) => {
-        candidateData["offered"] = this.state.offered;
+        candidateData["offered"] = (this.state.offered) ? 'offered': 'rejected';
         axios.put(`${url}/${candidateData._id}`, candidateData)
         .then(response => {
             console.log('response', response)
@@ -91,7 +93,7 @@ export default class CandidateAssessment extends Component {
     handleDeleteInterview(e, index, id) {
       e.preventDefault();
         if (confirm("Please confirm to delete this particular round?")) {
-      const {candidateInterviewRecords} = this.state;
+      const {candidateInterviewRecords, candidateData} = this.state;
       let arr = candidateInterviewRecords
       let url = "http://localhost:3000/candidateInfo";
       let roundUrl = url + '/CandidateRounds';
@@ -107,10 +109,16 @@ export default class CandidateAssessment extends Component {
         this.setState({ isShowProceedButton : false, listOfInterviewRounds: candidateInterviewRecords, showTable:false, showText: true, candidateInterviewRecords: candidateInterviewRecords });
     }
 
-      axios.delete(`${roundUrl}/${id}`)
+    candidateData["no_of_rounds"] = candidateInterviewRecords.length;
+    axios.put(`${url}/${candidateData._id}`, candidateData)
+    .then(response => {
+        console.log('response', response)
+        location.reload();
+      })
+
+    axios.delete(`${roundUrl}/${id}`)
         .then(res => {
           console.log('Record deleted');
-          location.reload();
         })
         .catch(err=> {
           console.error('err in delete-----------', err);
@@ -203,6 +211,11 @@ export default class CandidateAssessment extends Component {
               }
               this.setState({isShowProceedButton : isShowProceedButton, listOfInterviewRounds: listOfInterviewRounds, candidateInterviewRecords:candidateInterviewRecords });
 
+              candidateData["no_of_rounds"] = listOfInterviewRounds.length;
+              axios.put(`${url}/${candidateData._id}`, candidateData)
+              .then(response => {
+                  console.log('response', response)
+                })
 
             })
             .catch(err => {
@@ -229,7 +242,8 @@ export default class CandidateAssessment extends Component {
       let url = "http://localhost:3000/candidateInfo";
       axios.get(`${url}/${id}`)
           .then(response => {
-            this.setState({ candidateData: response.data, offered:response.data.offered , switched:response.data.offered});
+            let offered = response.data.offered  == "offered" ? true: false;
+            this.setState({ candidateData: response.data, offered:offered , switched: offered});
             console.log('candidate Data', response.data);
           })
           .catch(error => {
@@ -324,7 +338,11 @@ export default class CandidateAssessment extends Component {
 
 
         return (
-            <div className="App">
+            <div>
+              <Header />
+              <div className="container-fluid candidate-info-list-container-fluid">
+              <div className="container candidate-info-list-container">
+
               {sessionStorage.getItem('jwtToken') &&
                 <div className="log-in"><span className="username">{firstname + " " +lastname}</span><button className="btn btn-primary" onClick={this.logout}> Logout</button></div>
               }
@@ -420,19 +438,27 @@ export default class CandidateAssessment extends Component {
                 null}
 
                 </center>
-                <div>
-                  <span>candidatefirstName, isHired or not?</span>
-                  <span><Switch onClick={this.toggleSwitch} on={this.state.switched}/></span>
-                </div>
+                { listOfInterviewRounds.length > 0 &&
 
-                  {switched ? <div>
-                  <span>candidatefirstName, isOffered or not?</span>
+            <div className="candidate-hired">
+              { listOfInterviewRounds.length > 0 ? <div className="alert alert-info">
+                  <div><div>Hired or not?</div>
+                  <span><Switch onClick={this.toggleSwitch} on={this.state.switched}/></span>
+              </div>
+            </div> : ''}
+
+                  {switched ? <div className="alert alert-info">
+                  <div>Offered or not?</div>
                   <span><Switch onClick={this.offeredToggleSwitch} on={this.state.offered}/></span>
                 </div> : ''}
-                {offered && switched? <div className="alert alert-success">
+                {offered == 'offered' && switched? <div className="alert alert-success">
                   <strong>Success!</strong> Candidate have been offered.
                 </div>: ''}
+               </div>}
             </div>
+          </div>
+        <Footer />
+        </div>
         )
     }
 }

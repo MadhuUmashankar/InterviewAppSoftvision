@@ -1,5 +1,7 @@
 import React from 'react';
 import InputBox from './InputBox';
+import { Tooltip, OverlayTrigger, Popover } from 'react-bootstrap';
+import HelpIconTable from './HelpIconTable';
 
 class Expertise extends React.Component {
   constructor(props){
@@ -62,14 +64,27 @@ class Expertise extends React.Component {
   render(){
     let {candidate, IAdata} = this.state;
     // const currTechnicalObject = data || {};
+    const popoverHoverFocus = (
+  <Popover id="popover-trigger-hover-focus" title="Score Distribution" className="popupover-hover">
+    <HelpIconTable />
+
+  </Popover>
+);
     let rows = Object.keys(IAdata).length > 0 ? IAdata.rows : [{}];
 
     return (
       <div>
         <div className="container-fluid border">
           <div className="clearfix header-margin">
-          <div className="col-sm-5"><label className="experience-label">Technical Interview: 80%</label></div>
-
+          <div className="col-sm-5">
+            <label className="experience-label">Technical Interview: 80%</label>
+              <OverlayTrigger
+                  trigger={['hover', 'focus']}
+                  placement="right"
+                  overlay={popoverHoverFocus}>
+                  <span className="glyphicon glyphicon-question-sign help-icon"></span>
+              </OverlayTrigger>
+          </div>
                   <div className="col-sm-4 move-right">
                       <label className="experience-label">Calculated Score</label>
                       <label className="overallScore">{this.props.overallAvgScore}</label>
@@ -82,7 +97,9 @@ class Expertise extends React.Component {
                   id="tab_logic">
                   <thead className="color">
                     <tr>
-                        <th className="col-sm-2 text-center"><span className="control-label">Area of Expertise</span></th>
+                        <th className="col-sm-2 text-center">
+                          <span className="control-label">Area of Expertise</span>
+                            </th>
                         <th className="col-sm-2 text-center"><span className="control-label">Junior Minimum</span></th>
                         <th className="col-sm-2 text-center"><span className="control-label">Mid Minimum</span></th>
                         <th className="col-sm-2 text-center"><span className="control-label">Senior Minimum</span></th>

@@ -53,6 +53,18 @@ class CandidateInfoList extends Component {
 
         candidateNodes = candidateNodes && candidateNodes.map((candidate, index) => {
             const candidateID = candidate._id;
+            let status = false;
+            if(candidate.no_of_rounds > 0) {
+                if(candidate.offered == "offered") {
+                  status = "offered"
+                } else if(candidate.offered == "rejected") {
+                  status = "rejected"
+                } else {
+                  status = "In Progress"
+                }
+            } else {
+              status = "New";
+            }
 
             return (
 
@@ -65,9 +77,10 @@ class CandidateInfoList extends Component {
                                 <div><span className="margin-tiny glyphicon glyphicon-wrench"></span>Skills: {candidate.skills}</div>
                                 <div><span className="margin-tiny glyphicon glyphicon-map-marker"></span>Location: {candidate.city}</div>
                                 <div><span className="margin-tiny glyphicon glyphicon-phone"></span>Phone No.: {candidate.phone}</div>
+                                <div><span className="margin-tiny glyphicon glyphicon-stats"></span>Status: <strong>{status}</strong></div>
                                 </p>
                                 <div className="event-card-btn-group">
-                                  <button className="btn margin-tiny" onClick={(e)=>this.handleView(e, candidate)}>View</button>
+                                  <button className="btn btn-success margin-tiny" onClick={(e)=>this.handleView(e, candidate)}>View</button>
                                   </div>
                                   <div className="event-card-btn-group right">
                                   <button className="btn btn-danger" onClick={(e)=>this.handleDelete(e, candidateID, candidate)}>Delete</button>
@@ -82,7 +95,7 @@ class CandidateInfoList extends Component {
 
         return (
 
-            <div className="candidate-list">
+            <div className="row">
 
                 {
                     candidateNodes.length > 0

@@ -298,6 +298,9 @@ router.put('/candidateInfo/:id', function(req, res, next){
     if(candidate.offered){
       updcandidateInfo.offered = candidate.offered;
     }
+    if(candidate.no_of_rounds) {
+      updcandidateInfo.no_of_rounds = candidate.no_of_rounds;
+    }
     if(!updcandidateInfo){
         res.status(400);
         res.json({

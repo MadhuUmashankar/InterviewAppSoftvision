@@ -546,8 +546,8 @@ export default class CandidateForm extends React.Component{
                             }
 
 
-                            <div className="form-group submit">
-
+                          <div>
+                            <div className="submit">
                                     <div className="col-md-12">
                                         { !modalLabelView && !modalEditView &&
                                             <button className="btn btn-primary">Submit<span className="glyphicon glyphicon-submit"></span></button>
@@ -565,7 +565,7 @@ export default class CandidateForm extends React.Component{
                                         }
                                     </div>
                             </div>
-
+                          </div>
                         </fieldset>
                     </form>
             </div>

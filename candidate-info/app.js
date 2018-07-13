@@ -29,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'upload')));
 app.use('/', indexRouter);
 app.use('/', candidateRouter);
 app.use('/', auth);
+app.use(express.static("public/images/"));
 
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');

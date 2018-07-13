@@ -97,8 +97,18 @@ export default class Register extends Component {
       );
         return (
             <div className="signin-form">
-				<h3 className="sub-title">Sign Up to continue</h3>
-                <form className="form-horizontal form-container" onSubmit={ this.handleSubmit }>
+              <div className="row center-block">
+                <div className="login-title">
+                      <h3>Interview Management System</h3>
+                </div>
+                <div className="profile-img-block">
+                    <img className="profile-img" src="https://picsum.photos/200/300/?random" alt="" />
+
+                </div>
+
+              </div>
+
+                <form className="form-horizontal" onSubmit={ this.handleSubmit }>
                     <fieldset className = "background">
                         <div className="form-group">
                             <label className="col-md-4 control-label">First Name</label>
@@ -106,7 +116,7 @@ export default class Register extends Component {
                                 <div className="input-group">
                                         <InputBox
                                             type="text"
-                                            placeholder="firstname"
+                                            placeholder="Firstname"
                                             classname="form-control"
                                             name="firstname"
                                             autoFocus="true"
@@ -124,7 +134,7 @@ export default class Register extends Component {
                                 <div className="input-group">
                                         <InputBox
                                             type="text"
-                                            placeholder="lastname"
+                                            placeholder="Lastname"
                                             classname="form-control"
                                             name="lastname"
                                             pattern="\w+"
@@ -169,22 +179,22 @@ export default class Register extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-4 control-label">Role</label>  
+                            <label className="col-md-4 control-label">Role</label>
                             <div className="col-md-6 inputGroupContainer">
                                 <div className="input-group login-btn position">
-                                <select className="form-control" id="role" name="role" onChange={this.handleOnChange}>                                
+                                <select className="form-control" id="role" name="role" onChange={this.handleOnChange}>
                                     <option>Select</option>
                                     <option>TA</option>
                                     <option>Interviewer</option>
                                     <option>Manager</option>
                                     <option>HR</option>
                                 </select>
-                                    
+
                                 </div>
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-4 control-label">Password</label>  
+                            <label className="col-md-4 control-label">Password</label>
                             <div className="col-md-6 inputGroupContainer pwd-message">
                                 <div className="input-group login-btn position">
                                         <InputBox
@@ -207,7 +217,7 @@ export default class Register extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-md-4 control-label">Confirm Password</label>  
+                            <label className="col-md-4 control-label">Confirm Password</label>
                             <div className="col-md-6 inputGroupContainer">
                                 <div className="input-group">
                                         <InputBox
@@ -229,10 +239,11 @@ export default class Register extends Component {
                         <div className="form-group">
                             <label className="col-md-4"></label>
                                 <div className="col-md-6">
-                                    <button className="btn btn-primary sign-up">Sign Up<span className="glyphicon glyphicon-submit"></span></button>
-                                    
+                                  
+                                    <button className="btn btn-lg btn-primary btn-block sign-up">Register<span className="glyphicon glyphicon-submit"></span></button>
+
                                     <p>
-                                        Already Have Account? <Link to="/" className="register-btn">SIGN IN</Link>
+                                        Already Have Account? <Link to="/" className="register-btn">Sign in</Link>
                                     </p>
                                 </div>
                         </div>

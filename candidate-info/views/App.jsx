@@ -4,6 +4,8 @@ import CandidateInfoList from './CandidateInfoList';
 import './App.scss';
 import { Modal, Button } from 'react-bootstrap';
 import InputBox from './InputBox';
+import Header from './Header';
+import Footer from './Footer';
 import {hashHistory} from 'react-router';
 import ReactPaginate from 'react-paginate';
 import {
@@ -83,6 +85,8 @@ class App extends Component {
     handleSubmit(record) {
         if(record) {
             let records = this.state.data;
+            records["no_of_rounds"] = 0;
+            records["offered"] = false;
             this.setState({ show: false });
             let newCandidate = records.concat([record]);
             this.setState({ data: newCandidate });
@@ -175,9 +179,9 @@ class App extends Component {
     logout() {
         sessionStorage.removeItem('jwtToken');
         window.location.reload();
-        hashHistory.push({
-            pathname: '#/'
-          })
+        // hashHistory.push({
+        //     pathname: '#/'
+        //   })
     }
 
     handlePageClick(arg) {
@@ -220,11 +224,11 @@ class App extends Component {
     pageCount = Math.ceil(data.length/numberOfItemsPerPage);
 
     return (
-      <div className="App">
+      <div className>
+        <Header />
+        <div className="container-fluid candidate-info-list-container-fluid">
+        <div className="container candidate-info-list-container">
         <div className="App-header">
-            <div className="">
-                <h3> Candidate List </h3>
-            </div>
             {sessionStorage.getItem('jwtToken') &&
               <div className="log-in"><span className="username">{ firstname + " " + lastname}</span><button className="btn btn-primary" onClick={this.logout}> Logout</button></div>
             }
@@ -243,8 +247,6 @@ class App extends Component {
                 onChange={this.handleSearch}
             />
         </div>
-
-
         <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title><h3>Candidate Form</h3></Modal.Title>
@@ -253,7 +255,6 @@ class App extends Component {
                 <CandidateForm  onHandleSubmit={ this.handleSubmit } candidate={candidate} modalLabelView={modalLabelView} handleUpdate={ this.handleUpdate }  data = {data}/>
             </Modal.Body>
         </Modal>
-
         <CandidateInfoList
             onDelete={ this.handleDelete }
             onModalView={this.handleView }
@@ -263,21 +264,10 @@ class App extends Component {
             searchKey= { searchKey }
             url = {url}
             role={role} />
-
-            <ReactPaginate previousLabel={"previous"}
-                                   nextLabel={"next"}
-                                   breakLabel={<a href="">...</a>}
-                                   breakClassName={"break-me"}
-                                   pageCount={pageCount}
-                                   marginPagesDisplayed={2}
-                                   pageRangeDisplayed={5}
-                                   onPageChange={this.handlePageClick}
-                                   containerClassName={"pagination"}
-                                   subContainerClassName={"pages pagination"}
-                                   activeClassName={"active"} />
-
-
       </div>
+      </div>
+      <Footer />
+    </div>
     );
   }
 }

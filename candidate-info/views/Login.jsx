@@ -67,7 +67,7 @@ export default class Login extends Component {
         const { message } = this.state;
         return (
             <div className="signin-form">
-				<h3 className="sub-title">Login in to continue</h3>
+
                 <form className="form-horizontal" onSubmit={ this.handleSubmit }>
                 {message !== '' &&
                     <div className="alert alert-warning alert-dismissible" role="alert">
@@ -75,10 +75,15 @@ export default class Login extends Component {
                     </div>
                 }
                     <fieldset className = "background">
-                      <div className="row">
-                                    <div className="center-block">
-                                        <img className="profile-img" src="https://picsum.photos/200/300/?random" alt="" />
-                                    </div>
+                      <div className="row center-block">
+                        <div className="login-title">
+                              <h3>Interview Management System</h3>
+                        </div>
+                        <div className="profile-img-block">
+                            <img className="profile-img" src="https://picsum.photos/200/300/?random" alt="" />
+
+                        </div>
+
                       </div>
                         <div className="form-group">
                             <label className="col-md-4 control-label">User Name</label>
