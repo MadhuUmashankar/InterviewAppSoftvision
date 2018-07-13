@@ -23,7 +23,8 @@ export default class CandidateForm extends React.Component{
             fields: {},
             errors: {},
             errors1: {},
-            data : props.data
+            data : props.data,
+            scheduled : ''
         };
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -77,6 +78,10 @@ export default class CandidateForm extends React.Component{
                         selectedFile : event.target.files[0],
                         selectedFile_name : event.target.files[0].name
                       })
+                break;
+            case "scheduleInterview":
+                candidate["scheduleInterview"] = value;
+                this.setState({scheduleInterview : value})
                 break;
 
             default:
@@ -165,7 +170,7 @@ export default class CandidateForm extends React.Component{
     handleSubmit(e) {
         e.preventDefault();
         const candidateID = Math.random().toString(26).slice(2);
-         const {firstname, lastname, skills, email, phone, alternateNumber, city, state, selectedFile_name, selectedFile} = this.state;
+         const {firstname, lastname, skills, email, phone, alternateNumber, city, state, selectedFile_name, selectedFile, scheduleInterview} = this.state;
         const {onHandleSubmit} = this.props;
           let formIsValid = true;
         if (!formIsValid) {
@@ -173,7 +178,7 @@ export default class CandidateForm extends React.Component{
         }
         if(this.handleValidation()){
             //alert("Form submitted");
-            onHandleSubmit({ candidateID, firstname, lastname, skills, email, phone, alternateNumber, city, state, selectedFile_name, selectedFile, candStatus : 'Yet to be Interviewed'});
+            onHandleSubmit({ candidateID, firstname, lastname, skills, email, phone, alternateNumber, city, state, selectedFile_name, selectedFile, scheduleInterview});
          }
     }
 
@@ -501,6 +506,39 @@ export default class CandidateForm extends React.Component{
                                         </div>
                                     </div>
                             </div>
+                            
+                            <div className="form-group">
+                                <label className="col-md-4 control-label" >Schedule Interview</label>
+                                    <div className="col-md-6 inputGroupContainer">
+                                        <div className="input-group">
+                                        {!modalLabelView &&
+                                            <div>
+                                              <div>
+                                            <span className="input-group-addon"><i className="glyphicon glyphicon-lock"></i></span>
+                                              <select required className="form-control" id="scheduleInterviewId" onChange={this.handleOnChange}
+                                              value={candidate.scheduleInterview} name="scheduleInterview">
+                                                <option>Select</option>
+                                                  <option>Yes</option>
+                                                  <option>No</option>
+                                              </select>
+                                            </div>
+
+
+                                           </div>
+                                        }
+                                        {modalLabelView &&
+                                            <div>
+                                                <span>:
+                                                    <label>
+                                                        {candidate && candidate.scheduleInterview}
+                                                    </label>
+                                                </span>
+
+                                            </div>
+                                        }
+                                         </div>
+                                </div>
+                            </div>
 
                             {
                                 !modalLabelView &&
@@ -544,6 +582,8 @@ export default class CandidateForm extends React.Component{
                                         </div>
                                     </div>
                             }
+
+
 
 
                           <div>

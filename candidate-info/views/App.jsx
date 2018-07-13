@@ -160,8 +160,6 @@ class App extends Component {
     componentDidMount() {
         this.loadDetailsFromServer();
         this.loadDetailsFromServerForIASheet();
-
-
     }
 
     handleClose() {
@@ -258,6 +256,7 @@ class App extends Component {
         <CandidateInfoList
             onDelete={ this.handleDelete }
             onModalView={this.handleView }
+            onModalEdit={this.handleSubmit}
             data={ data }
             partialData = {partialData}
             IAData={IAData}

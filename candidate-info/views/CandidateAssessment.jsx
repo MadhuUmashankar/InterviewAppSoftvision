@@ -322,6 +322,14 @@ export default class CandidateAssessment extends Component {
         })
     }
 
+    navigateToHome() {
+      // sessionStorage.removeItem('jwtToken');
+      window.location.reload();
+      hashHistory.push({
+          pathname: '#/'
+        })
+    }
+
 
     render() {
       const {interViewToBeTaken, candidateData, showTable,
@@ -340,18 +348,18 @@ export default class CandidateAssessment extends Component {
         return (
             <div>
               <Header />
+
               <div className="container-fluid candidate-info-list-container-fluid">
               <div className="container candidate-info-list-container">
 
               {sessionStorage.getItem('jwtToken') &&
                 <div className="log-in"><span className="username">{firstname + " " +lastname}</span><button className="btn btn-primary" onClick={this.logout}> Logout</button></div>
               }
+
               <div>
                 <label className="candidate-assessment-label">{fullname}</label>
-                <div className="ca-resume"><label>Resume</label> <a  target="_blank" href= {candidateData.selectedFile_name} download> <span className="glyphicon glyphicon-download-alt"></span> </a></div>
-
+                <a className="margin-tiny ca-resume" target="_blank" href= {candidateData.selectedFile_name} download> <span className="glyphicon glyphicon-download-alt"></span> </a><button className="btn btn-primary move-right" onClick={this.navigateToHome}>Home</button>
                 <div><span className="margin-tiny glyphicon glyphicon-wrench"></span><label>Skills: {candidateData.skills}</label></div>
-
                 </div>
                 <hr />
                 <center>
@@ -451,7 +459,7 @@ export default class CandidateAssessment extends Component {
                   <div>Offered or not?</div>
                   <span><Switch onClick={this.offeredToggleSwitch} on={this.state.offered}/></span>
                 </div> : ''}
-                {offered == 'offered' && switched? <div className="alert alert-success">
+                {(switched && offered) ? <div className="alert alert-success">
                   <strong>Success!</strong> Candidate have been offered.
                 </div>: ''}
                </div>}

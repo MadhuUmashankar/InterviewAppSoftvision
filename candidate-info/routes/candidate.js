@@ -263,7 +263,6 @@ router.put('/candidateInfo/:id', function(req, res, next){
     if(candidate.firstname){
         updcandidateInfo.firstname = candidate.firstname;
     }
-
     if(candidate.lastname){
         updcandidateInfo.lastname = candidate.lastname;
     }
@@ -285,9 +284,8 @@ router.put('/candidateInfo/:id', function(req, res, next){
     if(candidate.state){
         updcandidateInfo.state = candidate.state;
     }
-
     if(candidate.selectedFile_name){
-          updcandidateInfo.selectedFile_name = candidate.selectedFile_name;
+        updcandidateInfo.selectedFile_name = candidate.selectedFile_name;
     }
     if(candidate.selectedFile){
         updcandidateInfo.selectedFile = candidate.selectedFile;
@@ -300,6 +298,9 @@ router.put('/candidateInfo/:id', function(req, res, next){
     }
     if(candidate.no_of_rounds) {
       updcandidateInfo.no_of_rounds = candidate.no_of_rounds;
+    }
+    if(candidate.scheduleInterview) {
+      updcandidateInfo.scheduleInterview = candidate.scheduleInterview;
     }
     if(!updcandidateInfo){
         res.status(400);

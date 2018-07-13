@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import './candidateInfoList.scss';
 import {hashHistory} from 'react-router';
+import { Modal, Button } from 'react-bootstrap';
 
 class CandidateInfoList extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+          show: false
+        }
         this.modalStatus = false;
         this.handleEvalution = this.handleEvalution.bind(this);
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
   handleDelete(e, candidateID) {
@@ -21,6 +28,13 @@ class CandidateInfoList extends Component {
     handleUpdate(e, candidateID, candidate) {
         const {handleUpdate} = this.props;
         handleUpdate(candidateID, candidate);
+        this.setState({ show: false });
+    }
+
+    handleSubmit(e,candidate) {
+      const {onModalEdit} = this.props;
+      // this.modalStatus = false;
+      onModalEdit(candidate);
     }
 
     handleView(e, candidate) {
@@ -29,14 +43,29 @@ class CandidateInfoList extends Component {
         onModalView(this.modalStatus, candidate);
     }
 
-    handleEvalution(event,candidateID) {
+    handleEvalution(event,candidateID, scheduledInterview) {
         event.preventDefault();
-        hashHistory.push({
-            pathname: '#/CandidateAssessment',
-            query: {
-            id: candidateID
-            }
-        })
+        const {candidate} = this.state;
+        if(scheduledInterview ==='Yes'){
+          hashHistory.push({
+              pathname: '#/CandidateAssessment',
+              query: {
+              id: candidateID
+              }
+          })
+        }else {
+            this.setState({ show: true });
+        }
+
+
+    }
+
+    handleClose() {
+        this.setState({ show: false });
+    }
+
+    handleShow() {
+        this.setState({ show: true });
     }
 
     render() {
@@ -53,12 +82,13 @@ class CandidateInfoList extends Component {
 
         candidateNodes = candidateNodes && candidateNodes.map((candidate, index) => {
             const candidateID = candidate._id;
+            const scheduledInterview = candidate.scheduleInterview;
             let status = false;
             if(candidate.no_of_rounds > 0) {
                 if(candidate.offered == "offered") {
-                  status = "offered"
+                  status = "Offered"
                 } else if(candidate.offered == "rejected") {
-                  status = "rejected"
+                  status = "Rejected"
                 } else {
                   status = "In Progress"
                 }
@@ -70,14 +100,44 @@ class CandidateInfoList extends Component {
 
                             <div  key={index} className="col-md-4 col-sm-6 card-wrapper">
                               <div className="event-card">
-                                <div className="event-card-title-block"><label><a href="" onClick={(e)=>this.handleEvalution(e,candidateID)}>{candidate.firstname} {candidate.lastname}</a></label></div>
+                                <div className="event-card-title-block">
+
+
+                                  <div>
+                                       <div>
+                                         <label>
+                                           <a href="" onClick={(e)=>this.handleEvalution(e, candidateID, scheduledInterview)}>{candidate.firstname} {candidate.lastname}</a>
+                                         </label>
+
+                                       </div>
+
+                                       <Modal show={this.state.show} onHide={this.handleClose}>
+                                           <Modal.Header closeButton>
+                                               <Modal.Title><h3>Select the round of interview</h3></Modal.Title>
+                                           </Modal.Header>
+                                           <Modal.Body>
+                                             The Candidate has not been scheduled an interview. Please schedule an interview for the same by clicking on view button in Home Screen.
+                                           </Modal.Body>
+                                           {/*<Button bsStyle="primary" bsSize="small" onClick={(e)=>this.handleSubmit(e, candidate)} >
+                                               Schedule Interview
+                                           </Button>*/}
+                                       </Modal>
+                                     </div>
+
+
+                                <div className="home-page-resume">
+                                   <a target="_blank" href= {candidate.selectedFile_name} download>
+                                      <span className="glyphicon glyphicon-download-alt"></span>
+                                    </a>
+                                  </div>
+                                </div>
 
 
                                 <p className="event-card-blurb">
                                 <div><span className="margin-tiny glyphicon glyphicon-wrench"></span>Skills: {candidate.skills}</div>
                                 <div><span className="margin-tiny glyphicon glyphicon-map-marker"></span>Location: {candidate.city}</div>
                                 <div><span className="margin-tiny glyphicon glyphicon-phone"></span>Phone No.: {candidate.phone}</div>
-                                <div><span className="margin-tiny glyphicon glyphicon-stats"></span>Status: <strong>{status}</strong></div>
+                                <div><span className="margin-tiny glyphicon glyphicon-stats"></span>Status: <i><strong>{status}</strong></i></div>
                                 </p>
                                 <div className="event-card-btn-group">
                                   <button className="btn btn-success margin-tiny" onClick={(e)=>this.handleView(e, candidate)}>View</button>
@@ -85,6 +145,7 @@ class CandidateInfoList extends Component {
                                   <div className="event-card-btn-group right">
                                   <button className="btn btn-danger" onClick={(e)=>this.handleDelete(e, candidateID, candidate)}>Delete</button>
                                   </div>
+
                               </div>
                             </div>
 

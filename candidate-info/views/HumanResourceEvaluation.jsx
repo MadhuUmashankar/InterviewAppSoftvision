@@ -255,7 +255,7 @@ class HumanResourceEvaluation extends Component {
     return (
       <div>
         <Button bsStyle="primary" onClick={()=>{this.handleShow()}}>
-          HR Form
+        <span className="glyphicon glyphicon-list-alt" />
         </Button>
 
         <Modal bsSize="large" show={this.state.show} onHide={this.handleClose}>
