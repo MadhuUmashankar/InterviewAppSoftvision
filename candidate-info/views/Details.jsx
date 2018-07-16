@@ -1,5 +1,8 @@
 import React from 'react';
 import InputBox from './InputBox';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+// import 'react-datepicker/dist/react-datepicker.css';
 
 class Details extends React.Component {
   constructor(props) {
@@ -9,20 +12,17 @@ class Details extends React.Component {
         interviewDate: '',
         interviewerName: '',
         candidate: props.candidate,
-        data:props.data
+        data:props.data,
+        startDate: ''
       };
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
   }
 
   handleOnChange(event) {
       switch (event.target.name) {
           case "candidateName":
               this.setState({candidateName : event.target.value}, () => {
-                this.onDetailsSave();
-              })
-              break;
-          case "interviewDate":
-              this.setState({interviewDate : event.target.value}, () => {
                 this.onDetailsSave();
               })
               break;
@@ -36,22 +36,31 @@ class Details extends React.Component {
       }
     }
 
-  onDetailsSave() {
-    const {interviewDate, interviewerName} = this.state;
-    const {onDetailsSave} = this.props;
+    handleDateChange(date) {
+      // date = date.format("YYYY-MM-DD");
+      console.log('date', date)
+     this.setState({startDate: date}, () => {
+       this.onDetailsSave();
+     });
+   }
 
-    if (!interviewDate && !interviewerName) {
+  onDetailsSave() {
+    const {interviewerName, startDate} = this.state;
+    const {onDetailsSave} = this.props;
+    // let startDate = startDate.toDateString("yyyy-MM-dd");
+    if (!startDate && !interviewerName) {
         return;
     }
-    onDetailsSave({interviewDate, interviewerName});
+    onDetailsSave({startDate, interviewerName});
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const { data, onDetailsSave } = this.props;
       if (data != undefined) {
         if(Object.keys(data).length > 0) {
-        this.setState({interviewDate:data.interviewDate, interviewerName : data.interviewerName},() => {
-          onDetailsSave({interviewDate:data.interviewDate, interviewerName : data.interviewerName})
+        // data.startDate = moment("2014-02-27T10:00:00").format('YYYY/MM/DD');
+        this.setState({startDate:data.startDate, interviewerName : data.interviewerName},() => {
+          onDetailsSave({startDate:data.startDate, interviewerName : data.interviewerName})
         });
       }
     }
@@ -59,8 +68,8 @@ class Details extends React.Component {
 
   render(){
 
-    const {candidate, data, interviewDate, interviewerName} = this.state;
-      //const currTechnicalObject = data || {};
+    const {candidate, data, startDate, interviewerName} = this.state;
+          //const currTechnicalObject = data || {};
     return(
           <div>
                   <div className="form-group required details-width padding">
@@ -81,18 +90,10 @@ class Details extends React.Component {
                   </div>
                   <div className="form-group  required details-width padding">
                     <label className="control-label" htmlFor="iDate">Interview Date:</label>
-                    <InputBox
-                        type="date"
-                        classname="form-control details-label"
-                        name="interviewDate"
-                        id="interviewDateId"
-                        value = {interviewDate}
-                        required
-                        onChange = {this.handleOnChange}
-                    />
+                      
+                      </div>
 
 
-              </div>
                   <div className="form-group required details-width">
                     <label className="control-label" htmlFor="tInt">Interviewer Name</label>
                     <InputBox

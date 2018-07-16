@@ -53,9 +53,9 @@ class EvaluationStatus extends Component {
       <div className="col-sm-6"><div className="form-group experience-width">
          <select required className="form-control" onChange = {this.handleOnChange} name="interviewStatus"
          id="interviewStatusId" value ={interviewStatus}>
-           <option>Yet to be interviewed</option>
+           <option value="">Yet to be interviewed</option>
            <option>Not Cleared</option>
-           <option>Cleared</option>     
+           <option>Cleared</option>
          </select>
       </div></div>
   </div>

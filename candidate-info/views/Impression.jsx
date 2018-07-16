@@ -40,7 +40,7 @@ class Impression extends React.Component {
               <div className="form-group">
                  <select required className="form-control" id="impression" onChange={this.handleOnChange}
                  value={candidateImpression}>
-                   <option>Select</option>
+                   <option value="">Select</option>
                      <option>0</option>
                      <option>2</option>
                      <option>4</option>

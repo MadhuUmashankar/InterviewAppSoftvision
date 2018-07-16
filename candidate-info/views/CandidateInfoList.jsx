@@ -83,17 +83,24 @@ class CandidateInfoList extends Component {
         candidateNodes = candidateNodes && candidateNodes.map((candidate, index) => {
             const candidateID = candidate._id;
             const scheduledInterview = candidate.scheduleInterview;
-            let status = false;
+            let status = false, classStatus="label label-default", scheduled;
+            if(scheduledInterview =='Yes') {
+              scheduled = "Yes"
+            }
             if(candidate.no_of_rounds > 0) {
                 if(candidate.offered == "offered") {
-                  status = "Offered"
+                  status = "Offered";
+                  classStatus = "label label-primary";
                 } else if(candidate.offered == "rejected") {
-                  status = "Rejected"
+                  status = "Rejected";
+                  classStatus = "label label-danger";
                 } else {
-                  status = "In Progress"
+                  status = "In Progress";
+                  classStatus = "label label-warning";
                 }
             } else {
               status = "New";
+              classStatus = "label label-success";
             }
 
             return (
@@ -116,7 +123,7 @@ class CandidateInfoList extends Component {
                                                <Modal.Title><h3>Select the round of interview</h3></Modal.Title>
                                            </Modal.Header>
                                            <Modal.Body>
-                                             The Candidate has not been scheduled an interview. Please schedule an interview for the same by clicking on view button in Home Screen.
+                                             No interview has been scheduled. Please schedule an interview for the same by clicking on view button in Home Screen.
                                            </Modal.Body>
                                            {/*<Button bsStyle="primary" bsSize="small" onClick={(e)=>this.handleSubmit(e, candidate)} >
                                                Schedule Interview
@@ -127,8 +134,9 @@ class CandidateInfoList extends Component {
 
                                 <div className="home-page-resume">
                                    <a target="_blank" href= {candidate.selectedFile_name} download>
-                                      <span className="glyphicon glyphicon-download-alt"></span>
+                                      <span title="Download Resume" className="glyphicon glyphicon-download-alt" />
                                     </a>
+                                    {scheduled ?<span className="scheduled-flag glyphicon glyphicon-flag" title="Interview Scheduled" /> : ''}
                                   </div>
                                 </div>
 
@@ -137,13 +145,16 @@ class CandidateInfoList extends Component {
                                 <div><span className="margin-tiny glyphicon glyphicon-wrench"></span>Skills: {candidate.skills}</div>
                                 <div><span className="margin-tiny glyphicon glyphicon-map-marker"></span>Location: {candidate.city}</div>
                                 <div><span className="margin-tiny glyphicon glyphicon-phone"></span>Phone No.: {candidate.phone}</div>
-                                <div><span className="margin-tiny glyphicon glyphicon-stats"></span>Status: <i><strong>{status}</strong></i></div>
+                                <div className="margin-tiny">
+                                   <span className={classStatus}>{status}</span>
+                                  </div>
                                 </p>
                                 <div className="event-card-btn-group">
-                                  <button className="btn btn-success margin-tiny" onClick={(e)=>this.handleView(e, candidate)}>View</button>
+                                  <button title="Click here to view the candidate" className="btn btn-success margin-tiny" onClick={(e)=>this.handleView(e, candidate)}><i className="fa fa-address-card-o" aria-hidden="true"></i></button>
                                   </div>
                                   <div className="event-card-btn-group right">
-                                  <button className="btn btn-danger" onClick={(e)=>this.handleDelete(e, candidateID, candidate)}>Delete</button>
+                                  <button title="Click here to delete the candidate" className="btn btn-danger" onClick={(e)=>this.handleDelete(e, candidateID, candidate)}>
+                                    <span className="glyphicon glyphicon-trash" title="Delete"/></button>
                                   </div>
 
                               </div>

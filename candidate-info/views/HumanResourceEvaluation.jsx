@@ -255,7 +255,7 @@ class HumanResourceEvaluation extends Component {
     return (
       <div>
         <Button bsStyle="primary" onClick={()=>{this.handleShow()}}>
-        <span className="glyphicon glyphicon-list-alt" />
+        <span className="glyphicon glyphicon-list-alt"  title="HR Form"/>
         </Button>
 
         <Modal bsSize="large" show={this.state.show} onHide={this.handleClose}>
@@ -300,18 +300,7 @@ class HumanResourceEvaluation extends Component {
                                   required
                                   onChange = {this.handleOnChange}
                               /></td>
-                            <td><strong>Interview Round</strong><span className="mandatory">*</span></td><td><InputBox
-                                  type="text"
-                                  placeholder="Enter the round"
-                                  classname="form-control"
-                                  name="interviewerRound"
-                                  id="interviewerRoundId"
-                                  value = {currHRObject.interviewerRound || this.state.interviewerRound }
-                                  maxLength="20"
-                                  autoComplete="off"
-                                  required
-                                  onChange = {this.handleOnChange}
-                              /></td>
+                            <td><strong>Interview Round</strong><span className="mandatory">*</span></td><td>{idx+1}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -389,7 +378,7 @@ class HumanResourceEvaluation extends Component {
                         <div className="form-group experience-width">
                           <select required className="form-control" onChange = {this.handleOnChange} name="hrInterviewStatus"
                           id="hrInterviewStatusId" value ={currHRObject.hrInterviewStatus}>
-                            <option>Yet to be interviewed</option>
+                            <option value="">Yet to be interviewed</option>
                             <option>Cleared</option>
                             <option>Not Cleared</option>
                           </select>

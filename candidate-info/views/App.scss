@@ -1,4 +1,5 @@
 @import "../node_modules/react-toggle-switch/dist/css/switch.min.css";
+@import '../node_modules/react-datepicker/dist/react-datepicker.css';
 
 // Landng Page css
 .footer {
@@ -85,7 +86,20 @@ button.close {
   margin-top: 2%;
 }
 
+body,div {
+  font-family: 'Crimson Text', cursive;
+}
+
 //
+.table .thead-dark th {
+    color: #fff;
+    background-color: #7a8086;
+    border-color: #32383e;
+}
+
+.endInterview-class{
+  float:right;
+}
 
 .modal-header{
   background: cornsilk;
@@ -171,6 +185,7 @@ button.close {
 }
 .login-title {
   padding-bottom:4%;
+  margin-left: 65px;
 }
 //Candidate form css
 
@@ -219,6 +234,11 @@ button.close {
     width: 100%;
   }
 }
+
+.inputGroupContainer span{
+  margin-left: 5px;
+}
+
 
 .margin-resume {
   margin-top: 5px;

@@ -36,12 +36,13 @@ export default class CandidateAssessment extends Component {
           isShowProceedButton : false,
           firstname: '',
           lastname: '',
-          switched: false,
+          hired: false,
           isOffered: false,
-          offered: false
+          offered: false,
+          endInterview: false,
+          removeEndInterview: false
         };
       this.handleInterviewChange = this.handleInterviewChange.bind(this);
-      this.startEvaluating = this.startEvaluating.bind(this);
       this.sendInterviewStatus = this.sendInterviewStatus.bind(this);
       this.logout = this.logout.bind(this);
       this.handleShow = this.handleShow.bind(this);
@@ -49,22 +50,33 @@ export default class CandidateAssessment extends Component {
       this.handleDeleteInterview = this.handleDeleteInterview.bind(this);
       this.toggleSwitch = this.toggleSwitch.bind(this);
       this.offeredToggleSwitch = this.offeredToggleSwitch.bind(this);
+      this.endInterview = this.endInterview.bind(this);
+      // this.removeEndInterview = this.removeEndInterview.bind(this);
   }
-      toggleSwitch() {
-        this.setState(prevState => {
-          return {
-            switched: !prevState.switched,
-            isOffered:true
-          };
+
+  toggleSwitch() {
+        let {candidateData, hired} = this.state;
+        let url = "http://localhost:3000/candidateInfo";
+        this.setState({
+          hired: !this.state.hired, isOffered : true
+        }, (prevState) => {
+          candidateData["hired"] = (this.state.hired) ? 'true': 'false';
+          axios.put(`${url}/${candidateData._id}`, candidateData)
+          .then(response => {
+              console.log('response', response)
+            })
         });
     };
+
     offeredToggleSwitch() {
       let {candidateData, offered} = this.state;
       let url = "http://localhost:3000/candidateInfo";
+      let isOffered = ( this.state.offered == "offered" ) ? true : false;
+      isOffered = !isOffered
       this.setState({
-        offered: !this.state.offered
+        offered: !isOffered
       }, (prevState) => {
-        candidateData["offered"] = (this.state.offered) ? 'offered': 'rejected';
+        candidateData["offered"] = (isOffered) ? 'offered': 'rejected';
         axios.put(`${url}/${candidateData._id}`, candidateData)
         .then(response => {
             console.log('response', response)
@@ -73,22 +85,13 @@ export default class CandidateAssessment extends Component {
 
     }
 
-
-      // console.log(offered);
-      //
-      // // this.setState(prevState => {
-      //   candidateData["offered"] = offered;
-      //   axios.put(`${url}/${candidateData._id}`, candidateData)
-      //   .then(response => {
-      //       console.log('response', response)
-      //     })
-      // });
-
-      // candidateData["offered"] = this.state.offered;
-      // axios.put(`${url}/${candidateData._id}`, candidateData)
-      // .then(response => {
-      //     console.log('response', response)
-      // })
+    endInterview() {
+      this.setState({endInterview:true})
+    }
+    //
+    // removeEndInterview() {
+    //   this.setState({removeEndInterview:true, endInterview:false})
+    // }
 
     handleDeleteInterview(e, index, id) {
       e.preventDefault();
@@ -201,7 +204,8 @@ export default class CandidateAssessment extends Component {
                     isShowProceedButton = false;
                  }
                  if(listOfInterviewRounds[i].sts === "In-Progress"){
-                    listOfInterviewRounds[i]["isShowDeleteButton"] = true
+                    listOfInterviewRounds[i]["isShowDeleteButton"] = true;
+                    isShowProceedButton = false;
                  }
               }
               if(listOfInterviewRounds.length===0){
@@ -242,8 +246,7 @@ export default class CandidateAssessment extends Component {
       let url = "http://localhost:3000/candidateInfo";
       axios.get(`${url}/${id}`)
           .then(response => {
-            let offered = response.data.offered  == "offered" ? true: false;
-            this.setState({ candidateData: response.data, offered:offered , switched: offered});
+            this.setState({ candidateData: response.data, offered:response.data.offered , hired: response.data.hired });
             console.log('candidate Data', response.data);
           })
           .catch(error => {
@@ -290,6 +293,7 @@ export default class CandidateAssessment extends Component {
                          }
                          if(candidateInterviewRecords[i].sts === "In-Progress"){
                            candidateInterviewRecords[i]["isShowDeleteButton"] = true;
+                             isShowProceedButton = false;
                          }
                       }
                     }
@@ -304,10 +308,6 @@ export default class CandidateAssessment extends Component {
                   console.error('erro message',err);
               });
       }
-
-    startEvaluating() {
-      this.setState({ isShowProceedButton: true , showText: false});
-     }
 
     sendInterviewStatus(status, type,idx) {
       // this.state.listOfInterviewRounds[idx].sts = "Cleared";
@@ -334,15 +334,32 @@ export default class CandidateAssessment extends Component {
     render() {
       const {interViewToBeTaken, candidateData, showTable,
         isShowProceedButton,status, type, showText, listOfInterviewRounds,
-        interviewStatus, users, candidateInterviewRecords, isShowDeleteButton, firstname, lastname, switched, offered} = this.state;
+        interviewStatus, users, candidateInterviewRecords, isShowDeleteButton, firstname, lastname, hired, offered, endInterview, role } = this.state;
 
+        let isOfferedStatus = false;
+        alert(offered);
+        if(offered == "offered") {
+          isOfferedStatus = true;
+        }
       const fullname = candidateData.firstname + " " + candidateData.lastname;
-      let url = "http://localhost:3000/candidateInfo", currentStatus;
+      // console.log('users[0].ro', this.props.users)
+      // const role= users && users[0].role;
+      let url = "http://localhost:3000/candidateInfo", currentStatus, endInterviewButton=false;
 
     //  if(interViewToBeTaken === "Technical Round") {
         currentStatus = status
 
      // }
+
+     if(listOfInterviewRounds.length >0) {
+       for (let i=0; i<listOfInterviewRounds.length; i++) {
+         if(listOfInterviewRounds[i].round === "Technical Round" || listOfInterviewRounds[i].round === "HR Round" || listOfInterviewRounds[i].round === "Manager Round"){
+           if(listOfInterviewRounds[i].round === "HR Round" || listOfInterviewRounds[i].round === "Manager Round"){
+             endInterviewButton = true;
+           }
+         }
+       }
+     }
 
 
         return (
@@ -353,7 +370,7 @@ export default class CandidateAssessment extends Component {
               <div className="container candidate-info-list-container">
 
               {sessionStorage.getItem('jwtToken') &&
-                <div className="log-in"><span className="username">{firstname + " " +lastname}</span><button className="btn btn-primary" onClick={this.logout}> Logout</button></div>
+                <div className="log-in"><span className="username">{firstname + " " +lastname+ "(" + role +")"}</span><button className="btn btn-primary" onClick={this.logout}> Logout</button></div>
               }
 
               <div>
@@ -365,22 +382,20 @@ export default class CandidateAssessment extends Component {
                 <center>
                 {showText ?
                   <div>
-                    <p>No interview is scheduled for this particular candidate.
-                      Please click here to <button onClick={this.startEvaluating}>Start Evaluating</button>
-                    </p>
+                    <h2>No interview is scheduled for this particular candidate.</h2>
                   </div>
                   :
-                  <div><p>Please select the interview round here<span className="glyphicon glyphicon-arrow-down"></span></p></div>
+                  ''
                 }
 
 
                   { showTable  ? <table
-                  className="table table-bordered table-responsive" id="interview_round_id">
-                      <thead>
+                  className="table table-responsive" id="interview_round_id">
+                      <thead className="thead-dark">
                           <tr>
                             <th>Interview Round</th>
-                            <th>Evaluation</th>
                             <th>Status</th>
+                            <th>Evaluation</th>
                             <th>Delete</th>
                           </tr>
                         </thead>
@@ -389,6 +404,7 @@ export default class CandidateAssessment extends Component {
                            {  listOfInterviewRounds.length>0 && listOfInterviewRounds.map((list, index)=> (
                               <tr key={index}>
                                 <td className="interview-round">{list.round}</td>
+                                  <td>{list.sts}</td>
                                 { list.item1 === 'Evaluation' ?
                                   <td>
                                   <Evaluation candidateInterviewRecords={listOfInterviewRounds}
@@ -397,16 +413,16 @@ export default class CandidateAssessment extends Component {
                                 :
                                ( list.item1 === 'ManagerEvaluation' ?
                                 <td>
-                                  <ManagerEvaluation candidateInterviewRecords={listOfInterviewRounds} candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} idx = {index}/>
+                                  <ManagerEvaluation candidateInterviewRecords={listOfInterviewRounds} candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} interViewToBeTaken={list.round} idx = {index}/>
                                 </td>
                                 :
                                 <td>
-                                  <HumanResourceEvaluation candidateInterviewRecords={listOfInterviewRounds} candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} idx = {index}/>
+                                  <HumanResourceEvaluation candidateInterviewRecords={listOfInterviewRounds} candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} interViewToBeTaken={list.round} idx = {index}/>
                                 </td>
                                )}
-                                <td>{list.sts}</td>
+
                                 <td>{list.isShowDeleteButton ? <button onClick={(e)=>{this.handleDeleteInterview(e, index, list._id)}} className="btn btn-danger float-right">
-                                  Delete
+                                  <span className="glyphicon glyphicon-trash" title="Delete"/>
                                 </button>: ''}</td>
                               </tr>
 
@@ -420,49 +436,67 @@ export default class CandidateAssessment extends Component {
                     :
                   null
                   }
-                   {isShowProceedButton ?
-               <div>
-                    <div>
-                        <Button bsStyle="primary" bsSize="large" onClick={this.handleShow} >
-                            Proceed interview
-                        </Button>
-                    </div>
 
-                    <Modal show={this.state.show} onHide={this.handleClose}>
-                        <Modal.Header closeButton>
-                            <Modal.Title><h3>Select the round of interview</h3></Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                          <select className="form-control experience-width" id="interViewToBeTakenId" onChange = {this.handleInterviewChange} value = {interViewToBeTaken}>
-                          <option value="technical">Select</option>
-                              <option value="technical">Technical Round</option>
-                              <option value="manager">Manager Round</option>
-                              <option value="hr">HR Round</option>
-                          </select>
-                        </Modal.Body>
-                    </Modal>
-                  </div>
+
+                </center>
+
+                {isShowProceedButton ?
+                <div>
+                 <div>
+                     <Button bsStyle="primary" bsSize="large" onClick={this.handleShow} >
+                         Proceed interview
+                     </Button>
+                     {endInterviewButton ?
+                                       <div className="endInterview-class"><Button bsStyle="primary" bsSize="large" onClick={this.endInterview}>End Interview</Button>
+
+                                         </div>
+                     : ''}
+                 </div>
+
+
+                 <Modal show={this.state.show} onHide={this.handleClose}>
+                     <Modal.Header closeButton>
+                         <Modal.Title><h3>Select the round of interview</h3></Modal.Title>
+                     </Modal.Header>
+                     <Modal.Body>
+                       <select required className="form-control experience-width" id="interViewToBeTakenId" onChange = {this.handleInterviewChange} value = {interViewToBeTaken}>
+                       <option value="">Select</option>
+                           <option value="technical">Technical Round</option>
+                           <option value="manager">Manager Round</option>
+                           <option value="hr">HR Round</option>
+                       </select>
+                     </Modal.Body>
+                 </Modal>
+                </div>
                 :
                 null}
 
-                </center>
-                { listOfInterviewRounds.length > 0 &&
 
+
+
+            { hired ?
             <div className="candidate-hired">
-              { listOfInterviewRounds.length > 0 ? <div className="alert alert-info">
-                  <div><div>Hired or not?</div>
-                  <span><Switch onClick={this.toggleSwitch} on={this.state.switched}/></span>
+                 <div className="alert alert-info">
+                  <div><div>Is the candidate hired or not?</div>
+                  <span><Switch onClick={this.toggleSwitch} on={hired}/></span>
               </div>
-            </div> : ''}
+            </div>
 
-                  {switched ? <div className="alert alert-info">
-                  <div>Offered or not?</div>
-                  <span><Switch onClick={this.offeredToggleSwitch} on={this.state.offered}/></span>
+
+                  {hired ? <div className="alert alert-info">
+                  <div>Is the candidate offered or not?</div>
+                  <span><Switch onClick={this.offeredToggleSwitch} on={isOfferedStatus}/></span>
                 </div> : ''}
-                {(switched && offered) ? <div className="alert alert-success">
-                  <strong>Success!</strong> Candidate have been offered.
-                </div>: ''}
-               </div>}
+
+                {(offered == "offered") ? <div className="alert alert-success">
+                  <strong>Success!</strong> Candidate has been offered.
+                </div> : ''}
+                {(offered == "rejected") ? <div className="alert alert-danger">
+                  <strong>Sorry!</strong> Candidate has been rejected.
+                </div> : ''}
+               </div>
+               : '' }
+
             </div>
           </div>
         <Footer />

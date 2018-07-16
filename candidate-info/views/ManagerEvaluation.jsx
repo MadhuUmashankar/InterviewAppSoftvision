@@ -318,7 +318,7 @@ class ManagerEvaluation extends Component {
     return (
       <div>
         <Button bsStyle="primary" onClick={()=>{this.handleShow()}}>
-          <span className="glyphicon glyphicon-list-alt" />
+          <span className="glyphicon glyphicon-list-alt" title="Manager Form" />
         </Button>
 
         <Modal bsSize="large" show={this.state.show} onHide={this.handleClose}>
@@ -363,18 +363,7 @@ class ManagerEvaluation extends Component {
                                   required
                                   onChange = {this.handleOnChange}
                               /></td>
-                            <td><strong>Interview Round</strong><span className="mandatory">*</span></td><td><InputBox
-                                  type="text"
-                                  placeholder="Enter the round"
-                                  classname="form-control"
-                                  name="interviewerRound"
-                                  id="interviewerRoundId1"
-                                    autoComplete="off"
-                                  value = {currManagerObject.interviewerRound || this.state.interviewerRound }
-                                  maxLength="20"
-                                  required
-                                  onChange = {this.handleOnChange}
-                              /></td>
+                            <td><strong>Interview Round</strong><span className="mandatory">*</span></td><td>{idx+1}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -392,8 +381,9 @@ class ManagerEvaluation extends Component {
                             <td rowSpan="3">Client Orientation<span className="mandatory">*</span></td>
                             <td className="col-sm-3">Understanding Customer Needs</td>
                             <td>
-                              <select className="form-control" id="ratings_id1" name="clientOrientationRatings1" onChange={this.handleOnChange}
+                              <select required="required" className="form-control" id="ratings_id1" name="clientOrientationRatings1" onChange={this.handleOnChange}
                                 value={currManagerObject.clientOrientationRatings1}>
+                                  <option value="">select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
                                   <option>2 - Needs Improvement</option>
@@ -402,7 +392,7 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <TextArea rows="2" cols="25" onChange = {this.handleOnChange} name="clientOrientationComments1"
+                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="clientOrientationComments1"
                               id="clientOrientationCommentsId1" placeholder="Please enter the comments" value={currManagerObject.clientOrientationComments1}></TextArea>
                             </td>
                           </tr>
@@ -410,8 +400,9 @@ class ManagerEvaluation extends Component {
 
                             <td className="col-sm-3">Follow client process</td>
                             <td>
-                              <select className="form-control" id="ratings_id2" name="clientOrientationRatings2" onChange={this.handleOnChange}
+                              <select required className="form-control" id="ratings_id2" name="clientOrientationRatings2" onChange={this.handleOnChange}
                                 value={currManagerObject.clientOrientationRatings2}>
+                                  <option value="">select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
                                   <option>2 - Needs Improvement</option>
@@ -420,7 +411,7 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <TextArea rows="2" cols="25" onChange = {this.handleOnChange} name="clientOrientationComments2"
+                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="clientOrientationComments2"
                               id="clientOrientationCommentsId2" placeholder="Please enter the comments" value={currManagerObject.clientOrientationComments2}></TextArea>
                             </td>
                           </tr>
@@ -428,8 +419,9 @@ class ManagerEvaluation extends Component {
 
                             <td className="col-sm-3">Developing relationships with client</td>
                             <td>
-                              <select className="form-control" id="ratings_id3" name="clientOrientationRatings3" onChange={this.handleOnChange}
+                              <select required className="form-control" id="ratings_id3" name="clientOrientationRatings3" onChange={this.handleOnChange}
                                 value={currManagerObject.clientOrientationRatings3}>
+                                <option value="">select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
                                   <option>2 - Needs Improvement</option>
@@ -438,7 +430,7 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <TextArea rows="2" cols="25" onChange = {this.handleOnChange} name="clientOrientationComments3"
+                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="clientOrientationComments3"
                               id="clientOrientationCommentsId3" placeholder="Please enter the comments" value={currManagerObject.clientOrientationComments3}></TextArea>
                             </td>
                           </tr>
@@ -447,7 +439,8 @@ class ManagerEvaluation extends Component {
                             <td>Project Management<span className="mandatory">*</span></td>
                             <td className="col-sm-3">People Management</td>
                             <td>
-                              <select className="form-control" id="ratings_id4" name="projectManagementRatings" onChange={this.handleOnChange} value={ currManagerObject.projectManagementRatings}>
+                              <select required className="form-control" id="ratings_id4" name="projectManagementRatings" onChange={this.handleOnChange} value={ currManagerObject.projectManagementRatings}>
+                                <option value="">select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
                                   <option>2 - Needs Improvement</option>
@@ -456,7 +449,7 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <TextArea rows="2" cols="25" onChange = {this.handleOnChange} name="projectManagementComments"
+                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="projectManagementComments"
                               id="projectManagementCommentsId" placeholder="Please enter the comments" value={currManagerObject.projectManagementComments}></TextArea>
                             </td>
                           </tr>
@@ -465,7 +458,8 @@ class ManagerEvaluation extends Component {
                             <td>Leadership<span className="mandatory">*</span></td>
                             <td className="col-sm-3"></td>
                             <td>
-                              <select className="form-control" id="ratings_id5" name="leadershipRatings" onChange={this.handleOnChange} value={currManagerObject.leadershipRatings}>
+                              <select required className="form-control" id="ratings_id5" name="leadershipRatings" onChange={this.handleOnChange} value={currManagerObject.leadershipRatings}>
+                                <option value="">select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
                                   <option>2 - Needs Improvement</option>
@@ -474,7 +468,7 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <TextArea rows="2" cols="25" onChange = {this.handleOnChange} name="leadershipComments"
+                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="leadershipComments"
                               id="leadershipCommentsId" placeholder="Please enter the comments" value={currManagerObject.leadershipComments}></TextArea>
                             </td>
                           </tr>
@@ -483,7 +477,8 @@ class ManagerEvaluation extends Component {
                             <td>Communication<span className="mandatory">*</span></td>
                             <td className="col-sm-3"></td>
                             <td>
-                              <select className="form-control" id="ratings_id6" onChange={this.handleOnChange} name="communicationRatings" value={currManagerObject.communicationRatings}>
+                              <select required className="form-control" id="ratings_id6" onChange={this.handleOnChange} name="communicationRatings" value={currManagerObject.communicationRatings}>
+                                <option value="">select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
                                   <option>2 - Needs Improvement</option>
@@ -492,7 +487,7 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <TextArea rows="2" cols="25" onChange = {this.handleOnChange} name="communicationComments"
+                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="communicationComments"
                               id="communicationCommentsId" placeholder="Please enter the comments" value={currManagerObject.communicationComments} ></TextArea>
                             </td>
                           </tr>
@@ -501,7 +496,8 @@ class ManagerEvaluation extends Component {
                             <td>Domain (Business/Technology)<span className="mandatory">*</span></td>
                             <td className="col-sm-3"></td>
                             <td>
-                              <select className="form-control" id="ratings_id7" name = "domainRatings" onChange={this.handleOnChange} value={currManagerObject.domainRatings}>
+                              <select required className="form-control" id="ratings_id7" name = "domainRatings" onChange={this.handleOnChange} value={currManagerObject.domainRatings}>
+                                <option value="">select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
                                   <option>2 - Needs Improvement</option>
@@ -510,7 +506,7 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <TextArea rows="2" cols="25" onChange = {this.handleOnChange} name="domainComments"
+                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="domainComments"
                               id="domainCommentsId" placeholder="Please enter the comments" value={currManagerObject.domainComments}></TextArea>
                             </td>
                           </tr>
@@ -518,7 +514,8 @@ class ManagerEvaluation extends Component {
                             <td rowSpan="4">Technical Solutions<span className="mandatory">*</span></td>
                             <td className="col-sm-3">Requirement gathering</td>
                             <td>
-                              <select className="form-control" id="ratings_id8" onChange={this.handleOnChange} name="technicalSolutionsRatings1" value={currManagerObject.technicalSolutionsRatings1}>
+                              <select required className="form-control" id="ratings_id8" onChange={this.handleOnChange} name="technicalSolutionsRatings1" value={currManagerObject.technicalSolutionsRatings1}>
+                                <option value="">select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
                                   <option>2 - Needs Improvement</option>
@@ -527,7 +524,7 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <TextArea rows="2" cols="25" onChange = {this.handleOnChange} name="technicalSolutionsComments1"
+                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="technicalSolutionsComments1"
                               id="technicalSolutionsCommentsId1" placeholder="Please enter the comments" value={currManagerObject.technicalSolutionsComments1}></TextArea>
                             </td>
                             </tr>
@@ -535,7 +532,8 @@ class ManagerEvaluation extends Component {
                             <tr>
                             <td className="col-sm-3">Architect/ Design</td>
                             <td>
-                              <select className="form-control" id="ratings_id9" onChange={this.handleOnChange} name="technicalSolutionsRatings2" value={currManagerObject.technicalSolutionsRatings2}>
+                              <select required className="form-control" id="ratings_id9" onChange={this.handleOnChange} name="technicalSolutionsRatings2" value={currManagerObject.technicalSolutionsRatings2}>
+                                <option value="">select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
                                   <option>2 - Needs Improvement</option>
@@ -544,7 +542,7 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <TextArea rows="2" cols="25" onChange = {this.handleOnChange} name="technicalSolutionsComments2"
+                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="technicalSolutionsComments2"
                               id="technicalSolutionsCommentsId2" placeholder="Please enter the comments" value={currManagerObject.technicalSolutionsComments2}></TextArea>
                             </td>
                           </tr>
@@ -552,7 +550,8 @@ class ManagerEvaluation extends Component {
 
                             <td className="col-sm-3">Coding</td>
                             <td>
-                              <select className="form-control" id="ratings_id10" onChange={this.handleOnChange} name="technicalSolutionsRatings3" value={currManagerObject.technicalSolutionsRatings3}>
+                              <select required className="form-control" id="ratings_id10" onChange={this.handleOnChange} name="technicalSolutionsRatings3" value={currManagerObject.technicalSolutionsRatings3}>
+                                <option value="">select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
                                   <option>2 - Needs Improvement</option>
@@ -561,7 +560,7 @@ class ManagerEvaluation extends Component {
                               </select>
                             </td>
                             <td>
-                              <TextArea rows="2" cols="25" onChange = {this.handleOnChange} name="technicalSolutionsComments3"
+                              <TextArea required rows="2" cols="25" onChange = {this.handleOnChange} name="technicalSolutionsComments3"
                               id="technicalSolutionsCommentsId3" placeholder="Please enter the comments" value={currManagerObject.technicalSolutionsComments3}></TextArea>
                             </td>
                           </tr>
@@ -569,7 +568,8 @@ class ManagerEvaluation extends Component {
 
                             <td className="col-sm-3">Testing</td>
                             <td>
-                              <select className="form-control" id="ratings_id11" onChange={this.handleOnChange} name="technicalSolutionsRatings4" value={currManagerObject.technicalSolutionsRatings4}>
+                              <select required className="form-control" id="ratings_id11" onChange={this.handleOnChange} name="technicalSolutionsRatings4" value={currManagerObject.technicalSolutionsRatings4}>
+                                <option value="">select</option>
                                   <option>0 - Not Applicaple</option>
                                   <option>1 - Below Expectation</option>
                                   <option>2 - Needs Improvement</option>
@@ -593,7 +593,7 @@ class ManagerEvaluation extends Component {
                           <div className="form-group experience-width">
                             <select required className="form-control experience-width" onChange = {this.handleOnChange} name="managerInterviewStatus"
                             id="managerInterviewStatusId" value ={currManagerObject.managerInterviewStatus}>
-                              <option>Yet to be interviewed</option>
+                              <option value="">Yet to be interviewed</option>
                               <option>Not Cleared</option>
                               <option>On Hold</option>
                               <option>Cleared</option>

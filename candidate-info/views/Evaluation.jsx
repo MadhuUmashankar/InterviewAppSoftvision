@@ -91,6 +91,7 @@ class Evaluation extends Component {
     const {candidateData, candidateInterviewRecords,idx} = this.props;
     const candidate = candidateData;
     const {detailsData, experience, expertiseData, impression, summaryData, interviewStatus} = this.state;
+    console.log('detailsData---update', detailsData);
     const fullname = candidate.firstname + " " + candidate.lastname;
     const candidateID = candidate.candidateID;
 
@@ -126,6 +127,7 @@ class Evaluation extends Component {
     const {candidateData, candidateInterviewRecords, idx} = this.props;
     const candidate = candidateData;
     const {detailsData, experience, expertiseData, impression, summaryData, interviewStatus} = this.state;
+    console.log('detailsData---', detailsData);
     // Candidate IA Form data
     const fullname = candidate.firstname + " " + candidate.lastname;
     const candidateID = candidate.candidateID;
@@ -189,7 +191,7 @@ class Evaluation extends Component {
     return (
       <div>
         <Button bsStyle="primary" onClick={()=>{this.handleShow()}}>
-          <span className="glyphicon glyphicon-list-alt" />
+          <span className="glyphicon glyphicon-list-alt" title="Technical Form"/>
         </Button>
 
         <Modal bsSize="large" show={this.state.show} onHide={this.handleClose}>

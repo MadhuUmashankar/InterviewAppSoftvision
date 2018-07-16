@@ -41,9 +41,9 @@ class Note extends React.Component {
           <div className="col-sm-3"><label className="experience-label">Experience: 10%</label><span className="mandatory">*</span></div>
           <div className="col-sm-2 move-right">
               <div className="form-group">
-                 <select className="form-control" id="experience" onChange={this.handleOnChange}
+                 <select required className="form-control" id="experience" onChange={this.handleOnChange}
                   value={ candidateExperience }>
-                   <option>Select</option>
+                   <option value="">Select</option>
                      <option>0</option>
                      <option>2</option>
                      <option>4</option>

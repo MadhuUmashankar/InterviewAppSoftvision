@@ -228,7 +228,7 @@ class App extends Component {
         <div className="container candidate-info-list-container">
         <div className="App-header">
             {sessionStorage.getItem('jwtToken') &&
-              <div className="log-in"><span className="username">{ firstname + " " + lastname}</span><button className="btn btn-primary" onClick={this.logout}> Logout</button></div>
+              <div className="log-in"><span className="username">{ firstname + " " + lastname + "(" + role +")"}</span><button className="btn btn-primary" onClick={this.logout}> Logout</button></div>
             }
             <div>
                 <Button bsStyle="primary" bsSize="large" onClick={this.handleShow} disabled={classname}>

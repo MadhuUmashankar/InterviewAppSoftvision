@@ -231,9 +231,7 @@ export default class CandidateForm extends React.Component{
                                         {modalLabelView &&
                                             <div>
                                                 <span>:
-                                                    <label>
                                                         {candidate && candidate.firstname}
-                                                    </label>
                                                 </span>
                                             </div>
                                         }
@@ -269,9 +267,9 @@ export default class CandidateForm extends React.Component{
                                         {modalLabelView &&
                                             <div>
                                                 <span>:
-                                                    <label>
+
                                                         {candidate && candidate.lastname}
-                                                    </label>
+
                                                 </span>
 
                                             </div>
@@ -307,9 +305,8 @@ export default class CandidateForm extends React.Component{
                                         {modalLabelView &&
                                             <div>
                                                 <span>:
-                                                    <label>
+
                                                         {candidate && candidate.email}
-                                                    </label>
                                                 </span>
 
                                             </div>
@@ -344,9 +341,7 @@ export default class CandidateForm extends React.Component{
                                         {modalLabelView &&
                                             <div>
                                                 <span>:
-                                                    <label>
                                                         {candidate && candidate.phone}
-                                                    </label>
                                                 </span>
 
                                             </div>
@@ -381,9 +376,7 @@ export default class CandidateForm extends React.Component{
                                         {modalLabelView &&
                                             <div>
                                                 <span>:
-                                                    <label>
                                                         {candidate && candidate.alternateNumber}
-                                                    </label>
                                                 </span>
 
                                             </div>
@@ -419,9 +412,7 @@ export default class CandidateForm extends React.Component{
                                         {modalLabelView &&
                                             <div>
                                                 <span>:
-                                                    <label>
                                                         {candidate && candidate.city}
-                                                    </label>
                                                 </span>
 
                                             </div>
@@ -457,9 +448,7 @@ export default class CandidateForm extends React.Component{
                                         {modalLabelView &&
                                             <div>
                                                 <span>:
-                                                    <label>
                                                         {candidate && candidate.state}
-                                                    </label>
                                                 </span>
 
                                             </div>
@@ -496,9 +485,7 @@ export default class CandidateForm extends React.Component{
                                         {modalLabelView &&
                                             <div>
                                                 <span>:
-                                                    <label>
                                                         {candidate && candidate.skills}
-                                                    </label>
                                                 </span>
 
                                             </div>
@@ -506,7 +493,7 @@ export default class CandidateForm extends React.Component{
                                         </div>
                                     </div>
                             </div>
-                            
+
                             <div className="form-group">
                                 <label className="col-md-4 control-label" >Schedule Interview</label>
                                     <div className="col-md-6 inputGroupContainer">
@@ -529,9 +516,7 @@ export default class CandidateForm extends React.Component{
                                         {modalLabelView &&
                                             <div>
                                                 <span>:
-                                                    <label>
                                                         {candidate && candidate.scheduleInterview}
-                                                    </label>
                                                 </span>
 
                                             </div>
@@ -571,9 +556,7 @@ export default class CandidateForm extends React.Component{
                                             {modalLabelView &&
                                                 <div>
                                                     <span>:
-                                                        <label>
                                                              {candidate.selectedFile_name}
-                                                        </label>
                                                     </span>
 
                                                 </div>
