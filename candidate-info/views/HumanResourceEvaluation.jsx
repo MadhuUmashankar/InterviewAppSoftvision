@@ -28,23 +28,6 @@ class HumanResourceEvaluation extends Component {
 
    componentDidMount() {
        this.loadHRDetails();
-     //   const {hrEvaluationData} = this.state;
-     //   const {candidateData, sendInterviewStatus} = this.props;
-     //   let currentHRRecord = hrEvaluationData.filter((record) => {
-     //     return candidateData.candidateID === record.candidateID
-     //   });
-     //
-     //   currentHRRecord = currentHRRecord[0];
-     //
-     //   if(currentHRRecord != undefined) {
-     //     if(Object.keys(currentHRRecord).length > 0) {
-     //       const hrInterviewStatus = currentHRRecord.hrInterviewStatus ? currentHRRecord.hrInterviewStatus : "";
-     //       this.setState({hrInterviewStatus},()=>{
-     //         sendInterviewStatus(hrInterviewStatus, "hr");
-     //       });
-     //
-     //     }
-     // }
    }
 
 

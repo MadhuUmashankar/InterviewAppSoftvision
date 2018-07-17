@@ -293,12 +293,15 @@ router.put('/candidateInfo/:id', function(req, res, next){
     if(candidate.resume){
         updcandidateInfo.resume = candidate.resume;
     }
-    if(candidate.offered){
+    // if(candidate.hired){
+    updcandidateInfo.hired = candidate.hired;
+    // }
+    // if(candidate.offered){
       updcandidateInfo.offered = candidate.offered;
-    }
-    if(candidate.hired){
-      updcandidateInfo.hired = candidate.hired;
-    }
+    // }
+    // if(candidate.rejected){
+      updcandidateInfo.rejected = candidate.rejected;
+    // }
     if(candidate.no_of_rounds) {
       updcandidateInfo.no_of_rounds = candidate.no_of_rounds;
     }

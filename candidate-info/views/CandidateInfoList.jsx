@@ -88,10 +88,10 @@ class CandidateInfoList extends Component {
               scheduled = "Yes"
             }
             if(candidate.no_of_rounds > 0) {
-                if(candidate.offered == "offered") {
+                if(candidate.offered) {
                   status = "Offered";
                   classStatus = "label label-primary";
-                } else if(candidate.offered == "rejected") {
+                } else if(candidate.rejected) {
                   status = "Rejected";
                   classStatus = "label label-danger";
                 } else {

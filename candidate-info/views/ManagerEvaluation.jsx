@@ -587,7 +587,7 @@ class ManagerEvaluation extends Component {
 
 
                     </div>
-                    <div className="margin-small">
+                    <div className="interview-status-align">
                       <div className="col-sm-4"><label>Interview Status</label><span className="mandatory">*</span></div>
                         <div className="col-sm-6">
                           <div className="form-group experience-width">

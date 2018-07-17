@@ -223,7 +223,7 @@ class Evaluation extends Component {
 
                       <Summary onSummarySave= {this.handleSummaryData} candidate={candidate} data={currentIARecord} />
                     </div>
-                    <div className="margin-small">
+                    <div className="interview-status-align">
                       <EvaluationStatus onEvaluationStatusSave= {this.handleEvaluationStatusSave} candidate={candidate} data={currentIARecord} />
                     </div>
                       <div className="margin-small">
