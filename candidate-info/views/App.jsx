@@ -8,6 +8,7 @@ import Header from './Header';
 import Footer from './Footer';
 import {hashHistory} from 'react-router';
 import ReactPaginate from 'react-paginate';
+import $http from '../routes/http';
 import {
     BrowserRouter as Router,
     Link,
@@ -15,9 +16,6 @@ import {
     Switch,
     HashRouter
   } from 'react-router-dom';
-
-import axios from 'axios';
-
 
 class App extends Component {
 
@@ -33,7 +31,7 @@ class App extends Component {
           users:[],
           pageCount: '',
           offset: 0,
-          numberOfItemsPerPage: 5,
+          numberOfItemsPerPage: 50,
           partialData:[]
         };
         this.handleShow = this.handleShow.bind(this);
@@ -49,8 +47,8 @@ class App extends Component {
     }
 
     loadDetailsFromServer() {
-        axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('jwtToken');
-        axios.get(this.props.url)
+        $http.defaults.headers.common['Authorization'] = sessionStorage.getItem('jwtToken');
+        $http.get(this.props.url)
             .then(res => {
                 this.setState({ data: res.data });
             }).catch((error) => {
@@ -61,7 +59,7 @@ class App extends Component {
                 }
             });
 
-            axios.get(this.props.userListurl)
+            $http.get(this.props.userListurl)
             .then(res => {
                   this.setState({ users: res.data });
             })
@@ -69,8 +67,8 @@ class App extends Component {
     }
 
     loadDetailsFromServerForIASheet() {
-        axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('jwtToken');
-        axios.get(this.props.IAurl)
+        $http.defaults.headers.common['Authorization'] = sessionStorage.getItem('jwtToken');
+        $http.get(this.props.IAurl)
             .then(res => {
                 this.setState({ IAData: res.data });
             }).catch((error) => {
@@ -93,9 +91,9 @@ class App extends Component {
              let formData = new FormData();
             formData.append('selectedFile', record.selectedFile);
 
-           axios.all([
-            axios.post(this.props.url+'/upload', formData),
-            axios.post(this.props.url+'/newCandidate', record),
+           $http.all([
+            $http.post(this.props.url+'/upload', formData),
+            $http.post(this.props.url+'/newCandidate', record),
            ])
            .catch(err => {
                 console.error(err);
@@ -123,9 +121,9 @@ class App extends Component {
 
         deleteIAFormID = deleteIAFormID.length > 0 ? deleteIAFormID[0]._id : '';
 
-        axios.all([
-            `${deleteIAFormID} ? ${axios.delete(`${this.props.IAurl}/${deleteIAFormID}`)} : ""`,
-            axios.delete(`${this.props.url}/${id}`)
+        $http.all([
+            `${deleteIAFormID} ? ${$http.delete(`${this.props.IAurl}/${deleteIAFormID}`)} : ""`,
+            $http.delete(`${this.props.url}/${id}`)
         ]).then(res => {
             console.log('Record deleted');
         })
@@ -146,9 +144,9 @@ class App extends Component {
         formData.append('selectedFile', record.selectedFile);
 
           //sends the new candidate id and new candidate to our api
-        axios.all([
-                        axios.post(this.props.url+'/upload', formData),
-                        axios.put(`${this.props.url}/${id}`, record),
+        $http.all([
+                        $http.post(this.props.url+'/upload', formData),
+                        $http.put(`${this.props.url}/${id}`, record),
                 ])
         .catch(err => {
             console.log(err);
@@ -247,7 +245,7 @@ class App extends Component {
         </div>
         <Modal show={this.state.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title><h3>Candidate Form</h3></Modal.Title>
+                <Modal.Title><h3>Candidate details</h3></Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <CandidateForm  onHandleSubmit={ this.handleSubmit } candidate={candidate} modalLabelView={modalLabelView} handleUpdate={ this.handleUpdate }  data = {data}/>

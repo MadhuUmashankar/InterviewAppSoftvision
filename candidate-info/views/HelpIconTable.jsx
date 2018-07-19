@@ -20,84 +20,72 @@ export default class HelpIconTable extends Component {
             <td>2</td>
             <td>4</td>
             <td>7</td>
-            <td>6</td>
           </tr>
           <tr>
             <td>HTTP</td>
             <td>2</td>
             <td>4</td>
             <td>7</td>
-            <td>6</td>
           </tr>
           <tr>
             <td>HTML</td>
             <td>3</td>
             <td>5</td>
             <td>8</td>
-            <td>6</td>
           </tr>
           <tr>
             <td>CSS</td>
             <td>3</td>
             <td>5</td>
             <td>7</td>
-            <td>6</td>
           </tr>
           <tr>
             <td>Git</td>
             <td>2</td>
             <td>4</td>
             <td>7</td>
-            <td>6</td>
           </tr>
           <tr>
             <td>Javascript</td>
             <td>3</td>
             <td>5</td>
             <td>8</td>
-            <td>6</td>
           </tr>
           <tr>
             <td>Node. Js</td>
             <td>2</td>
             <td>4</td>
             <td>7</td>
-            <td>6</td>
           </tr>
           <tr>
             <td>PHP</td>
             <td>2</td>
             <td>4</td>
             <td>7</td>
-            <td>6</td>
           </tr>
           <tr>
             <td>Databases</td>
             <td>3</td>
             <td>5</td>
             <td>8</td>
-            <td>6</td>
           </tr>
           <tr>
             <td>Ruby</td>
             <td>2</td>
             <td>4</td>
             <td>7</td>
-            <td>6</td>
           </tr>
           <tr>
             <td>Ruby on Rails</td>
             <td>2</td>
             <td>4</td>
             <td>7</td>
-            <td>6</td>
           </tr>
           <tr>
             <td>Python</td>
             <td>3</td>
             <td>5</td>
             <td>8</td>
-            <td>6</td>
           </tr>
         </tbody>
       </table>

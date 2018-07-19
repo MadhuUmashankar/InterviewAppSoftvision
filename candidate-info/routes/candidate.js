@@ -293,15 +293,14 @@ router.put('/candidateInfo/:id', function(req, res, next){
     if(candidate.resume){
         updcandidateInfo.resume = candidate.resume;
     }
-    // if(candidate.hired){
-    updcandidateInfo.hired = candidate.hired;
-    // }
-    // if(candidate.offered){
-      updcandidateInfo.offered = candidate.offered;
-    // }
-    // if(candidate.rejected){
-      updcandidateInfo.rejected = candidate.rejected;
-    // }
+
+    updcandidateInfo.candidateSelected = candidate.candidateSelected;
+    updcandidateInfo.candidateHired = candidate.candidateHired;
+    updcandidateInfo.candidateOffered = candidate.candidateOffered;
+    updcandidateInfo.candidateOnHold = candidate.candidateOnHold;
+    updcandidateInfo.candidateRejectedByEmployer = candidate.candidateRejectedByEmployer;
+    updcandidateInfo.candidateRejectedByHimself = candidate.candidateRejectedByHimself;
+
     if(candidate.no_of_rounds) {
       updcandidateInfo.no_of_rounds = candidate.no_of_rounds;
     }
@@ -347,8 +346,8 @@ router.put('/candidateInfo/newIAForm/:id', function(req, res, next){
      if(evaluator.candidateID){
         updatedIA.candidateID = evaluator.candidateID;
     }
-    if(evaluator.startDate){
-        updatedIA.startDate = evaluator.startDate;
+    if(evaluator.interviewerDate){
+        updatedIA.interviewerDate = evaluator.interviewerDate;
     }
     if(evaluator.interviewerName){
         updatedIA.interviewerName = evaluator.interviewerName;

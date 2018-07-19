@@ -2,18 +2,25 @@ import React, { Component } from 'react';
 import './candidateInfoList.scss';
 import {hashHistory} from 'react-router';
 import { Modal, Button } from 'react-bootstrap';
+import Switch from "react-switch";
 
 class CandidateInfoList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          show: false
+          show: false,
+          checked: false
         }
         this.modalStatus = false;
         this.handleEvalution = this.handleEvalution.bind(this);
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(checked) {
+      this.setState({ checked });
     }
 
   handleDelete(e, candidateID) {
@@ -88,10 +95,19 @@ class CandidateInfoList extends Component {
               scheduled = "Yes"
             }
             if(candidate.no_of_rounds > 0) {
-                if(candidate.offered) {
+              if(candidate.candidateSelected) {
+                status = "Selected";
+                classStatus = "label label-info";
+                if(candidate.candidateOffered){
                   status = "Offered";
                   classStatus = "label label-primary";
-                } else if(candidate.rejected) {
+                  if(candidate.candidateHired){
+                    status = "Hired";
+                    classStatus = "label label-success";
+                  }
+                }
+              }
+                else if((candidate.candidateRejectedByEmployer || candidate.candidateRejectedByHimself)) {
                   status = "Rejected";
                   classStatus = "label label-danger";
                 } else {
@@ -120,10 +136,10 @@ class CandidateInfoList extends Component {
 
                                        <Modal show={this.state.show} onHide={this.handleClose}>
                                            <Modal.Header closeButton>
-                                               <Modal.Title><h3>Select the round of interview</h3></Modal.Title>
+                                               <Modal.Title><h3>Interview schedule</h3></Modal.Title>
                                            </Modal.Header>
                                            <Modal.Body>
-                                             No interview has been scheduled. Please schedule an interview for the same by clicking on view button in Home Screen.
+                                             No interview has been scheduled. Please schedule an interview for the same by clicking on view button in home screen.
                                            </Modal.Body>
                                            {/*<Button bsStyle="primary" bsSize="small" onClick={(e)=>this.handleSubmit(e, candidate)} >
                                                Schedule Interview
@@ -152,9 +168,14 @@ class CandidateInfoList extends Component {
                                 <div className="event-card-btn-group">
                                   <button title="Click here to view the candidate" className="btn btn-success margin-tiny" onClick={(e)=>this.handleView(e, candidate)}><i className="fa fa-address-card-o" aria-hidden="true"></i></button>
                                   </div>
-                                  <div className="event-card-btn-group right">
-                                  <button title="Click here to delete the candidate" className="btn btn-danger" onClick={(e)=>this.handleDelete(e, candidateID, candidate)}>
-                                    <span className="glyphicon glyphicon-trash" title="Delete"/></button>
+                                  <div className="event-card-btn-group right" title="Active/InAcive">
+                                      <Switch
+                                        onChange={this.handleChange}
+                                        checked={this.state.checked}
+                                        className="react-switch"
+                                        id="normal-switch"
+
+                                      />
                                   </div>
 
                               </div>

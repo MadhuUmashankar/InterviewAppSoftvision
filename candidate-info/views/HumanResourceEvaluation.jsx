@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import EvaluationStatus from './EvaluationStatus';
 import { Modal,Button } from 'react-bootstrap';
 import TextArea from './TextArea';
-import axios from 'axios';
-import InputBox from './InputBox'
+import InputBox from './InputBox';
+import $http from '../routes/http';
 
 class HumanResourceEvaluation extends Component {
   constructor(props, context) {
@@ -35,7 +35,7 @@ class HumanResourceEvaluation extends Component {
      let hrUrl = this.props.url + '/newHREvaluationForm';
      let {candidateInterviewRecords, idx} = this.props;
      let {hrEvaluationData} = this.state;
-       axios.get(hrUrl)
+       $http.get(hrUrl)
            .then(res => {
                this.setState({ hrEvaluationData: res.data });
                hrEvaluationData = res.data;
@@ -154,13 +154,13 @@ class HumanResourceEvaluation extends Component {
           let records = this.state.hrEvaluationData;
           let newHREvaluationForm = records.concat(hrRecord);
           this.setState({ hrEvaluationData: newHREvaluationForm });
-          let url = "http://localhost:3000/candidateInfo";
+          let url = "/candidateInfo";
           let roundUrl = url + '/CandidateRounds';
-          axios.post(this.props.url + '/newHREvaluationForm', hrRecord)
+          $http.post(this.props.url + '/newHREvaluationForm', hrRecord)
           .then(res => {
               candidateInterviewRecords[idx].IA_id = res.data._id;
               candidateInterviewRecords[idx].sts = hrRecord.hrInterviewStatus;
-              axios.put(`${roundUrl}/${candidateInterviewRecords[idx]._id}`, candidateInterviewRecords[idx])
+              $http.put(`${roundUrl}/${candidateInterviewRecords[idx]._id}`, candidateInterviewRecords[idx])
               .then(response => {
                 this.setState({ hrEvaluationData: records });
                 // this.loadDetailsFromServerForIASheet();
@@ -201,14 +201,14 @@ class HumanResourceEvaluation extends Component {
     const updatedHRrecord = Object.assign({}, {candidateID: candidateData.candidateID}, {business:business1}, {project:project1}, {customerFocus:customerFocus1}, {senseOfUrgency:senseOfUrgency1}, {orientationToDetails:orientationToDetails1}, {technologyExposure:technologyExposure1}, {attitude:attitude1}, {culturalCompatibility:culturalCompatibility1}, {communicationSkills:communicationSkills1}, {interpersonalSkills:interpersonalSkills1}, {analyticalCritical:analyticalCritical1}, {energyEnthusiasm:energyEnthusiasm1}, {hrInterviewStatus:hrInterviewStatus1}, {interviewerName1:interviewerName2}, {jobTitle:jobTitle1}, {interviewerRound:interviewerRound1})
     let iaUrl = this.props.url + '/newHREvaluationForm';
     this.setState({ show: false });
-    let url = "http://localhost:3000/candidateInfo";
+    let url = "/candidateInfo";
     let roundUrl = url + '/CandidateRounds';
 
     //sends the new candidate id and new candidate to our api
-    axios.put(`${iaUrl}/${id}`, updatedHRrecord)
+    $http.put(`${iaUrl}/${id}`, updatedHRrecord)
     .then(res => {
         candidateInterviewRecords[idx].sts = updatedHRrecord.hrInterviewStatus;
-        axios.put(`${roundUrl}/${candidateInterviewRecords[idx]._id}`, candidateInterviewRecords[idx])
+        $http.put(`${roundUrl}/${candidateInterviewRecords[idx]._id}`, candidateInterviewRecords[idx])
         .then(response => {
           // this.loadDetailsFromServerForIASheet();
           location.reload();

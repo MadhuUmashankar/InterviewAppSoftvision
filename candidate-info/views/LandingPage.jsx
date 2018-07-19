@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Login from './Login'
+import Login from './Login';
+import $http from '../routes/http';
 
 export default class LandingPage extends Component {
   render(){
@@ -22,7 +23,7 @@ export default class LandingPage extends Component {
                     </div>
               </div>
               <div className="col-md-6 login-page">
-                  <Login  url="http://localhost:3000/candidateInfo"/>
+                  <Login  url="/candidateInfo"/>
               </div>
           </div>
         </div>

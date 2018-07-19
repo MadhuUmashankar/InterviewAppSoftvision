@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Register from './Register'
+import Register from './Register';
+import $http from '../routes/http';
 
 export default class RegisterPage extends Component {
   render(){
@@ -23,7 +24,7 @@ export default class RegisterPage extends Component {
               </div>
               <div className="col-md-6 login-page">
 
-                   <Register url="http://localhost:3000/candidateInfo"/>
+                   <Register url="/candidateInfo"/>
 
               </div>
           </div>

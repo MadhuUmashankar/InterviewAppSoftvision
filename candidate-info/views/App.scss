@@ -1,6 +1,6 @@
 @import "../node_modules/react-toggle-switch/dist/css/switch.min.css";
-@import '../node_modules/react-datepicker/dist/react-datepicker.css';
-
+// @import '../node_modules/react-datepicker/dist/react-datepicker.css';
+// @import '../node_modules/react-date-picker/dist/entry.nostyle';
 // Landng Page css
 .footer {
     background-color: #172b3f !important;
@@ -83,6 +83,7 @@ button.close {
 }
 
 .candidate-hired {
+  display: -webkit-inline-box;
   margin-top: 2%;
   padding: 2%;
   border: 1px solid #9faacc;
@@ -90,6 +91,12 @@ button.close {
   background: cornsilk;
 }
 
+.hiring-status {
+  display: -webkit-inline-box;
+}
+.hiring-status span {
+  margin-left: 6px;
+}
 .offered-class {
   margin-top: 2%;
 }
@@ -309,6 +316,7 @@ body,div {
     .form-horizontal .background .form-group .control-label {
           text-align: left;
           padding-left: 50px;
+          margin-top: -7px;
     }
 
     label {
@@ -328,6 +336,16 @@ body,div {
         margin-left: 28px;
         padding: 3px 8px;
     }
+
+    input[type=file] {
+      width: 100%;
+      border: 1px solid#ccc;
+      border-radius: 4px;
+      display: inline-block;
+      padding: 6px 12px;
+      cursor: pointer;
+      box-shadow: none;
+  }
     // .form-group {
     //   .not-mandatory:after {
     //     content: "";
