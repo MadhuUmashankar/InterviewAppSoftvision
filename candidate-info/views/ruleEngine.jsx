@@ -2,29 +2,54 @@
 
 /* Inside Table */
 const roleDefinition = {
-  "HR" : {},
+  "HR" : {
+    "isShowDeleteButton" : true,
+    "isShowProceedButton" : true,
+    "isDisableRound" : true,
+    "endInterviewButton" : true
+  },
   "MANAGER" : {},
   "TA" : {
     "isShowDeleteButton" : true,
-    "isShowProceedButton" : true,
-    "isDisableRound" : true
+    "isShowProceedButton" : false,
+    "isDisableRound" : true,
+    "endInterviewButton" : true
   },
-  "INTERVIEWER" : {}
+  "TECH INTERVIEWER" : {
+    "isShowProceedButton" : true,
+  },
+  "ADMIN" : {
+    "isShowDeleteButton" : true,
+    "isShowProceedButton" : true,
+    "isDisableRound" : true,
+    "endInterviewButton" : true
+  }
 };
 
 const roleDefinitionOverall = {
   "HR" : {
-    isShowProceedButton : true
+    isShowDeleteButton : true,
+    isShowProceedButton : true,
+    isDisableRound : true,
+    endInterviewButton : true
   },
   "MANAGER" : {
     isShowProceedButton : true
   },
   "TA" : {
+    isShowProceedButton : false,
+    endInterviewButton : true
+  },
+  "TECH INTERVIEWER" : {
     isShowProceedButton : true
   },
-  "INTERVIEWER" : {
-    isShowProceedButton : false
+  "ADMIN" : {
+    isShowDeleteButton : true,
+    isShowProceedButton : true,
+    isDisableRound : true,
+    endInterviewButton : true
   }
+
 }
 
 export const getRole = function(role) {
@@ -46,10 +71,13 @@ export const getCandidateRecords = function(role, candidateInterviewRecords, can
         case 'MANAGER' : {
             return candidateInterviewRecords;
         }
-        case 'INTERVIEWER' : {
+        case 'TECH INTERVIEWER' : {
           let candidateInterviewRecords = data.length > 0 && data.filter((record) => {
             return candidate._id === record.candidateID;
           });
+        }
+        case 'ADMIN' : {
+            return candidateInterviewRecords;
         }
         default : {
           return candidateInterviewRecords;

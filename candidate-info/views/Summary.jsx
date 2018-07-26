@@ -1,4 +1,5 @@
 import React from 'react';
+import TextArea from './TextArea';
 
 class Summary extends React.Component {
   constructor(props) {
@@ -49,7 +50,7 @@ class Summary extends React.Component {
       onSummarySave({interviewComments, observations, technicalLevel, projectLevelComments});
     }
 
-    componentDidMount() {
+    componentWillMount() {
       const { data } = this.props;
       if (data != undefined) {
         if (Object.keys(data).length > 0) {
@@ -67,7 +68,8 @@ class Summary extends React.Component {
     }
 
   render() {
-    const {candidate, IAdata, interviewComments, observations, technicalLevel, projectLevelComments } = this.state
+    const {candidate, IAdata, interviewComments, observations, technicalLevel, projectLevelComments } = this.state;
+
 
     return (
       <div className="container-fluid border">
@@ -78,15 +80,15 @@ class Summary extends React.Component {
         <div className="row interview-comments">
           <div className="col-sm-4">Interviewers comments regarding the candidate, strong points, weak points</div>
             <div className="col-sm-8">
-              <textarea required rows="4" cols="50" onChange = {this.handleOnChange} name="interviewComments"
-              id="interviewCommentsId" value ={interviewComments} ></textarea>
+              <TextArea required rows="4" cols="50" onChange = {this.handleOnChange} name="interviewComments"
+              id="interviewCommentsId" value ={interviewComments} ></TextArea>
             </div>
         </div>
         <div className="row">
           <div className="col-sm-4">Other observations (additional comments regarding candidates attitude, potential)</div>
             <div className="col-sm-8">
-              <textarea required rows="4" cols="50" onChange = {this.handleOnChange} name="observations"
-              id="observationsId" value ={observations}></textarea>
+              <TextArea required rows="4" cols="50" onChange = {this.handleOnChange} name="observations"
+              id="observationsId" value ={observations}></TextArea>
             </div>
         </div>
         <div className="row">
@@ -113,8 +115,8 @@ class Summary extends React.Component {
         <div className="row">
           <div className="col-sm-4">On what type of project(s) or role(s) do you think this candidate would fit best?</div>
           <div className="col-sm-8">
-            <textarea required rows="2" cols="50" onChange = {this.handleOnChange} name="projectLevelComments"
-            id="projectLevelCommentsId" value ={projectLevelComments}></textarea>
+            <TextArea required rows="2" cols="50" onChange = {this.handleOnChange} name="projectLevelComments"
+            id="projectLevelCommentsId" value ={projectLevelComments}></TextArea>
           </div>
         </div>
       </div>

@@ -14,6 +14,19 @@
     //     filter: blur(5px);
     // }
 
+    .not-active a{
+      pointer-events: none;
+      cursor: default;
+      text-decoration: none;
+      color: black;
+    }
+
+    .active a{
+      pointer-events: all;
+      cursor: pointer;
+      text-decoration: default;
+
+    }
     .header {
         background: #172b3f !important;
         color: #fff;
@@ -25,14 +38,14 @@
 
     }
     .login-page {
-      background-color: #faf1ec;
+      background-color: #f4f5f2; //#f7f7f7, e7f0f3
       padding:7%;
       height : 99.6vh
     }
 
     .body {
-        background: #172b3f !important;
-        height : 87.6vh;
+        background: #e0e0e0 !important;
+        height : 86.8vh;
         padding-top: 5%;
     }
     .nospace {
@@ -44,13 +57,24 @@
       margin-right: 0;
     }
 
+    .addCandidateButtonClassEnabled {
+      display:auto;
+    }
+    .addCandidateButtonClassDisabled {
+      display:none;
+    }
+
     .candidate-info-list-container {
-      min-height: 83.9vh;
+      min-height: 82.8vh;
       padding-top: 3%;
     }
 
     .candidate-info-list-container-fluid {
-      background-color: #faf1ec;
+      background-color: #f4f5f2;
+    }
+
+    .cursor-pointer {
+        cursor:pointer;
     }
 
 .App {
@@ -86,16 +110,45 @@ button.close {
   display: -webkit-inline-box;
   margin-top: 2%;
   padding: 2%;
-  border: 1px solid #9faacc;
+  // border: 1px solid #9faacc;
   border-radius: 10px;
-  background: cornsilk;
+  // background: cornsilk;
+}
+.candidate-active-inactive-toggle {
+  background-color: #ccc2c2 !important;
 }
 
 .hiring-status {
   display: -webkit-inline-box;
+  display: -moz-inline-box;
+  zoom: 1;
+  width: 33%;
+  text-align: center;
 }
+
+
+.checkbox {
+    margin-top: 0px;
+    height: 1.7em;
+    width: 6%;
+}
+input[type="checkbox"] {
+    margin-top: 0px;
+}
+ input[type="checkbox"]:checked {
+    margin-top: 0px;
+    color: blue;
+}
+.panel-heading {
+  font-size: 16px;
+}
+.alert-font {
+  font-size: 15px;
+}
+
 .hiring-status span {
   margin-left: 6px;
+  font-size: 16px;
 }
 .offered-class {
   margin-top: 2%;
@@ -106,104 +159,9 @@ button.close {
   padding-right:25px;
   margin-left: 6px;
 }
-
 .checkbox {
   padding-left: 20px;
 }
-  .checkbox label {
-    display: inline-block;
-    position: relative;
-    padding-left: 5px;
-   }
-    .checkbox label::before {
-      content: "";
-      display: inline-block;
-      position: absolute;
-      width: 17px;
-      height: 17px;
-      left: 0;
-      margin-left: -20px;
-      border: 1px solid #cccccc;
-      border-radius: 3px;
-      background-color: #fff;
-      -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
-      -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
-      transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
-     }
-    .checkbox label::after {
-      display: inline-block;
-      position: absolute;
-      width: 16px;
-      height: 16px;
-      left: 0;
-      top: 0;
-      margin-left: -20px;
-      padding-left: 3px;
-      padding-top: 1px;
-      font-size: 11px;
-      color: #555555;
-     }
-  .checkbox input[type="checkbox"] {
-    opacity: 0;
-   }
-    .checkbox input[type="checkbox"]:focus + label::before {
-      outline: thin dotted;
-      outline: 5px auto -webkit-focus-ring-color;
-      outline-offset: -2px;
-    }
-    .checkbox input[type="checkbox"]:checked + label::after {
-      font-family: 'FontAwesome';
-      content: "\f00c";
-    }
-    .checkbox input[type="checkbox"]:disabled + label {
-      opacity: 0.65;
-    }
-      .checkbox input[type="checkbox"]:disabled + label::before {
-        background-color: #eeeeee;
-        cursor: not-allowed;
-       }
-  .checkbox.checkbox-inline {
-    margin-top: 0; }
-
-.checkbox-primary input[type="checkbox"]:checked + label::before {
-  background-color: #428bca;
-  border-color: #428bca;
-}
-.checkbox-primary input[type="checkbox"]:checked + label::after {
-  color: #fff;
-}
-
-.checkbox-danger input[type="checkbox"]:checked + label::before {
-  background-color: #d9534f;
-  border-color: #d9534f;
- }
-.checkbox-danger input[type="checkbox"]:checked + label::after {
-  color: #fff;
-}
-
-.checkbox-info input[type="checkbox"]:checked + label::before {
-  background-color: #5bc0de;
-  border-color: #5bc0de;
- }
-.checkbox-info input[type="checkbox"]:checked + label::after {
-  color: #fff;
-}
-
-.checkbox-warning input[type="checkbox"]:checked + label::before {
-  background-color: #f0ad4e;
-  border-color: #f0ad4e;
- }
-.checkbox-warning input[type="checkbox"]:checked + label::after {
-  color: #fff;
-}
-
-.checkbox-success input[type="checkbox"]:checked + label::before {
-  background-color: #5cb85c;
-  border-color: #5cb85c;
- }
-.checkbox-success input[type="checkbox"]:checked + label::after {
-  color: #fff;
- }
 
 
 body,div {
@@ -219,13 +177,24 @@ body,div {
 
 .endInterview-class{
   float:right;
+  margin-bottom: 2%;
 }
 
 .modal-header{
   background: cornsilk;
 }
 
+.breadcrumb {
+      background-color: cornsilk;
+}
+
+
 // Login CSS
+
+#tooltip {
+  font-family: "Gill Sans", sans-serif;
+  font-size: 14px;
+}
 
 .signin-form {
     width: 540px;
@@ -382,6 +351,23 @@ body,div {
 
 
 // IA form details
+.technical-details>tbody>tr>td{
+     border-top: none;
+     padding: 0;
+     padding-right: 5px;
+   }
+
+   .technical-details>tbody {
+     display: inline-flex;
+   }
+
+   .technical-details>tbody>tr {
+     margin-right:82px;
+   }
+
+    .ia-date {
+      margin-top: -5px;
+    }
 
 .details-width {
     display: inline-block;

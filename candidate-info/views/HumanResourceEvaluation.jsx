@@ -16,7 +16,10 @@ class HumanResourceEvaluation extends Component {
        hrInterviewStatus:'',
        interviewerName1: '',
        jobTitle: '',
-       interviewerRound:''
+       interviewerRound:'',
+       createdBy: '',
+       createdUser: {},
+       isOwner : true
      };
 
     this.handleSubmitHrForm = this.handleSubmitHrForm.bind(this);
@@ -34,11 +37,12 @@ class HumanResourceEvaluation extends Component {
    loadHRDetails() {
      let hrUrl = this.props.url + '/newHREvaluationForm';
      let {candidateInterviewRecords, idx} = this.props;
-     let {hrEvaluationData} = this.state;
+     let {hrEvaluationData, createdBy} = this.state;
        $http.get(hrUrl)
            .then(res => {
                this.setState({ hrEvaluationData: res.data });
                hrEvaluationData = res.data;
+               if(hrEvaluationData.length) {
                let currentHRRecord = hrEvaluationData.length>0 && hrEvaluationData.filter((record) => {
                      return candidateInterviewRecords[idx].IA_id === record._id
               });
@@ -49,6 +53,20 @@ class HumanResourceEvaluation extends Component {
                     object[prop] = currHRObject[prop];
                    this.setState(object);
                }
+
+
+               if(createdBy) {
+                 let id = createdBy;
+                 let userUrl = this.props.url + '/get';
+                 $http.get(`${userUrl}/${id}`)
+                     .then(res => {
+                          this.setState({"createdUser": res.data})
+                 }).catch(err => {
+                     console.error(err);
+                 });
+               }
+             }
+
            })
    }
   handleClose() {
@@ -145,10 +163,11 @@ class HumanResourceEvaluation extends Component {
     e.preventDefault();
 
     const {business, project, customerFocus, senseOfUrgency, orientationToDetails, technologyExposure, attitude, culturalCompatibility, communicationSkills, interpersonalSkills, analyticalCritical, energyEnthusiasm, hrInterviewStatus, interviewerName1, jobTitle, interviewerRound} = this.state;
-    const {candidateData, candidateInterviewRecords, idx} = this.props;
+    const {candidateData, candidateInterviewRecords, idx, currentUser} = this.props;
     // Candidate HR Form data
 
     const hrRecord = Object.assign({}, {candidateID: candidateData.candidateID}, {business}, {project}, {customerFocus}, {senseOfUrgency}, {orientationToDetails}, {technologyExposure}, {attitude}, {culturalCompatibility}, {communicationSkills}, {interpersonalSkills}, {analyticalCritical}, {energyEnthusiasm}, {hrInterviewStatus}, {interviewerName1}, {jobTitle}, {interviewerRound})
+    hrRecord.createdBy = currentUser[0]._id;
     this.setState({ show: false });
       if(hrRecord) {
           let records = this.state.hrEvaluationData;
@@ -181,7 +200,8 @@ class HumanResourceEvaluation extends Component {
   handleUpdateHRForm(e, id, record) {
     e.preventDefault();
     const {candidateData, candidateInterviewRecords, idx} = this.props;
-    const {business, project, customerFocus, senseOfUrgency, orientationToDetails, technologyExposure, attitude, culturalCompatibility, communicationSkills, interpersonalSkills, analyticalCritical, energyEnthusiasm, hrInterviewStatus, interviewerName1, jobTitle, interviewerRound} = this.state;
+    const {business, project, customerFocus, senseOfUrgency, orientationToDetails, technologyExposure, attitude, culturalCompatibility, communicationSkills,
+       interpersonalSkills, analyticalCritical, energyEnthusiasm, hrInterviewStatus, interviewerName1, jobTitle, interviewerRound, createdBy} = this.state;
     let business1 =  business ? business : record[0].business;
     let project1 =  project ? project : record[0].project;
     let customerFocus1 =  customerFocus ? customerFocus : record[0].customerFocus;
@@ -198,7 +218,7 @@ class HumanResourceEvaluation extends Component {
     let interviewerName2 =  interviewerName1 ? interviewerName1 : record[0].interviewerName1;
     let jobTitle1 =  jobTitle ? jobTitle : record[0].jobTitle;
     let interviewerRound1 =  interviewerRound ? interviewerRound : record[0].interviewerRound;
-    const updatedHRrecord = Object.assign({}, {candidateID: candidateData.candidateID}, {business:business1}, {project:project1}, {customerFocus:customerFocus1}, {senseOfUrgency:senseOfUrgency1}, {orientationToDetails:orientationToDetails1}, {technologyExposure:technologyExposure1}, {attitude:attitude1}, {culturalCompatibility:culturalCompatibility1}, {communicationSkills:communicationSkills1}, {interpersonalSkills:interpersonalSkills1}, {analyticalCritical:analyticalCritical1}, {energyEnthusiasm:energyEnthusiasm1}, {hrInterviewStatus:hrInterviewStatus1}, {interviewerName1:interviewerName2}, {jobTitle:jobTitle1}, {interviewerRound:interviewerRound1})
+    const updatedHRrecord = Object.assign({}, {candidateID: candidateData.candidateID}, {business:business1}, {project:project1}, {customerFocus:customerFocus1}, {senseOfUrgency:senseOfUrgency1}, {orientationToDetails:orientationToDetails1}, {technologyExposure:technologyExposure1}, {attitude:attitude1}, {culturalCompatibility:culturalCompatibility1}, {communicationSkills:communicationSkills1}, {interpersonalSkills:interpersonalSkills1}, {analyticalCritical:analyticalCritical1}, {energyEnthusiasm:energyEnthusiasm1}, {hrInterviewStatus:hrInterviewStatus1}, {interviewerName1:interviewerName2}, {jobTitle:jobTitle1}, {interviewerRound:interviewerRound1}, {createdBy})
     let iaUrl = this.props.url + '/newHREvaluationForm';
     this.setState({ show: false });
     let url = "/candidateInfo";
@@ -224,14 +244,20 @@ class HumanResourceEvaluation extends Component {
   }
 
   render() {
-    const {hrEvaluationData, business, project, customerFocus, senseOfUrgency, orientationToDetails, technologyExposure, attitude, culturalCompatibility, communicationSkills, interpersonalSkills, analyticalCritical, energyEnthusiasm, hrInterviewStatus, interviewerName1, jobTitle, interviewerRound} = this.state;
-    const {candidateData, interViewToBeTaken, candidateInterviewRecords, idx} = this.props;
+    let {hrEvaluationData, business, project, customerFocus, senseOfUrgency, orientationToDetails, technologyExposure, attitude,isOwner,
+       culturalCompatibility, communicationSkills, interpersonalSkills, analyticalCritical, energyEnthusiasm, hrInterviewStatus, interviewerName1, jobTitle, interviewerRound, createdUser} = this.state;
+    const {candidateData, interViewToBeTaken, candidateInterviewRecords, idx, currentUser} = this.props;
 
     let currentHRRecord = hrEvaluationData.length> 0 && hrEvaluationData.filter((record) => {
       return candidateInterviewRecords[idx].IA_id === record._id
     });
 
     const currHRObject = currentHRRecord[0] || {};
+    isOwner  = (currHRObject && currHRObject.createdBy === currentUser[0]._id);
+
+    if (!createdUser.firstname) {
+      createdUser = currentUser[0];
+    }
 
     const candidateFullname = candidateData.firstname + " " + candidateData.lastname;
 
@@ -243,7 +269,7 @@ class HumanResourceEvaluation extends Component {
 
         <Modal bsSize="large" show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
-          <h2 className="ia-form-title">Human Resource Evaluation Form</h2>
+          <h2 className="ia-form-title">Human Resource Evaluation Form {!isOwner && "(Read-Only)"}</h2>
           </Modal.Header>
           <Modal.Body>
             <div className="form-container">
@@ -259,18 +285,9 @@ class HumanResourceEvaluation extends Component {
                               <td><strong>Interview Type</strong></td><td className="interview-round">{interViewToBeTaken}</td>
                             </tr>
                             <tr>
-                              <td><strong>Interviewer</strong><span className="mandatory">*</span></td><td><InputBox
-                                  type="text"
-                                  placeholder="Enter Interviewer's name"
-                                  classname="form-control"
-                                  name="interviewerName1"
-                                  id="interviewerId1"
-                                  value = {currHRObject.interviewerName1 || this.state.interviewerName1 }
-                                  maxLength="20"
-                                  required
-                                    autoComplete="off"
-                                  onChange = {this.handleOnChange}
-                              /></td>
+                              <td><strong>Interviewer</strong></td><td>{
+                                  createdUser.firstname + ' ' + createdUser.lastname
+                              }</td>
                             <td><strong>Job Title</strong><span className="mandatory">*</span></td><td><InputBox
                                   type="text"
                                   placeholder="Enter Job title"
@@ -361,16 +378,20 @@ class HumanResourceEvaluation extends Component {
                         <div className="form-group experience-width">
                           <select required className="form-control" onChange = {this.handleOnChange} name="hrInterviewStatus"
                           id="hrInterviewStatusId" value ={currHRObject.hrInterviewStatus}>
-                            <option value="">Yet to be interviewed</option>
-                            <option>Cleared</option>
-                            <option>Not Cleared</option>
+                            <option value="">Select</option>
+                            <option>Selected</option>
+                            <option>On Hold</option>
+                            <option>Rejected</option>
                           </select>
                         </div>
                     </div>
                     </div>
+
+
+                      </fieldset>
                       <div className="margin-small">
                       {
-                        currHRObject._id &&
+                        currHRObject._id && isOwner &&
                         <Button className="move-right"
                           onClick={(e)=>this.handleUpdateHRForm(e, currHRObject._id, hrEvaluationData)}>Update</Button>
                       }
@@ -380,8 +401,8 @@ class HumanResourceEvaluation extends Component {
 
                       <Button className="" onClick={this.handleClose}>Cancel</Button>
                       </div>
-                      </fieldset>
               </form>
+
             </div>
           </Modal.Body>
 

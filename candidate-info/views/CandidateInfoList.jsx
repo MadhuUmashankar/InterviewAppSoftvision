@@ -3,6 +3,7 @@ import './candidateInfoList.scss';
 import {hashHistory} from 'react-router';
 import { Modal, Button } from 'react-bootstrap';
 import Switch from "react-switch";
+import $http from '../routes/http';
 
 class CandidateInfoList extends Component {
     constructor(props) {
@@ -19,8 +20,15 @@ class CandidateInfoList extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(checked) {
-      this.setState({ checked });
+    handleChange(candidateID, partialData, checked, index) {
+      partialData[index].checked = checked;
+      console.log('checked value', )
+
+      this.setState({partialData : partialData});
+      let url = "/candidateInfo";
+      $http.put(`${url}/${partialData[index]._id}`, partialData[index]).then(response => {
+        console.log('response on ------------------offered save', response)
+      })
     }
 
   handleDelete(e, candidateID) {
@@ -79,6 +87,7 @@ class CandidateInfoList extends Component {
         const {data, searchKey, url, IAData, role, partialData} = this.props;
         let candidateNodes = partialData;
         let dataFromIA = IAData;
+        const {checked} = this.state;
 
         if(searchKey) {
             candidateNodes = candidateNodes.filter((candidate, index) => {
@@ -90,27 +99,51 @@ class CandidateInfoList extends Component {
         candidateNodes = candidateNodes && candidateNodes.map((candidate, index) => {
             const candidateID = candidate._id;
             const scheduledInterview = candidate.scheduleInterview;
-            let status = false, classStatus="label label-default", scheduled;
+            let status = false, classStatus="label label-default", scheduled, checkedclass="event-card active";
             if(scheduledInterview =='Yes') {
               scheduled = "Yes"
             }
+
+            if(!candidate.checked) {
+               checkedclass = "event-card candidate-active-inactive-toggle not-active";
+            } else{
+              checkedclass = "event-card active";
+            }
+
             if(candidate.no_of_rounds > 0) {
               if(candidate.candidateSelected) {
                 status = "Selected";
                 classStatus = "label label-info";
-                if(candidate.candidateOffered){
+                if(candidate.candidateOffered) {
                   status = "Offered";
                   classStatus = "label label-primary";
+                  if(candidate.candidateAccepted){
+                    status = "Accepted";
+                    classStatus = "label label-primary";
                   if(candidate.candidateHired){
                     status = "Hired";
                     classStatus = "label label-success";
+                  }
+
+                  if(candidate.candidateOfferOnHold){
+                    status = "Offer on-hold";
+                    classStatus = "label label-danger";
+                  }
+                }
+                  if(candidate.candidateRejectedByEmployer || candidate.candidateRejectedByHimself){
+                    status = "Rejected";
+                    classStatus = "label label-danger";
                   }
                 }
               }
                 else if((candidate.candidateRejectedByEmployer || candidate.candidateRejectedByHimself)) {
                   status = "Rejected";
                   classStatus = "label label-danger";
-                } else {
+                } else if(candidate.candidateOnHold) {
+                  status = "On-hold";
+                  classStatus = "label label-danger";
+                }
+                else {
                   status = "In Progress";
                   classStatus = "label label-warning";
                 }
@@ -119,10 +152,11 @@ class CandidateInfoList extends Component {
               classStatus = "label label-success";
             }
 
+            let switchId = "normal-switch" + candidateID;
             return (
 
                             <div  key={index} className="col-md-4 col-sm-6 card-wrapper">
-                              <div className="event-card">
+                              <div className= {checkedclass} >
                                 <div className="event-card-title-block">
 
 
@@ -166,17 +200,18 @@ class CandidateInfoList extends Component {
                                   </div>
                                 </p>
                                 <div className="event-card-btn-group">
-                                  <button title="Click here to view the candidate" className="btn btn-success margin-tiny" onClick={(e)=>this.handleView(e, candidate)}><i className="fa fa-address-card-o" aria-hidden="true"></i></button>
+                                  <button title="Click here to view the candidate" className="btn btn-success margin-tiny" disabled={!candidate.checked} onClick={(e)=>this.handleView(e, candidate)}><i className="fa fa-address-card-o" aria-hidden="true"></i></button>
                                   </div>
+
+                                  { (role =="TA" || role =="ADMIN") ?
                                   <div className="event-card-btn-group right" title="Active/InAcive">
                                       <Switch
-                                        onChange={this.handleChange}
-                                        checked={this.state.checked}
+                                        onChange={(value)=>{this.handleChange(candidate._id, partialData, value, index)}}
+                                        checked={candidate.checked}
                                         className="react-switch"
-                                        id="normal-switch"
-
+                                        id={switchId}
                                       />
-                                  </div>
+                                  </div> :''}
 
                               </div>
                             </div>

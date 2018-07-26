@@ -6,10 +6,11 @@ export default class RegisterPage extends Component {
   render(){
     return(
       <div className="container-fluid screen-width nospace">
-          <div className="row">
+          <div className="landing-row">
               <div className="col-md-6 nospace">
                     <div className="header">
-                            <h3><span>Soft</span><span><b>vision</b></span></h3>
+                      <img id="logo-page-id" src="images/SV_Facebook_Logo.jpg" className="img-responsive" alt="Responsive image" />
+
                     </div>
                     <div className="body">
                          <div className="row">

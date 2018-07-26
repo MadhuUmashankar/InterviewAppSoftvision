@@ -11,6 +11,7 @@ import {getRole, getCandidateRecords, getOverallRole} from './ruleEngine';
 import Switch from 'react-toggle-switch';
 import {RadioGroup, RadioButton, ReversedRadioButton} from 'react-radio-buttons';
 import $http from '../routes/http';
+import ActiveRoleBreadScrumb from './ActiveRoleBreadScrumb';
 // import "node_modules/react-toggle-switch/dist/css/switch.min.css"
 
 export default class CandidateAssessment extends Component {
@@ -42,7 +43,10 @@ export default class CandidateAssessment extends Component {
       candidateHired: false,
       candidateOnHold: false,
       candidateRejectedByEmployer: false,
-      candidateRejectedByHimself: false
+      candidateRejectedByHimself: false,
+      candidateOfferOnHold: false,
+      candidateAccepted: false,
+      currentUser: {}
     };
     this.handleInterviewChange = this.handleInterviewChange.bind(this);
     this.sendInterviewStatus = this.sendInterviewStatus.bind(this);
@@ -54,6 +58,7 @@ export default class CandidateAssessment extends Component {
     this.endInterview = this.endInterview.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
     this.reset = this.reset.bind(this);
+    this.checkStatus = this.checkStatus.bind(this);
   }
 
   reset() {
@@ -62,17 +67,29 @@ export default class CandidateAssessment extends Component {
     this.setState({hiredChecked: false, rejectedChecked: false, offeredChecked: false});
   }
 
+  checkStatus () {
+    const {role, candidateSelected} = this.state;
+
+    if(role === "TECH INTERVIEWER" || role === "MANAGER" ) {
+      return true;
+    }
+
+    return false;
+
+  }
+
   handleOnChange(event) {
     let value = event.target.checked;
     switch (event.target.name) {
       case "candidateSelected":
         this.setState({
-          candidateRejectedByEmployer: false,
-          candidateRejectedByHimself:false,
           candidateSelected: value,
+          candidateOnHold: false,
           candidateOffered: false,
-          candidateHired: false,
-          candidateOnHold: false
+          candidateAccepted: false,
+          CandidateHired:false,
+          candidateRejectedByEmployer: false,
+          candidateRejectedByHimself:false
         }, () => {
           this.onOfferedSave();
         })
@@ -91,7 +108,7 @@ export default class CandidateAssessment extends Component {
           candidateRejectedByEmployer: false,
           candidateRejectedByHimself:false,
           candidateHired: value,
-          candidateOnHold: false
+          candidateOfferOnHold: false
         }, () => {
           this.onOfferedSave();
         })
@@ -100,7 +117,11 @@ export default class CandidateAssessment extends Component {
         this.setState({
           candidateRejectedByEmployer: false,
           candidateRejectedByHimself:false,
-          candidateOnHold: value
+          candidateOnHold: value,
+          candidateSelected: false,
+          candidateOffered: false,
+          candidateAccepted: false,
+          CandidateHired:false
         }, () => {
           this.onOfferedSave();
         })
@@ -111,6 +132,8 @@ export default class CandidateAssessment extends Component {
           candidateOffered: false,
           candidateHired: false,
           candidateOnHold: false,
+          candidateAccepted: false,
+          candidateOfferOnHold:false,
           candidateRejectedByEmployer: event.target.checked
         }, () => {
           this.onOfferedSave();
@@ -118,16 +141,30 @@ export default class CandidateAssessment extends Component {
         break;
       case "candidateRejectedByHimself":
         this.setState({
-          candidateSelected: false,
-          candidateOffered: false,
+          candidateAccepted:false,
           candidateHired: false,
-          candidateOnHold: false,
+          candidateOfferOnHold:false,
           candidateRejectedByHimself: event.target.checked
         }, () => {
           this.onOfferedSave();
         })
         break;
-
+        case "candidateOfferOnHold":
+          this.setState({
+            candidateOfferOnHold: value,
+            candidateHired: false
+          }, () => {
+            this.onOfferedSave();
+          })
+          break;
+          case "candidateAccepted":
+            this.setState({
+              candidateAccepted: value,
+              candidateRejectedByHimself: false
+            }, () => {
+              this.onOfferedSave();
+            })
+            break;
       default:
         break;
     }
@@ -141,7 +178,9 @@ export default class CandidateAssessment extends Component {
       candidateHired,
       candidateOnHold,
       candidateRejectedByEmployer,
-      candidateRejectedByHimself
+      candidateRejectedByHimself,
+      candidateOfferOnHold,
+      candidateAccepted
     } = this.state;
     let url = "/candidateInfo";
     candidateData["candidateSelected"] = candidateSelected ? true: false;
@@ -150,6 +189,8 @@ export default class CandidateAssessment extends Component {
     candidateData["candidateOnHold"] = candidateOnHold ? true: false;
     candidateData["candidateRejectedByEmployer"] = candidateRejectedByEmployer ? true: false;
     candidateData["candidateRejectedByHimself"] = candidateRejectedByHimself ? true: false;
+    candidateData["candidateOfferOnHold"] = candidateOfferOnHold ? true :false;
+    candidateData["candidateAccepted"] = candidateAccepted ? true : false;
     $http.put(`${url}/${candidateData._id}`, candidateData).then(response => {
       console.log('response on offered save', response)
     })
@@ -202,7 +243,7 @@ export default class CandidateAssessment extends Component {
     this.setState({show: true, modalLabelView: false});
   }
 
-  componentDidMount() {
+  componentWillMount() {
     $http.get("/candidateInfo/users").then(res => {
       this.setState({users: res.data});
       const username = sessionStorage.getItem('username');
@@ -210,9 +251,9 @@ export default class CandidateAssessment extends Component {
       const currentUser = users.length > 0 && users.filter((user) => (user.username == username));
       const firstname = currentUser.length > 0 && currentUser[0].firstname,
         lastname = currentUser.length > 0 && currentUser[0].lastname,
-        role = currentUser.length > 0 && currentUser[0].role,
+        role = sessionStorage.getItem('activeRole'),
         roleDef = getRole(role);
-      this.setState({firstname: firstname, lastname: lastname, role: role})
+      this.setState({firstname: firstname, lastname: lastname, role: role, currentUser: currentUser})
       const roleOverall = getOverallRole(role);
 
       for (let props in roleOverall) {
@@ -229,7 +270,7 @@ export default class CandidateAssessment extends Component {
 
   handleInterviewChange(e) {
     let url = "/candidateInfo";
-    let {status, listOfInterviewRounds, IAdata, candidateData, candidateInterviewRecords} = this.state;
+    let {status, listOfInterviewRounds, IAdata, candidateData, candidateInterviewRecords, role} = this.state;
     let item = {};
     let round,
       item1,
@@ -271,15 +312,43 @@ export default class CandidateAssessment extends Component {
     $http.post(url + '/CandidateRounds', rounds).then(res => {
       let array = candidateInterviewRecords || [];
       array.push(res.data);
-      candidateInterviewRecords = listOfInterviewRounds = array;
+      // candidateInterviewRecords = listOfInterviewRounds = [];
+
+      listOfInterviewRounds = [];
+      if(role === "TECH INTERVIEWER") {
+        for(let i=0; i< array.length; i++) {
+            if(array[i].round == "Technical Round") {
+              listOfInterviewRounds.push(array[i]);
+            }
+        }
+      } else if(role ==="MANAGER") {
+        for(let i=0; i< array.length; i++) {
+            if(array[i].round == "Manager Round" || array[i].round == "Technical Round") {
+              listOfInterviewRounds.push(array[i]);
+            }
+        }
+
+      } else if(role==="HR") {
+        for(let i=0; i< array.length; i++) {
+            if(array[i].round == "HR Round" || array[i].round == "Manager Round" || array[i].round == "Technical Round") {
+              listOfInterviewRounds.push(array[i]);
+            }
+        }
+      }
+
+      candidateInterviewRecords = listOfInterviewRounds;
+
       let isShowProceedButton = true;
+
       for (let i = 0; i < listOfInterviewRounds.length; i++) {
-        if (listOfInterviewRounds[i].sts === "Not Cleared" || listOfInterviewRounds[i].sts === "Selected" || listOfInterviewRounds[i].sts === "Rejected") {
+        if (listOfInterviewRounds[i].sts === "On Hold" || listOfInterviewRounds[i].sts === "Rejected") {
           isShowProceedButton = false;
+          endInterviewButton = false;
         }
         if (listOfInterviewRounds[i].sts === "In-Progress") {
           listOfInterviewRounds[i]["isShowDeleteButton"] = true;
           isShowProceedButton = false;
+          endInterviewButton = false;
         }
       }
       if (listOfInterviewRounds.length === 0 || !listOfInterviewRounds) {
@@ -317,7 +386,8 @@ export default class CandidateAssessment extends Component {
     let url = "/candidateInfo";
     $http.get(`${url}/${id}`).then(response => {
       this.setState({candidateData: response.data, candidateSelected: response.data.candidateSelected, candidateOffered: response.data.candidateOffered,
-        candidateHired: response.data.candidateHired, candidateOnHold: response.data.candidateOnHold, candidateRejectedByEmployer: response.data.candidateRejectedByEmployer, candidateRejectedByHimself: response.data.candidateRejectedByHimself});
+        candidateHired: response.data.candidateHired, candidateOnHold: response.data.candidateOnHold, candidateRejectedByEmployer: response.data.candidateRejectedByEmployer,
+         candidateRejectedByHimself: response.data.candidateRejectedByHimself, candidateOfferOnHold: response.data.candidateOfferOnHold, candidateAccepted: response.data.candidateAccepted});
       console.log('candidate Data', response.data);
     }).catch(error => {
       if (error.response.status === 401) {
@@ -337,35 +407,79 @@ export default class CandidateAssessment extends Component {
   }
 
   loadDetailsFromServerInterviewRounds() {
+
     $http.defaults.headers.common['Authorization'] = sessionStorage.getItem('jwtToken');
     let url = "/candidateInfo";
     let id = this.getCandidateIDqs('id');
-    let {candidateData, users} = this.state;
+    let {candidateData, users, role,endInterviewButton, isShowProceedButton } = this.state;
     let roundUrl = url + '/CandidateRounds';
+    let listOfInterviewRounds = [];
     $http.get(roundUrl).then(res => {
       console.log('loadDetailsFromServerInterviewRounds---------', res.data);
       let candidateInterviewRecords = res.data.length > 0 && res.data.filter((record) => {
         return id === record.candidateID
       });
+
+      let array = candidateInterviewRecords || [];
+
+      if(role === "TECH INTERVIEWER") {
+        for(let i=0; i< array.length; i++) {
+            if(array[i].round == "Technical Round") {
+              listOfInterviewRounds.push(array[i]);
+            }
+        }
+      } else if(role ==="MANAGER") {
+        for(let i=0; i< array.length; i++) {
+            if(array[i].round == "Manager Round" || array[i].round == "Technical Round" ) {
+              listOfInterviewRounds.push(array[i]);
+            }
+        }
+
+      } else if(role==="HR") {
+        for(let i=0; i< array.length; i++) {
+            if(array[i].round == "HR Round" || array[i].round == "Manager Round" || array[i].round == "Technical Round") {
+              listOfInterviewRounds.push(array[i]);
+            }
+        }
+      } else if(role==="TA") {
+        listOfInterviewRounds = array;
+      }else if(role==="ADMIN") {
+        listOfInterviewRounds = array;
+      }
+
+      if(role) {
+        const roleStatus = getOverallRole(role);
+        isShowProceedButton = roleStatus.isShowProceedButton;
+        endInterviewButton = roleStatus.endInterviewButton;
+      }
+
+      candidateInterviewRecords = listOfInterviewRounds;
+
       candidateInterviewRecords = getCandidateRecords(users[0].role, candidateInterviewRecords, candidateData, res.data);
-      let isShowProceedButton = true;
+      // let isShowProceedButton = true;
+
       if (candidateInterviewRecords && candidateInterviewRecords.length > 0) {
         for (let i = 0; i < candidateInterviewRecords.length; i++) {
-          if (candidateInterviewRecords[i].sts === "Not Cleared" || candidateInterviewRecords[i].sts === "Selected" || candidateInterviewRecords[i].sts === "Rejected") {
+          if (candidateInterviewRecords[i].sts === "On Hold" || candidateInterviewRecords[i].sts === "Rejected") {
             isShowProceedButton = false;
+            endInterviewButton = false;
           }
           if (candidateInterviewRecords[i].sts === "In-Progress") {
             candidateInterviewRecords[i]["isShowDeleteButton"] = true;
             isShowProceedButton = false;
+            endInterviewButton = false; 
           }
         }
       }
+
       if (candidateInterviewRecords.length === 0 || !candidateInterviewRecords) {
-        this.setState({showText: true, showTable: false, isShowProceedButton: isShowProceedButton});
+        this.setState({showText: true, showTable: false, isShowProceedButton: isShowProceedButton,  endInterviewButton : false});
       } else {
-        this.setState({showText: false, showTable: true, isShowProceedButton: isShowProceedButton});
+        this.setState({showText: false, showTable: true, isShowProceedButton: isShowProceedButton, endInterviewButton : endInterviewButton});
       }
-      this.setState({isShowProceedButton: isShowProceedButton, listOfInterviewRounds: candidateInterviewRecords, candidateInterviewRecords: candidateInterviewRecords});
+
+      this.setState({isShowProceedButton: isShowProceedButton,
+        listOfInterviewRounds: candidateInterviewRecords, candidateInterviewRecords: candidateInterviewRecords});
 
     }).catch(err => {
       console.error('erro message', err);
@@ -373,20 +487,20 @@ export default class CandidateAssessment extends Component {
   }
 
   sendInterviewStatus(status, type, idx) {
-    // this.state.listOfInterviewRounds[idx].sts = "Cleared";
+    // this.state.listOfInterviewRounds[idx].sts = "Selected";
     // this.setState({status, type, listOfInterviewRounds:this.state.listOfInterviewRounds});
   }
 
   logout() {
     sessionStorage.removeItem('jwtToken');
-    window.location.reload();
-    hashHistory.push({pathname: '#/'})
+    sessionStorage.removeItem('activeRole');
+    window.location = "/";
   }
 
   navigateToHome() {
     //sessionStorage.removeItem('jwtToken');
     window.location.reload();
-    hashHistory.push({pathname: '#/'})
+    hashHistory.push({pathname: '#/'});
   }
 
   render() {
@@ -413,7 +527,10 @@ export default class CandidateAssessment extends Component {
       candidateHired,
       candidateOnHold,
       candidateRejectedByEmployer,
-      candidateRejectedByHimself
+      candidateRejectedByHimself,
+      candidateOfferOnHold,
+      candidateAccepted,
+      currentUser
     } = this.state;
 
     const fullname = candidateData.firstname + " " + candidateData.lastname;
@@ -422,12 +539,14 @@ export default class CandidateAssessment extends Component {
     if (listOfInterviewRounds.length > 0) {
       for (let i = 0; i < listOfInterviewRounds.length; i++) {
         if (listOfInterviewRounds[i].round === "Technical Round" || listOfInterviewRounds[i].round === "HR Round" || listOfInterviewRounds[i].round === "Manager Round") {
-          if (listOfInterviewRounds[i].round === "HR Round" || listOfInterviewRounds[i].round === "Manager Round") {
+          if (listOfInterviewRounds[i].round === "HR Round" && listOfInterviewRounds[i].round === "Manager Round") {
             endInterviewButton = true;
+            endInterview = true;
           }
         }
       }
     }
+
 
     return (<div>
       <Header/>
@@ -437,11 +556,13 @@ export default class CandidateAssessment extends Component {
 
           {
             sessionStorage.getItem('jwtToken') && <div className="log-in">
-                <span className="username">{firstname + " " + lastname + "(" + role + ")"}</span>
+                <span className="username">{firstname + " " + lastname + "  " + "(" + role + ")"}</span>
                 <button className="btn btn-primary" onClick={this.logout}>
                   Logout</button>
               </div>
           }
+
+          <ActiveRoleBreadScrumb currentUser={currentUser} />
 
           <div>
             <label className="candidate-assessment-label">{fullname}</label>
@@ -479,21 +600,23 @@ export default class CandidateAssessment extends Component {
                     <tbody>
 
                       {
-                        listOfInterviewRounds.length > 0 && listOfInterviewRounds.map((list, index) => (<tr key={index}>
+                        listOfInterviewRounds.length && listOfInterviewRounds.map((list, index) => (
+
+                          <tr key={index}>
                           <td className="interview-round">{list.round}</td>
                           <td>{list.sts}</td>
                           {
                             list.item1 === 'Evaluation'
                               ? <td>
-                                  <Evaluation candidateInterviewRecords={listOfInterviewRounds} candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} idx={index}/>
+                                  <Evaluation currentUser={currentUser} candidateInterviewRecords={listOfInterviewRounds} candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} idx={index}/>
                                 </td>
                               : (
                                 list.item1 === 'ManagerEvaluation'
                                 ? <td>
-                                  <ManagerEvaluation candidateInterviewRecords={listOfInterviewRounds} candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} interViewToBeTaken={list.round} idx={index}/>
+                                  <ManagerEvaluation currentUser={currentUser} candidateInterviewRecords={listOfInterviewRounds} candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} interViewToBeTaken={list.round} idx={index}/>
                                 </td>
                                 : <td>
-                                  <HumanResourceEvaluation candidateInterviewRecords={listOfInterviewRounds} candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} interViewToBeTaken={list.round} idx={index}/>
+                                  <HumanResourceEvaluation currentUser={currentUser} candidateInterviewRecords={listOfInterviewRounds} candidateData={candidateData} url={url} sendInterviewStatus={this.sendInterviewStatus} interViewToBeTaken={list.round} idx={index}/>
                                 </td>)
                           }
 
@@ -517,20 +640,16 @@ export default class CandidateAssessment extends Component {
 
           </center>
 
+
+
           {
-            isShowProceedButton
+            isShowProceedButton && (!candidateSelected) && (!candidateRejectedByEmployer) && (!candidateOnHold)
               ? <div>
                   <div>
                     <Button bsStyle="primary" bsSize="large" onClick={this.handleShow}>
                       Proceed interview
                     </Button>
-                    {
-                      endInterviewButton
-                        ? <div className="endInterview-class">
-                            <Button bsStyle="primary" bsSize="large" onClick={this.endInterview}>End Interview</Button>
-                          </div>
-                        : ''
-                    }
+
                   </div>
 
                   <Modal show={this.state.show} onHide={this.handleClose}>
@@ -540,11 +659,28 @@ export default class CandidateAssessment extends Component {
                       </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                      <select required="required" className="form-control experience-width" id="interViewToBeTakenId" onChange={this.handleInterviewChange} value={interViewToBeTaken}>
+                      <select required className="form-control experience-width" id="interViewToBeTakenId" onChange={this.handleInterviewChange} value={interViewToBeTaken}>
                         <option value="">Select</option>
+                        {role === "ADMIN" ?
+                        <span>
+                          <option value="technical">Technical Round</option>
+                          <option value="manager">Manager Round</option>
+                          <option value="hr">HR Round</option>
+                        </span>
+
+                        : ''
+                      }
+
+                        {role == "TECH INTERVIEWER" ?
                         <option value="technical">Technical Round</option>
+                        :''}
+                        {role == "MANAGER" ?
                         <option value="manager">Manager Round</option>
-                        <option value="hr">HR Round</option>
+                        :''}
+                        {role == "HR" ?
+                          <option value="hr">HR Round</option>
+                        :''}
+
                       </select>
                     </Modal.Body>
                   </Modal>
@@ -552,88 +688,93 @@ export default class CandidateAssessment extends Component {
               : null
           }
 
+
           {
-            endInterview || (candidateSelected || candidateOffered || candidateHired || candidateOnHold || candidateRejectedByEmployer || candidateRejectedByHimself)
-              ? <div className="row offered-class">
-                  <div className="col-md-4">
-                    <div className="panel panel-info">
-                      <div className="panel-heading">
-                        Interview Status
-                      </div>
-                      <div className="panel-body">
-                        <div className="candidate-hired">
-                          <input className="checkbox checkbox-primary" name="candidateSelected" type="checkbox" value={candidateSelected} onChange={this.handleOnChange} checked={candidateSelected}/>
-                          <span>Candidate selected?</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="col-md-4">
-                    <div className="panel panel-success">
-                      <div className="panel-heading">
-                        Hiring Status
-                      </div>
-                      <div className="panel-body">
-                          <p className="hiring-status"><input className="checkbox checkbox-primary" name="candidateOffered" type="checkbox" value={candidateOffered} onChange={this.handleOnChange} checked={candidateOffered}/>
-                          <span>Candidate Offered?</span>
-                          </p><br/>
-                          <p className="hiring-status"><input className="checkbox checkbox-success" name="candidateHired" type="checkbox" value={candidateHired} onChange={this.handleOnChange} checked={candidateHired}/>
-                          <span>Candidate Hired?</span>
-                        </p>
-                        <br/>
-                        <p className="hiring-status">  <input className="checkbox checkbox-danger" name="candidateOnHold" type="checkbox" value={candidateOnHold} onChange={this.handleOnChange} checked={candidateOnHold}/>
-                          <span>Candidate on hold?</span>
-                          </p>
-                          </div>
-                    </div>
-                  </div>
-
-                  <div className="col-md-4">
-                    <div className="panel panel-danger">
-                      <div className="panel-heading">
-                        Rejected Status
-                      </div>
-                      <div className="panel-body">
-                        <div className="candidate-hired">
-                          <input className="checkbox checkbox-primary" name="candidateRejectedByEmployer" type="checkbox" value={candidateRejectedByEmployer} onChange={this.handleOnChange} checked={candidateRejectedByEmployer}/>
-                          <span>Rejected by Employer?</span>
-                          <input className="checkbox checkbox-success" name="candidateRejectedByHimself" type="checkbox" value={candidateRejectedByHimself} onChange={this.handleOnChange} checked={candidateRejectedByHimself}/>
-                          <span>Rejected by Candidate?</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
+            endInterviewButton  && (!candidateSelected) && (!candidateRejectedByEmployer) && (!candidateOnHold)
+              ? <div className="endInterview-class">
+                  <Button bsStyle="primary" bsSize="large" onClick={this.endInterview}>End Interview</Button>
                 </div>
               : ''
           }
 
-          {  candidateSelected
-                        ? (candidateOffered ? ((candidateHired ? <div className="alert alert-success offered-class">
-                            <strong>Congragulations!</strong>
-                            Candidate has been selected, offered and hired.
-                          </div>
-                           : <div className="alert alert-success offered-class">
-                            <strong>Congragulations!</strong>
-                            Candidate has been selected and offered.
-                          </div>) )
-                          : ((!candidateOffered && !candidateHired && !candidateOnHold) ? <div className="alert alert-info offered-class">
-                              <strong>Congragulations!</strong>
-                              Candidate has been selected.
-                            </div> : '' ) )
-                        :
-                         '' }
+        { endInterview || candidateSelected || candidateRejectedByEmployer || candidateOnHold ?   <div className="row offered-class">
+            <div className="col-md-12">
+              <div className="panel panel-success">
+                    <div className="panel-heading">Interview  Status  </div>
+                    <div className="panel-body test">
+                        <p className="hiring-status">
+                          <input disabled={this.checkStatus()} className="checkbox checkbox-primary" name="candidateSelected" type="checkbox"
+                          value={candidateSelected} onChange={this.handleOnChange} checked={candidateSelected}/>
+                          <span>Candidate Selected?</span>
+                        </p>
+                        <p className="hiring-status">
 
-                    {
-                      (candidateRejectedByHimself  || candidateRejectedByEmployer)
-                        ? <div className="alert alert-danger offered-class">
-                            <strong>Sorry!</strong>
-                            Candidate has been rejected.
-                          </div>
-                        : ''
-                    }
+                          <input disabled={this.checkStatus()} className="checkbox checkbox-success" name="candidateRejectedByEmployer"
+                           type="checkbox" value={candidateRejectedByEmployer} onChange={this.handleOnChange} checked={candidateRejectedByEmployer}/>
+                          <span>Candidate rejected by employer?</span>
+                        </p>
 
+                      <p className="hiring-status">
+                        <input disabled={this.checkStatus()} className="checkbox checkbox-danger" name="candidateOnHold" type="checkbox"
+                        value={candidateOnHold} onChange={this.handleOnChange} checked={candidateOnHold}/>
+                        <span>Candidate on hold?</span>
+                      </p>
+                  </div>
+
+                    {candidateSelected ? (<div className="panel-body test">
+                    <p className="hiring-status">
+                      <input disabled={this.checkStatus()} className="checkbox checkbox-primary" name="candidateOffered" type="checkbox"
+                      value={candidateOffered} onChange={this.handleOnChange} checked={candidateOffered}/>
+                      <span>Candidate Offered?</span>
+                    </p></div>): ''}
+
+                    {(candidateSelected && candidateOffered) ? (<div className="panel-body test">
+                      <p className="hiring-status">
+                        <input disabled={this.checkStatus()} className="checkbox checkbox-primary" name="candidateAccepted" type="checkbox"
+                        value={candidateAccepted} onChange={this.handleOnChange} checked={candidateAccepted}/>
+                        <span>Candidate Accepted?</span>
+                      </p>
+
+                    <p className="hiring-status">
+                      <input disabled={this.checkStatus()} className="checkbox checkbox-danger" name="candidateRejectedByHimself" type="checkbox"
+                      value={candidateRejectedByHimself} onChange={this.handleOnChange} checked={candidateRejectedByHimself}/>
+                      <span>Candidate rejected the offer?</span>
+                    </p>
+                </div>) : ''}
+
+                {candidateSelected && candidateOffered && candidateAccepted && (<div className="panel-body test">
+                        <p className="hiring-status">
+                          <input disabled={this.checkStatus()} className="checkbox checkbox-primary" name="candidateHired" type="checkbox"
+                          value={candidateHired} onChange={this.handleOnChange} checked={candidateHired}/>
+                          <span>Candidate Hired?</span>
+                        </p>
+
+                      <p className="hiring-status">
+                        <input disabled={this.checkStatus()} className="checkbox checkbox-danger" name="candidateOfferOnHold" type="checkbox"
+                        value={candidateOfferOnHold} onChange={this.handleOnChange} checked={candidateOfferOnHold}/>
+                        <span>Candidate offer on hold?</span>
+                      </p>
+                  </div>)}
+                  </div>
+                </div>
+                </div>
+                :'' }
+
+
+                {(candidateSelected && candidateOffered && candidateAccepted && candidateHired)? (<div className="alert alert-font alert-success offered-class">
+                          Candidate has been hired.
+                        </div>):''}
+
+              {(candidateRejectedByEmployer)? (<div className="alert alert-danger alert-font offered-class">
+                        Candidate has been rejected.
+                      </div>):''}
+              {(candidateSelected && candidateOffered && candidateRejectedByHimself)? (<div className="alert alert-danger alert-font offered-class">
+                        Candidate has rejected the offer.
+                      </div>):''}
+
+            {(candidateOnHold)? (<div className="alert alert-info alert-font offered-class">
+                      Candidate is kept on hold.
+                    </div>):''}
 
         </div>
       </div>

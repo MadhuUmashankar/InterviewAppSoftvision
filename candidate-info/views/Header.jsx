@@ -7,7 +7,7 @@ export default class Header extends Component {
           <div className="landing-row">
                 <div className="col-md-12 nospace">
                 <div className="header">
-                        <h3><span>Soft</span><span><b>vision</b></span></h3>
+                        <img id="logo-page-id" src="images/SV_Facebook_Logo.jpg" className="img-responsive" alt="Responsive image" />
                 </div>
           </div>
       </div>

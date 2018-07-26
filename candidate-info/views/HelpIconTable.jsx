@@ -11,7 +11,6 @@ export default class HelpIconTable extends Component {
             <th>Junior Minimum</th>
             <th>Mid Minimum</th>
             <th>Senior Minimum</th>
-            <th>Score</th>
           </tr>
         </thead>
         <tbody>

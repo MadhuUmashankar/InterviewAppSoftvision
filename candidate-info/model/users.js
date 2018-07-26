@@ -26,7 +26,7 @@ var UserSchema = new Schema({
         required: true
     },
     role: {
-        type: String,
+        type: Array,
         required: true
     },
     password: {
@@ -74,7 +74,7 @@ UserSchema.methods.comparePassword = function (passw, cb) {
         cb(null, isMatch);
     });
 };
-  
+
   //export our module to use in server.js
-  
+
   module.exports = mongoose.model('users', UserSchema);

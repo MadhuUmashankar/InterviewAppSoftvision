@@ -23,7 +23,10 @@ class Evaluation extends Component {
        summaryData:{},
        interviewStatus:{},
        // candidate:props.candidateData,
-       url: props.url
+       url: props.url,
+       createdBy: '',
+       createdUser: {},
+       isOwner : true
      };
 
     this.handleSubmitIAForm = this.handleSubmitIAForm.bind(this);
@@ -42,11 +45,9 @@ class Evaluation extends Component {
      let iaUrl = this.state.url + '/newIAForm';
        $http.get(iaUrl)
            .then(res => {
-             console.log('response from server IA data', res.data);
                this.setState({ IAdata: res.data });
-           })
+             })
    }
-
 
   handleClose() {
     this.setState({ show: false });
@@ -90,13 +91,13 @@ class Evaluation extends Component {
 
     const {candidateData, candidateInterviewRecords,idx} = this.props;
     const candidate = candidateData;
-    const {detailsData, experience, expertiseData, impression, summaryData, interviewStatus} = this.state;
+    const {detailsData, experience, expertiseData, impression, summaryData, interviewStatus, createdBy} = this.state;
     console.log('detailsData---update', detailsData);
     const fullname = candidate.firstname + " " + candidate.lastname;
     const candidateID = candidate.candidateID;
 
     // const updatedrecord = Object.assign({}, { candidateID, candidateName: fullname, interviewRounds : [{interviewDate:detailsData.interviewDate, interviewerName:detailsData.interviewerName, experience, rows: expertiseData, impression, summaryData, interviewStatus}]});
-    const updatedrecord = Object.assign({},{candidateID: candidate.candidateID}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus)
+    const updatedrecord = Object.assign({},{candidateID: candidate.candidateID}, detailsData, {candidateName: fullname}, {experience},{rows: expertiseData}, {impression}, {summaryData}, interviewStatus, {createdBy})
     let iaUrl = this.props.url + '/newIAForm';
       let url = "/candidateInfo";
       let roundUrl = url + '/CandidateRounds';
@@ -124,7 +125,7 @@ class Evaluation extends Component {
   handleSubmitIAForm(e) {
     e.preventDefault();
 
-    const {candidateData, candidateInterviewRecords, idx} = this.props;
+    const {candidateData, candidateInterviewRecords, idx, currentUser} = this.props;
     const candidate = candidateData;
     const {detailsData, experience, expertiseData, impression, summaryData, interviewStatus} = this.state;
     console.log('detailsData---', detailsData);
@@ -135,6 +136,8 @@ class Evaluation extends Component {
     // const record = Object.assign({}, { candidateID, candidateName: fullname, interviewRounds : [{interviewDate:detailsData.interviewDate, interviewerName:detailsData.interviewerName, experience, rows: expertiseData, impression, summaryData, interviewStatus}]});
 
 // , {experience}, {rows: expertiseData}, {impression}, {summaryData}, interviewStatus
+
+    record.createdBy = currentUser[0]._id;
 
     this.setState({ show: false });
          if(record) {
@@ -165,8 +168,8 @@ class Evaluation extends Component {
     }
 
   render() {
-    let {url, IAdata, index, experience, expertiseData, impression, overallAvgScore} = this.state;
-    const {candidateData, sendInterviewStatus,idx,candidateInterviewRecords} = this.props;
+    let {url, IAdata, index, experience, expertiseData, impression, overallAvgScore, createdUser, isOwner} = this.state;
+    const {candidateData, sendInterviewStatus,idx,candidateInterviewRecords, currentUser} = this.props;
     const candidate = candidateData;
     let rows = expertiseData;
     if(rows.length) {
@@ -181,12 +184,8 @@ class Evaluation extends Component {
     });
 
     currentIARecord = currentIARecord[0];
-    // if(currentIARecord !== undefined) {
-    //   const {candidateID, _id, candidateName } = currentIARecord;
-    //
-    //   currentIARecord = Object.assign({}, {candidateID}, {_id}, {candidateName}, currentIARecord.interviewRounds[this.props.idx]);
-    // }
 
+    isOwner = (currentIARecord && currentIARecord.createdBy === currentUser[0]._id)
 
     return (
       <div>
@@ -196,14 +195,16 @@ class Evaluation extends Component {
 
         <Modal bsSize="large" show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
-          <h2 className="ia-form-title">Candidate Evaluation Form</h2>
+          <h2 className="ia-form-title">
+          Candidate Evaluation Form {!isOwner? "(Read only)" : ''}
+          </h2>
           </Modal.Header>
           <Modal.Body>
             <div className="form-container">
               <form className="form-horizontal" onSubmit= {this.handleSubmitIAForm}>
                 <fieldset className = "background">
                     <div className="margin-small">
-                      <Details onDetailsSave= {this.handleDetailsData} candidate={candidate} data={currentIARecord} />
+                      <Details currentUser={currentUser}  onDetailsSave= {this.handleDetailsData} candidate={candidate} data={currentIARecord} url={this.state.url} />
                     </div>
                     <div className="margin-small">
                      <Note onNoteSave= {this.handleNoteData} candidate={candidate} data={currentIARecord} />
@@ -226,9 +227,10 @@ class Evaluation extends Component {
                     <div className="interview-status-align">
                       <EvaluationStatus onEvaluationStatusSave= {this.handleEvaluationStatusSave} candidate={candidate} data={currentIARecord} />
                     </div>
+
                       <div className="margin-small">
                       {
-                        currentIARecord &&
+                        currentIARecord && isOwner &&
                         <Button className="move-right" onClick={(e)=>{this.handleUpdate(e, currentIARecord._id, IAdata)}}>Update</Button>
                       }
                       {
@@ -237,6 +239,7 @@ class Evaluation extends Component {
 
                       <Button className="" onClick={this.handleClose}>Cancel</Button>
                       </div>
+
                       </fieldset>
               </form>
             </div>

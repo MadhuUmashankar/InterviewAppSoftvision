@@ -1,5 +1,6 @@
 import React from 'react';
 import InputBox from './InputBox';
+import $http from '../routes/http';
 // import DatePicker from 'react-date-picker';
 // import DatePicker from 'react-datepicker';
 // import moment from 'moment';
@@ -15,12 +16,12 @@ class Details extends React.Component {
         interviewerName: '',
         candidate: props.candidate,
         data:props.data,
-        date: new Date()
-      };
+        date: new Date(),
+        createdUser : {}
+    };
     this.handleOnChange = this.handleOnChange.bind(this);
     // this.handleDateChange = this.handleDateChange.bind(this);
   }
-
 
   handleOnChange(event) {
       switch (event.target.name) {
@@ -64,7 +65,7 @@ class Details extends React.Component {
   }
 
   componentWillMount() {
-    const { data, onDetailsSave } = this.props;
+    const { data, onDetailsSave,url } = this.props;
       if (data != undefined) {
         if(Object.keys(data).length > 0) {
         // data.startDate = moment("2014-02-27T10:00:00").format('YYYY/MM/DD');
@@ -72,63 +73,62 @@ class Details extends React.Component {
           onDetailsSave({interviewerDate:data.interviewerDate, interviewerName : data.interviewerName})
         });
       }
+
+      let id = data.createdBy;
+      let userUrl = url + '/get';
+      $http.get(`${userUrl}/${id}`)
+          .then(res => {
+               this.setState({createdUser: res.data})
+      }).catch(err => {
+          console.error(err);
+      });
     }
   }
 
-  render(){
+  render() {
 
-    const {candidate, data, startDate, interviewerDate, interviewerName} = this.state;
+    let {candidate, data, startDate, interviewerDate, interviewerName, createdUser} = this.state;
+    let {currentUser} = this.props;
+    let candidateName = candidate.firstname +" "+ candidate.lastname;
+    interviewerName = createdUser.firstname + ' ' + createdUser.lastname;
+
+    if (!createdUser.firstname) {
+      createdUser = currentUser[0];
+      interviewerName = createdUser.firstname + ' ' + createdUser.lastname;
+    }
+
           //const currTechnicalObject = data || {};
     return(
           <div>
-                  <div className="form-group required details-width padding">
-                    <label className="control-label" htmlFor="cName">Candidate Name:</label>
-                    <InputBox
-                        type="text"
-                        placeholder="Enter Candidate name"
-                        classname="form-control details-label"
-                        name="candidateName"
-                        id="candidateId"
-                        value = {candidate.firstname +" "+ candidate.lastname }
-                        autoFocus="true"
-                        maxLength="15"
-                        required
-                        onChange = {this.handleOnChange}
-                        readOnly = "true"
-                    />
-                  </div>
-                  <div className="form-group  required details-width padding">
-                    <label className="control-label" htmlFor="iDate">Interview Date:</label>
-                      <InputBox
-                          type="date"
-                          placeholder="Enter the date"
-                          classname="form-control details-label"
-                          name="interviewerDate"
-                          id="interviewerDateId"
-                          value = {interviewerDate}
-                          autoComplete="off"
-                          required
-                          onChange = {this.handleOnChange}
-                      />
-                    </div>
 
-
-                  <div className="form-group required details-width">
-                    <label className="control-label" htmlFor="tInt">Interviewer Name</label>
-                    <InputBox
-                        type="text"
-                        placeholder="Enter Interviewer's name"
-                        classname="form-control details-label"
-                        name="interviewerName"
-                        id="interviewerId"
-                        value = {interviewerName}
-                        maxLength="20"
+            <table
+                className="table table-responsive technical-details" id="manager_evaluation_detais_id">
+                <tbody>
+                  <tr>
+                    <td><strong>Candidate Name:</strong></td><td>{candidateName}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Interviewer:</strong></td><td className="interview-round">{interviewerName}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Interview Date:</strong></td><td><InputBox
+                        type="date"
+                        placeholder="Enter the date"
+                        classname="form-control ia-date"
+                        name="interviewerDate"
+                        id="interviewerDateId"
+                        value = {interviewerDate}
                         autoComplete="off"
                         required
                         onChange = {this.handleOnChange}
-                    />
+                    /></td>
+                  </tr>
 
-                  </div>
+
+              </tbody>
+          </table>
+
+
           </div>
     )
   }

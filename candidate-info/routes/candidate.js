@@ -8,8 +8,21 @@ var passport = require('passport');
 require('../config/passport')(passport);
 var db = mongojs('mongodb://localhost:27017/candidateInformationTable', ['candidateInformationTables', 'evaluationSheetInformationTables', 'managerEvaluationInformationTables', 'hrEvaluationInformationTables', 'users', 'candidateInterviewRounds']);
 
+router.get('/candidateInfo/get/:id', function(req, res, next){
 
-// Get all Manager Evaluaton  Info
+  // console.log('errorr....',error);
+  //
+  db.users.findOne({_id: mongojs.ObjectId(req.params.id)}, function(err, user) {
+        res.json(user);
+    });
+
+    console.log('response from server------------------', req.params.id);
+
+
+});
+
+
+// Get all users  Info
 router.get('/candidateInfo/users', function(req, res, next){
 
     db.users.find(function(err, users){
@@ -71,7 +84,7 @@ router.post('/candidateInfo/CandidateRounds', function(req, res, next){
 // Save Manager evaulation data
 router.post('/candidateInfo/newManagerForm', function(req, res, next){
     var managerEvaluator = req.body;
-
+    console.log('manager data----', managerEvaluator);
     db.managerEvaluationInformationTables.save(managerEvaluator, function(err, managerEvaluator){
         if(err){
             res.send(err);
@@ -131,7 +144,6 @@ router.get('/candidateInfo/newIAForm/:id', function(req, res, next){
         }
         res.json(evaluator);
     });
-    console.log('response from server------------------', evaluator);
 });
 
 
@@ -294,12 +306,15 @@ router.put('/candidateInfo/:id', function(req, res, next){
         updcandidateInfo.resume = candidate.resume;
     }
 
+    updcandidateInfo.checked = candidate.checked;
     updcandidateInfo.candidateSelected = candidate.candidateSelected;
     updcandidateInfo.candidateHired = candidate.candidateHired;
     updcandidateInfo.candidateOffered = candidate.candidateOffered;
     updcandidateInfo.candidateOnHold = candidate.candidateOnHold;
     updcandidateInfo.candidateRejectedByEmployer = candidate.candidateRejectedByEmployer;
     updcandidateInfo.candidateRejectedByHimself = candidate.candidateRejectedByHimself;
+    updcandidateInfo.candidateOfferOnHold = candidate.candidateOfferOnHold;
+    updcandidateInfo.candidateAccepted = candidate.candidateAccepted;
 
     if(candidate.no_of_rounds) {
       updcandidateInfo.no_of_rounds = candidate.no_of_rounds;
@@ -492,6 +507,10 @@ router.put('/candidateInfo/newManagerForm/:id', function(req, res, next){
     }
     if(managerEvaluator.finalRemark){
         updatedManagerInfo.finalRemark = managerEvaluator.finalRemark;
+    }
+
+    if(managerEvaluator.createdBy){
+        updatedManagerInfo.createdBy = managerEvaluator.createdBy;
     }
 
     if(!Object.keys(updatedManagerInfo).length){

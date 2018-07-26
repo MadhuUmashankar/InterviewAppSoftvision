@@ -67,7 +67,7 @@ class Expertise extends React.Component {
     const popoverHoverFocus = (
   <Popover id="popover-trigger-hover-focus" title="Score Distribution" className="popupover-hover">
     <HelpIconTable />
-
+    <div><i>***Note: If not listed please contact HR</i></div>
   </Popover>
 );
     let rows = Object.keys(IAdata).length > 0 ? IAdata.rows : [{}];
@@ -97,13 +97,10 @@ class Expertise extends React.Component {
                   id="tab_logic">
                   <thead className="color">
                     <tr>
-                        <th className="col-sm-2 text-center">
+                        <th className="col-sm-3 text-center">
                           <span className="control-label">Area of Expertise</span>
                             </th>
-                        <th className="col-sm-2 text-center"><span className="control-label">Junior Minimum</span></th>
-                        <th className="col-sm-2 text-center"><span className="control-label">Mid Minimum</span></th>
-                        <th className="col-sm-2 text-center"><span className="control-label">Senior Minimum</span></th>
-                        <th className="col-sm-2 text-center"><span className="control-label">Score</span></th>
+                        <th className="col-sm-3 text-center"><span className="control-label">Score</span></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -124,40 +121,6 @@ class Expertise extends React.Component {
                         />
                         </td>
 
-                            <td>
-                            <InputBox
-                                type="number"
-                                classname="form-control"
-                                name="juniorMinimumScore"
-                                id="juniorMinimumScoreId"
-                                value={item.juniorMinimumScore}
-                                min="1"
-                                max="10"
-                                onChange = {(e)=>this.handleInputChange(e, idx)}
-                            />
-                        </td>
-                            <td>
-                            <InputBox
-                                type="number"
-                                classname="form-control"
-                                name="midMinimumScore"
-                                id="midMinimumScoreId"
-                                value={item.midMinimumScore}
-                                onChange = {(e)=>this.handleInputChange(e, idx)}
-                            />
-
-                        </td>
-                            <td>
-                            <InputBox
-                                type="number"
-                                classname="form-control"
-                                name="seniorMinimumScore"
-                                id="seniorMinimumScoreId"
-                                value={item.seniorMinimumScore}
-                                onChange = {(e)=>this.handleInputChange(e, idx)}
-                            />
-
-                            </td>
                             <td>
                               <InputBox
                                   type="number"

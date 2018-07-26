@@ -16,6 +16,7 @@ import {
     Switch,
     HashRouter
   } from 'react-router-dom';
+  import ActiveRoleBreadScrumb from './ActiveRoleBreadScrumb';
 
 class App extends Component {
 
@@ -174,6 +175,7 @@ class App extends Component {
 
     logout() {
         sessionStorage.removeItem('jwtToken');
+        sessionStorage.removeItem('activeRole');
         window.location.reload();
         // hashHistory.push({
         //     pathname: '#/'
@@ -201,13 +203,14 @@ class App extends Component {
 
    render() {
     let {data, searchKey, candidate, modalLabelView, IAData, users, pageCount, partialData, offset, numberOfItemsPerPage} = this.state;
-    let url = this.props.url;
+    let url = this.props.url, addCandidateButton= "primary";
     const username = sessionStorage.getItem('username');
     const currentUser = users.length > 0 && users.filter((user)=> (user.username == username));
     const firstname = currentUser.length > 0 && currentUser[0].firstname,
     lastname = currentUser.length > 0 && currentUser[0].lastname,
-    role = currentUser.length > 0 && currentUser[0].role.toLowerCase(),
-    classname = (role === "interviewer" || role === "manager" || role === "hr") ? true : false;
+    role = sessionStorage.getItem('activeRole')
+
+    addCandidateButton = (role ==='HR' || role==='TECH INTERVIEWER') ? "primary addCandidateButtonClassDisabled" : "primary addCandidateButtonClassEnabled";
 
     let countIndex = numberOfItemsPerPage;
     if(data.length >0 && offset==0) {
@@ -226,10 +229,13 @@ class App extends Component {
         <div className="container candidate-info-list-container">
         <div className="App-header">
             {sessionStorage.getItem('jwtToken') &&
-              <div className="log-in"><span className="username">{ firstname + " " + lastname + "(" + role +")"}</span><button className="btn btn-primary" onClick={this.logout}> Logout</button></div>
+              <div className="log-in"><span className="username">{ firstname + " " + lastname +  "  " + "(" + role +")"}</span><button className="btn btn-primary" onClick={this.logout}> Logout</button></div>
             }
+
+            <ActiveRoleBreadScrumb currentUser={currentUser} />
+
             <div>
-                <Button bsStyle="primary" bsSize="large" onClick={this.handleShow} disabled={classname}>
+                <Button id="addCandidateButton" bsStyle={addCandidateButton} bsSize="large" onClick={this.handleShow} >
                     Add Candidate
                 </Button>
             </div>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import InputBox from './InputBox';
-import axios from 'axios';
+import $http from '../routes/http';
 import {hashHistory} from 'react-router';
 import './App.scss';
 import {
@@ -16,7 +16,7 @@ import {
 export default class Login extends Component {
     constructor(props) {
         super(props);
-        this.state = { data: [], show: false, searchKey:"", modalLabelView: false, candidate:{}, username: '', password: '', message:'' };
+        this.state = { data: [], show: false, searchKey:"", modalLabelView: false, candidate:{}, username: '', password: '', message:'', activeRole: '' };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleOnChange = this.handleOnChange.bind(this);
     }
@@ -25,10 +25,11 @@ export default class Login extends Component {
         e.preventDefault();
         const { username, password } = this.state;
 
-        axios.post(this.props.url+'/login', { username, password })
+        $http.post(this.props.url+'/login', { username, password })
           .then((result) => {
             sessionStorage.setItem('username', result.data.username);
             sessionStorage.setItem('jwtToken', result.data.token);
+            sessionStorage.setItem('activeRole', result.data.role[0])
             this.setState({ message: '' });
             hashHistory.push({
                 pathname: '#/app'

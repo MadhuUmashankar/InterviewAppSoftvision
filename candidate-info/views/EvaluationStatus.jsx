@@ -33,7 +33,7 @@ class EvaluationStatus extends Component {
       onEvaluationStatusSave({interviewStatus});
     }
 
-    componentDidMount() {
+    componentWillMount() {
       const { data } = this.props;
       if (data != undefined) {
         if (Object.keys(data).length > 0) {
@@ -53,9 +53,10 @@ class EvaluationStatus extends Component {
       <div className="col-sm-6"><div className="form-group experience-width">
          <select required className="form-control" onChange = {this.handleOnChange} name="interviewStatus"
          id="interviewStatusId" value ={interviewStatus}>
-           <option value="">Yet to be interviewed</option>
-           <option>Not Cleared</option>
-           <option>Cleared</option>
+           <option value="">Select</option>
+            <option>Selected</option>
+           <option>On Hold</option>
+          <option>Rejected</option>
          </select>
       </div></div>
   </div>

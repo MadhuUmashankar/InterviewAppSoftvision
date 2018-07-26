@@ -515,7 +515,7 @@ export default class CandidateForm extends React.Component{
                                         }
                                         {modalLabelView &&
                                             <div>
-                                                <span>:
+                                                <span>
                                                         {candidate && candidate.scheduleInterview}
                                                 </span>
 
@@ -549,13 +549,13 @@ export default class CandidateForm extends React.Component{
                             {
                                 modalLabelView &&
                                 <div className="form-group">
-                                    <label className="col-md-4 control-label">Resume</label>
+                                    <label className="col-md-4 control-label">Resume:</label>
                                         <div className="col-md-6 inputGroupContainer">
                                             <div className="input-group">
 
                                             {modalLabelView &&
                                                 <div>
-                                                    <span>:
+                                                    <span>
                                                              {candidate.selectedFile_name}
                                                     </span>
 

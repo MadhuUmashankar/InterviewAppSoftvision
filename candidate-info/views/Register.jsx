@@ -2,13 +2,14 @@
 
 import React, { Component } from 'react';
 import InputBox from './InputBox'
-import axios from 'axios';
+import $http from '../routes/http';
 import {hashHistory} from 'react-router';
 import {
     Link
   } from 'react-router-dom';
 import './App.scss';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+import MultiSelect from './Multi-select';
 
 export default class Register extends Component {
     constructor(props) {
@@ -16,6 +17,12 @@ export default class Register extends Component {
         this.state = { firstname:'', lastname:'', username:'', email: '', role: '', password:'', confirmpassword:'' };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleOnChange = this.handleOnChange.bind(this);
+        this.handleOnRoleChangeSave = this.handleOnRoleChangeSave.bind(this);
+    }
+
+    handleOnRoleChangeSave(roleValue){
+      this.setState({role : roleValue})
+      console.log('inside onrole change in register page', roleValue)
     }
 
     handleOnChange(event) {
@@ -34,9 +41,9 @@ export default class Register extends Component {
             case "email":
                 this.setState({email : value})
                 break;
-            case "role":
-                this.setState({role : value})
-                break;
+            // case "role":
+            //     this.setState({role : value})
+            //     break;
             case "password":
                 this.setState({password : value})
                 break;
@@ -57,8 +64,8 @@ export default class Register extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const { firstname, lastname, username, email, role, password, confirmpassword} = this.state;
-
+        let { firstname, lastname, username, email, role, password, confirmpassword} = this.state;
+        role = role.roleValue.split(",");
         const user = {
             firstname,
             lastname,
@@ -69,7 +76,7 @@ export default class Register extends Component {
             confirmpassword
         }
 
-        axios.post(this.props.url+'/register', user)
+        $http.post(this.props.url+'/register', user)
         .then((result) => {
             hashHistory.push({
                 pathname: '#/'
@@ -95,7 +102,8 @@ export default class Register extends Component {
           <strong>Password must be 6 characters long, including lowercase, uppercase and number.</strong>
         </Tooltip>
       );
-        return (
+
+            return (
             <div className="signin-form">
               <div className="row center-block">
                 <div className="login-title">
@@ -182,14 +190,7 @@ export default class Register extends Component {
                             <label className="col-md-4 control-label">Role</label>
                             <div className="col-md-6 inputGroupContainer">
                                 <div className="input-group login-btn position">
-                                <select className="form-control" id="role" name="role" onChange={this.handleOnChange}>
-                                    <option>Select</option>
-                                    <option>TA</option>
-                                    <option>Interviewer</option>
-                                    <option>Manager</option>
-                                    <option>HR</option>
-                                </select>
-
+                                  <MultiSelect onRoleChangeSave={ this.handleOnRoleChangeSave } />
                                 </div>
                             </div>
                         </div>
@@ -239,7 +240,7 @@ export default class Register extends Component {
                         <div className="form-group">
                             <label className="col-md-4"></label>
                                 <div className="col-md-6">
-                                  
+
                                     <button className="btn btn-lg btn-primary btn-block sign-up">Register<span className="glyphicon glyphicon-submit"></span></button>
 
                                     <p>
