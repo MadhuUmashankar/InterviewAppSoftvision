@@ -207,10 +207,10 @@ class App extends Component {
     const username = sessionStorage.getItem('username');
     const currentUser = users.length > 0 && users.filter((user)=> (user.username == username));
     const firstname = currentUser.length > 0 && currentUser[0].firstname,
-    lastname = currentUser.length > 0 && currentUser[0].lastname,
-    role = sessionStorage.getItem('activeRole')
-
-    addCandidateButton = (role ==='HR' || role==='TECH INTERVIEWER') ? "primary addCandidateButtonClassDisabled" : "primary addCandidateButtonClassEnabled";
+    lastname = currentUser.length > 0 && currentUser[0].lastname;
+    let role = sessionStorage.getItem('activeRole');
+    role = (role)? role.split(',') : [];
+    addCandidateButton = (role.includes('TA') || role.includes('COMMUNITY MANAGER') || role.includes('ADMIN')) ? "primary addCandidateButtonClassEnabled" : "primary addCandidateButtonClassDisabled";
 
     let countIndex = numberOfItemsPerPage;
     if(data.length >0 && offset==0) {
@@ -229,7 +229,7 @@ class App extends Component {
         <div className="container candidate-info-list-container">
         <div className="App-header">
             {sessionStorage.getItem('jwtToken') &&
-              <div className="log-in"><span className="username">{ firstname + " " + lastname +  "  " + "(" + role +")"}</span><button className="btn btn-primary" onClick={this.logout}> Logout</button></div>
+              <div className="log-in"><span className="username">{firstname + " " + lastname}</span><button className="btn btn-primary" onClick={this.logout}> Logout</button></div>
             }
 
             <ActiveRoleBreadScrumb currentUser={currentUser} />

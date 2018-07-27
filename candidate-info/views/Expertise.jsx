@@ -127,6 +127,7 @@ class Expertise extends React.Component {
                                   classname="form-control"
                                   name="avgScore"
                                   id="avgScoreId"
+                                  required
                                   value={item.avgScore}
                                   onChange = {(e)=>this.handleInputChange(e, idx)}
                               />

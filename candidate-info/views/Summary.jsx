@@ -96,7 +96,7 @@ class Summary extends React.Component {
           <div className="col-sm-8"><div className="form-group experience-width">
              <select required className="form-control" onChange = {this.handleOnChange} name="technicalLevel"
              id="technicalLevelId" value ={technicalLevel}>
-               <option>Select</option>
+               <option value="">Select</option>
                  <option>Junior 1</option>
                  <option>Junior 2</option>
                  <option>Junior 3</option>

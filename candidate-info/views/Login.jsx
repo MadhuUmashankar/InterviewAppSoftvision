@@ -29,7 +29,7 @@ export default class Login extends Component {
           .then((result) => {
             sessionStorage.setItem('username', result.data.username);
             sessionStorage.setItem('jwtToken', result.data.token);
-            sessionStorage.setItem('activeRole', result.data.role[0])
+            sessionStorage.setItem('activeRole',result.data.role)
             this.setState({ message: '' });
             hashHistory.push({
                 pathname: '#/app'

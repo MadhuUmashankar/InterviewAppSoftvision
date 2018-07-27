@@ -250,9 +250,10 @@ export default class CandidateAssessment extends Component {
       const {users} = this.state;
       const currentUser = users.length > 0 && users.filter((user) => (user.username == username));
       const firstname = currentUser.length > 0 && currentUser[0].firstname,
-        lastname = currentUser.length > 0 && currentUser[0].lastname,
-        role = sessionStorage.getItem('activeRole'),
-        roleDef = getRole(role);
+        lastname = currentUser.length > 0 && currentUser[0].lastname;
+        let role = sessionStorage.getItem('activeRole');
+        role = (role)?role.split(',') : []
+
       this.setState({firstname: firstname, lastname: lastname, role: role, currentUser: currentUser})
       const roleOverall = getOverallRole(role);
 
@@ -270,7 +271,7 @@ export default class CandidateAssessment extends Component {
 
   handleInterviewChange(e) {
     let url = "/candidateInfo";
-    let {status, listOfInterviewRounds, IAdata, candidateData, candidateInterviewRecords, role} = this.state;
+    let {status, listOfInterviewRounds, IAdata, candidateData, candidateInterviewRecords, role, endInterviewButton} = this.state;
     let item = {};
     let round,
       item1,
@@ -315,26 +316,28 @@ export default class CandidateAssessment extends Component {
       // candidateInterviewRecords = listOfInterviewRounds = [];
 
       listOfInterviewRounds = [];
-      if(role === "TECH INTERVIEWER") {
+      for(let i=0;i<role.length;i++) {
+      if(role[i] === "TECH INTERVIEWER") {
         for(let i=0; i< array.length; i++) {
             if(array[i].round == "Technical Round") {
               listOfInterviewRounds.push(array[i]);
             }
         }
-      } else if(role ==="MANAGER") {
+      } else if(role[i] ==="MANAGER") {
         for(let i=0; i< array.length; i++) {
             if(array[i].round == "Manager Round" || array[i].round == "Technical Round") {
               listOfInterviewRounds.push(array[i]);
             }
         }
 
-      } else if(role==="HR") {
+      } else if(role[i]==="HR") {
         for(let i=0; i< array.length; i++) {
             if(array[i].round == "HR Round" || array[i].round == "Manager Round" || array[i].round == "Technical Round") {
               listOfInterviewRounds.push(array[i]);
             }
         }
       }
+    }
 
       candidateInterviewRecords = listOfInterviewRounds;
 
@@ -422,29 +425,22 @@ export default class CandidateAssessment extends Component {
 
       let array = candidateInterviewRecords || [];
 
-      if(role === "TECH INTERVIEWER") {
-        for(let i=0; i< array.length; i++) {
-            if(array[i].round == "Technical Round") {
-              listOfInterviewRounds.push(array[i]);
-            }
-        }
-      } else if(role ==="MANAGER") {
-        for(let i=0; i< array.length; i++) {
-            if(array[i].round == "Manager Round" || array[i].round == "Technical Round" ) {
-              listOfInterviewRounds.push(array[i]);
-            }
+      for(let i=0; i< array.length; i++) {
+        if(array[i].round == "Technical Round") {
+                  listOfInterviewRounds.push(array[i]);
         }
 
-      } else if(role==="HR") {
-        for(let i=0; i< array.length; i++) {
-            if(array[i].round == "HR Round" || array[i].round == "Manager Round" || array[i].round == "Technical Round") {
+        if(array[i].round == "Manager Round") {
+          if(role.includes('COMMUNITY MANAGER') || role.includes('ADMIN') || role.includes('MANAGER') || role.includes('HR') ||  role.includes('TA') ) {
               listOfInterviewRounds.push(array[i]);
-            }
+          }
         }
-      } else if(role==="TA") {
-        listOfInterviewRounds = array;
-      }else if(role==="ADMIN") {
-        listOfInterviewRounds = array;
+
+        if(array[i].round == "HR Round") {
+          if(role.includes('COMMUNITY MANAGER') || role.includes('ADMIN') || role.includes('HR') ||  role.includes('TA') ) {
+              listOfInterviewRounds.push(array[i]);
+          }
+        }
       }
 
       if(role) {
@@ -455,7 +451,8 @@ export default class CandidateAssessment extends Component {
 
       candidateInterviewRecords = listOfInterviewRounds;
 
-      candidateInterviewRecords = getCandidateRecords(users[0].role, candidateInterviewRecords, candidateData, res.data);
+      // candidateInterviewRecords = getCandidateRecords(role, candidateInterviewRecords, candidateData, res.data);
+
       // let isShowProceedButton = true;
 
       if (candidateInterviewRecords && candidateInterviewRecords.length > 0) {
@@ -467,7 +464,7 @@ export default class CandidateAssessment extends Component {
           if (candidateInterviewRecords[i].sts === "In-Progress") {
             candidateInterviewRecords[i]["isShowDeleteButton"] = true;
             isShowProceedButton = false;
-            endInterviewButton = false; 
+            endInterviewButton = false;
           }
         }
       }
@@ -556,7 +553,7 @@ export default class CandidateAssessment extends Component {
 
           {
             sessionStorage.getItem('jwtToken') && <div className="log-in">
-                <span className="username">{firstname + " " + lastname + "  " + "(" + role + ")"}</span>
+                <span className="username">{firstname + " " + lastname}</span>
                 <button className="btn btn-primary" onClick={this.logout}>
                   Logout</button>
               </div>
@@ -659,29 +656,34 @@ export default class CandidateAssessment extends Component {
                       </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                      <select required className="form-control experience-width" id="interViewToBeTakenId" onChange={this.handleInterviewChange} value={interViewToBeTaken}>
+
+                        {(role.includes("ADMIN") || role.includes("COMMUNITY MANAGER") ) &&
+                        <select required className="form-control experience-width" id="interViewToBeTakenId" onChange={this.handleInterviewChange} value={interViewToBeTaken}>
                         <option value="">Select</option>
-                        {role === "ADMIN" ?
-                        <span>
-                          <option value="technical">Technical Round</option>
-                          <option value="manager">Manager Round</option>
-                          <option value="hr">HR Round</option>
-                        </span>
-
-                        : ''
-                      }
-
-                        {role == "TECH INTERVIEWER" ?
                         <option value="technical">Technical Round</option>
-                        :''}
-                        {role == "MANAGER" ?
                         <option value="manager">Manager Round</option>
-                        :''}
-                        {role == "HR" ?
+                        <option value="hr">HR Round</option>
+                        </select>
+                        }
+                        {role.includes("TECH INTERVIEWER") &&
+                        <select required className="form-control experience-width" id="interViewToBeTakenId" onChange={this.handleInterviewChange} value={interViewToBeTaken}>
+                        <option value="">Select</option>
+                        <option value="technical">Technical Round</option>
+                        </select>
+                        }
+                        {role.includes("MANAGER") &&
+                        <select required className="form-control experience-width" id="interViewToBeTakenId" onChange={this.handleInterviewChange} value={interViewToBeTaken}>
+                        <option value="">Select</option>
+                        <option value="manager">Manager Round</option>
+                        </select>
+                        }
+                        {role.includes("HR") &&
+                        <select required className="form-control experience-width" id="interViewToBeTakenId" onChange={this.handleInterviewChange} value={interViewToBeTaken}>
+                        <option value="">Select</option>
                           <option value="hr">HR Round</option>
-                        :''}
+                          </select>
+                        }
 
-                      </select>
                     </Modal.Body>
                   </Modal>
                 </div>

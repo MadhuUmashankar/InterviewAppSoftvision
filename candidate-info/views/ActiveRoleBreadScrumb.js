@@ -26,19 +26,7 @@ export default class ActiveRoleBreadScrumb extends Component {
     return ( < div className = "row" >
       < div className = "col-md-12" >
       < ul className = "breadcrumb pull-right" > {
-        currentUser.length > 1 && currentUser[0].role.map((object, i) =>
-          < li className = "bread-scrumb-role" > < span className =
-          "cursor-pointer"
-          onClick = {
-            (event) => {
-              this.handleActiveRole(object)
-            }
-          } > {
-            object
-          } < /span></li >
-        )
-      } {
-        currentUser.length === 1 && currentUser[0].role.map((object, i) =>
+        currentUser.length && currentUser[0].role.map((object, i) =>
           < li className = "bread-scrumb-role" > < span > {
             object
           } < /span></li >

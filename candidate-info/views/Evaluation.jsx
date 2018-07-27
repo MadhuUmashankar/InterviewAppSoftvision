@@ -26,7 +26,8 @@ class Evaluation extends Component {
        url: props.url,
        createdBy: '',
        createdUser: {},
-       isOwner : true
+       isOwner : true,
+       currentIARecord : []
      };
 
     this.handleSubmitIAForm = this.handleSubmitIAForm.bind(this);
@@ -42,10 +43,22 @@ class Evaluation extends Component {
    }
 
    loadDetailsFromServerForIASheet() {
+
+
+     let {idx,candidateInterviewRecords} = this.props;
+
      let iaUrl = this.state.url + '/newIAForm';
        $http.get(iaUrl)
            .then(res => {
+
                this.setState({ IAdata: res.data });
+
+               let currentIARecord = res.data.length > 0 && res.data.filter((record) => {
+                 return  candidateInterviewRecords[idx].IA_id === record._id
+               });
+
+              this.setState({ currentIARecord: currentIARecord, createdBy: (currentIARecord[0] && currentIARecord[0].createdBy) });
+
              })
    }
 
@@ -168,7 +181,7 @@ class Evaluation extends Component {
     }
 
   render() {
-    let {url, IAdata, index, experience, expertiseData, impression, overallAvgScore, createdUser, isOwner} = this.state;
+    let {url, IAdata, index, experience, expertiseData, impression, overallAvgScore, createdUser, isOwner, currentIARecord} = this.state;
     const {candidateData, sendInterviewStatus,idx,candidateInterviewRecords, currentUser} = this.props;
     const candidate = candidateData;
     let rows = expertiseData;
@@ -179,9 +192,6 @@ class Evaluation extends Component {
     let total = ((0.1*experience) + (0.8*overallAvgScore) + (0.1*impression)) || 0;
     let totalValue = parseFloat(Number(total).toFixed(2));
 
-    let currentIARecord = IAdata.length > 0 && IAdata.filter((record) => {
-      return  candidateInterviewRecords[idx].IA_id === record._id
-    });
 
     currentIARecord = currentIARecord[0];
 

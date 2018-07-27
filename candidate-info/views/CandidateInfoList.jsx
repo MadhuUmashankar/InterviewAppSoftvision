@@ -203,7 +203,7 @@ class CandidateInfoList extends Component {
                                   <button title="Click here to view the candidate" className="btn btn-success margin-tiny" disabled={!candidate.checked} onClick={(e)=>this.handleView(e, candidate)}><i className="fa fa-address-card-o" aria-hidden="true"></i></button>
                                   </div>
 
-                                  { (role =="TA" || role =="ADMIN") ?
+                                  { (role.includes("TA") || role.includes("ADMIN") || role.includes('COMMUNITY MANAGER')) ?
                                   <div className="event-card-btn-group right" title="Active/InAcive">
                                       <Switch
                                         onChange={(value)=>{this.handleChange(candidate._id, partialData, value, index)}}

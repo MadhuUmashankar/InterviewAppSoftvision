@@ -98,7 +98,7 @@ class ManagerEvaluation extends Component {
 										$http.get(`${userUrl}/${id}`)
 												.then(res => {
 														this.setState({
-																"createdUser": res.data
+																"createdUser": res.data, "createdBy" : res.data._id
 														})
 												}).catch(err => {
 														console.error(err);

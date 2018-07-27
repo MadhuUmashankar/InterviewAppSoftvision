@@ -60,7 +60,7 @@ class HumanResourceEvaluation extends Component {
                  let userUrl = this.props.url + '/get';
                  $http.get(`${userUrl}/${id}`)
                      .then(res => {
-                          this.setState({"createdUser": res.data})
+                          this.setState({"createdUser": res.data, "createdBy" : res.data._id})
                  }).catch(err => {
                      console.error(err);
                  });
@@ -253,7 +253,10 @@ class HumanResourceEvaluation extends Component {
     });
 
     const currHRObject = currentHRRecord[0] || {};
-    isOwner  = (currHRObject && currHRObject.createdBy === currentUser[0]._id);
+
+    if(currHRObject._id) {
+      isOwner  = (currHRObject.createdBy === currentUser[0]._id);
+    }
 
     if (!createdUser.firstname) {
       createdUser = currentUser[0];

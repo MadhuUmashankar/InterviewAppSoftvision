@@ -78,7 +78,7 @@ class Details extends React.Component {
       let userUrl = url + '/get';
       $http.get(`${userUrl}/${id}`)
           .then(res => {
-               this.setState({createdUser: res.data})
+               this.setState({createdUser: res.data, createdBy: res.data._id})
       }).catch(err => {
           console.error(err);
       });
