@@ -195,7 +195,11 @@ class Evaluation extends Component {
 
     currentIARecord = currentIARecord[0];
 
-    isOwner = (currentIARecord && currentIARecord.createdBy === currentUser[0]._id)
+    if(currentIARecord && currentIARecord._id) {
+      isOwner  = (currentIARecord.createdBy === currentUser[0]._id);
+    }
+
+    // isOwner = (currentIARecord && currentIARecord.createdBy === currentUser[0]._id)
 
     return (
       <div>

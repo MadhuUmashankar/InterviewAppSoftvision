@@ -673,7 +673,11 @@ class ManagerEvaluation extends Component {
 
 				const currManagerObject = currentManagerRecord[0] || {};
 
-				isOwner = (currManagerObject && currManagerObject.createdBy === currentUser[0]._id);
+				if(currManagerObject && currManagerObject._id) {
+		      isOwner  = (currManagerObject.createdBy === currentUser[0]._id);
+		    }
+
+				// isOwner = (currManagerObject && currManagerObject.createdBy === currentUser[0]._id);
 
 				if (!createdUser.firstname) {
 						createdUser = currentUser[0];

@@ -254,7 +254,7 @@ class HumanResourceEvaluation extends Component {
 
     const currHRObject = currentHRRecord[0] || {};
 
-    if(currHRObject._id) {
+    if(currHRObject && currHRObject._id) {
       isOwner  = (currHRObject.createdBy === currentUser[0]._id);
     }
 
