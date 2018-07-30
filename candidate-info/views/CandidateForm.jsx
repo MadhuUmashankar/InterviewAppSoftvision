@@ -503,7 +503,7 @@ export default class CandidateForm extends React.Component{
                                               <div>
                                             <span className="input-group-addon"><i className="glyphicon glyphicon-lock"></i></span>
                                               <select required className="form-control" id="scheduleInterviewId" onChange={this.handleOnChange}
-                                              value={candidate.scheduleInterview} name="scheduleInterview">
+                                              value={modalEditView &&  candidate ? candidate.scheduleInterview : this.state.scheduleInterview } name="scheduleInterview">
                                                 <option>Select</option>
                                                   <option>Yes</option>
                                                   <option>No</option>

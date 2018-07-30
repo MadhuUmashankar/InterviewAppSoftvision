@@ -98,7 +98,10 @@ export default class CandidateAssessment extends Component {
         this.setState({
           candidateRejectedByEmployer: false,
           candidateRejectedByHimself:false,
-          candidateOffered: value
+          candidateOffered: value,
+          candidateAccepted:false,
+          candidateHired: false,
+          candidateOfferOnHold:false
         }, () => {
           this.onOfferedSave();
         })
@@ -160,7 +163,9 @@ export default class CandidateAssessment extends Component {
           case "candidateAccepted":
             this.setState({
               candidateAccepted: value,
-              candidateRejectedByHimself: false
+              candidateRejectedByHimself: false,
+              candidateHired: false,
+              candidateOfferOnHold:false
             }, () => {
               this.onOfferedSave();
             })

@@ -79,22 +79,22 @@ class Summary extends React.Component {
 
         <div className="row interview-comments">
           <div className="col-sm-4">Interviewers comments regarding the candidate, strong points, weak points</div>
-            <div className="col-sm-8">
-              <TextArea required rows="4" cols="50" onChange = {this.handleOnChange} name="interviewComments"
+            <div className="col-sm-4">
+              <TextArea className="col-sm-4" required rows="4" cols="50" onChange = {this.handleOnChange} name="interviewComments"
               id="interviewCommentsId" value ={interviewComments} ></TextArea>
             </div>
         </div>
         <div className="row">
           <div className="col-sm-4">Other observations (additional comments regarding candidates attitude, potential)</div>
-            <div className="col-sm-8">
-              <TextArea required rows="4" cols="50" onChange = {this.handleOnChange} name="observations"
+            <div className="col-sm-4">
+              <TextArea className="col-sm-4" required rows="4" cols="50" onChange = {this.handleOnChange} name="observations"
               id="observationsId" value ={observations}></TextArea>
             </div>
         </div>
         <div className="row">
           <div className="col-sm-4">Technical level</div>
-          <div className="col-sm-8"><div className="form-group experience-width">
-             <select required className="form-control" onChange = {this.handleOnChange} name="technicalLevel"
+          <div className="col-sm-4"><div className="form-group experience-width">
+             <select required className="form-control col-sm-4" onChange = {this.handleOnChange} name="technicalLevel"
              id="technicalLevelId" value ={technicalLevel}>
                <option value="">Select</option>
                  <option>Junior 1</option>
@@ -114,8 +114,8 @@ class Summary extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-4">On what type of project(s) or role(s) do you think this candidate would fit best?</div>
-          <div className="col-sm-8">
-            <TextArea required rows="2" cols="50" onChange = {this.handleOnChange} name="projectLevelComments"
+          <div className="col-sm-4">
+            <TextArea className="col-sm-4" required rows="2" cols="50" onChange = {this.handleOnChange} name="projectLevelComments"
             id="projectLevelCommentsId" value ={projectLevelComments}></TextArea>
           </div>
         </div>
