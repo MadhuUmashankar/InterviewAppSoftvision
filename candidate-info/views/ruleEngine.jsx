@@ -31,6 +31,12 @@ const roleDefinition = {
     "isShowProceedButton" : true,
     "isDisableRound" : true,
     "endInterviewButton" : true
+  },
+  "COMMUNITY MANAGER" : {
+    "isShowDeleteButton" : true,
+    "isShowProceedButton" : true,
+    "isDisableRound" : true,
+    "endInterviewButton" : true
   }
 };
 
@@ -65,7 +71,7 @@ const roleDefinitionOverall = {
     "isDisableRound" : true,
     "endInterviewButton" : true
   },
-  "Community manager" : {
+  "COMMUNITY MANAGER" : {
     "isShowDeleteButton" : true,
     "isShowProceedButton" : true,
     "isDisableRound" : true,

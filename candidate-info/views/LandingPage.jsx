@@ -15,7 +15,7 @@ export default class LandingPage extends Component {
                     <div className="body">
                          <div className="landing-row">
                              <div className="col-md-12 nospace" >
-                                    <img id="landing-page-id" src="images/interview.jpg" className="img-responsive" alt="Responsive image" />
+                                    <img id="landing-page-id" src="images/interviewImg.jpg" className="img-responsive" alt="Responsive image" />
                              </div>
                          </div>
                     </div>

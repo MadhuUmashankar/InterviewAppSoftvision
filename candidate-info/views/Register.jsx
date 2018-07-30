@@ -107,7 +107,7 @@ export default class Register extends Component {
             <div className="signin-form">
               <div className="row center-block">
                 <div className="login-title">
-                      <h3>Interview Management System</h3>
+                      <h2>Interview Management System</h2>
                 </div>
                 <div className="profile-img-block">
                     <img className="profile-img" src="https://picsum.photos/200/300/?random" alt="" />

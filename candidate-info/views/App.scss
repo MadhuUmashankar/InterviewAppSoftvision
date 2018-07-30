@@ -9,6 +9,18 @@
     padding : 1%;
     }
 
+.header-alignment {
+  display: -webkit-box;
+}
+
+.header {
+  .header-alignment {
+    h3 {
+          margin-top: 8px;
+    }
+  }
+}
+
     // #landing-page-id {
     //     -webkit-filter: blur(5px); /* Safari 6.0 - 9.0 */
     //     filter: blur(5px);
